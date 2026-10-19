@@ -1,142 +1,135 @@
-# SCEPI reproducibility
+# SCEPI：实测单效应条件化与补偿组合发现
 
-SCEPI is Single-mutant-Conditioned Epistasis Prediction. It predicts combination effects in a held-out protein from a shared source-trained model and permitted target single-mutant measurements. The primary S-all protocol supplies no target double-mutant labels for fitting or configuration selection.
+正式方法名称为 **SCEPI**，全称 **Single-mutant-Conditioned Epistasis Prediction**。核心创新是将目标实测单效应及其可用标记输入跨蛋白共享相互作用函数，同时保留外部单效应校准。论文、图表和项目说明统一使用 SCEPI；既有结果中的 `interaction` 等程序标识、运行目录和权重名称保留，以保持实验记录可追溯。
 
-## Contents
+方法定义见 [METHOD.md](METHOD.md)，完整实验协议见 [EXPERIMENTS.md](EXPERIMENTS.md)。计算实验在一号机的 `/data3/doomx/RECOMB-3-Epistasis` 执行，唯一环境为系统 Conda 的 `/data1/doomx/anaconda3/envs/recomb-3-epistasis`，训练使用 GPU 0–7。方法、基线、重复和消融的当前执行范围均已完成，逐项计算与统计汇总均已写出。运行事实由各评价矩阵的 manifest 和逐蛋白结果记录。
 
-- `epistasis/`: model, likelihood, feature construction, metrics, and baseline interfaces.
-- `scripts/`: source training, target adaptation, evaluation, aggregation, and plotting.
-- `configs/environment.yml`: the recorded Linux Conda environment, without a machine-specific prefix.
-- `reproducibility/environment.json`: recorded interpreter and package versions.
-- `reproducibility/source_repositories.json`: exact upstream repositories and commits.
-- `reproducibility/source_models.json`: selected source configurations, fitting permissions, and checkpoint epochs.
-- `reproducibility/source_jobs.json`: portable commands for the 50 primary source fits and the 100 matched-control fits, including their single-effect initialization dependencies.
-- `evidence/`: saved per-protein results, independently reconstructed table values, random expectations, and supplementary summaries.
-- `paper/`: current manuscript, supplementary material, editable figure sources, and references.
+## 审稿修订，2026-10-19
 
-## Environment
+正文新增与StabilityArc + Kermut、ThermoMPNN-D和Mutate Everything的信息使用比较表，区分源单效应监督、目标后验或外部校准，以及相互作用网络内的实测输入。Mutate Everything作为方法比较，其公开分数没有代入当前匹配评价。
 
-The recorded calculations use Python 3.11.17, PyTorch 2.3.1, NumPy 1.26.4, pandas 2.2.3, SciPy 1.14.1, and transformers 4.48.1. The full baseline environment also includes GPyTorch, MAVE-NN, MoCHI, TensorFlow, R, HMMER, and MMseqs2. It was checked with `pip check` in the system Conda environment.
+随机富集分析保留原候选集合、预测与聚合方式。标准候选集合包含120个蛋白、79,564个双突变和1,718个命中。等蛋白随机期望为2.6291%，SCEPI前十候选命中率为11.2167%，富集4.2664倍，命中率增加8.5876个百分点。预算1、3、10、30分别富集5.52、4.90、4.27、3.26倍。距测量边界至少0.5 kcal/mol时，30%与25%分组的原生富集分别为4.15和4.19倍。完整1,248项比较保存在一号机的 `runs/reviewer_revision_20261019/random_enrichment/`。正文、Table 3、Figure 2和Appendix K已更新。
 
-Create one environment in the system Conda `envs/` directory. Keep environments outside the project checkout.
+公开代码与复现材料已发布于 [SZU-ADDG/SCEPI](https://github.com/SZU-ADDG/SCEPI)，源码提交为 `f88a24ba69c977cdc3b73bff03e8d02ff32693f1`。材料包括模型、数据处理与评价源码，150项选定源训练配置，冻结分组，结果表，环境版本和上游提交，以及一个已训练模型和32个真实留出实验单元。从公开仓库下载的副本通过 `reproduce.py --model-check`，重建52行主比较中的312个均值、1,248项随机比较中的8,736个数值，并验证738,400条配对记录和CPU预测。验证沿用系统Conda。公开论文源码及两份PDF与正式文件逐字节一致。
 
-```bash
-conda env create --name recomb-3-epistasis --file configs/environment.yml
-conda activate recomb-3-epistasis
-python -m pip check
-```
+本轮正式文件为 `paper/manuscript.tex`、`paper/submission.pdf` 与 `paper/supplementary.pdf`。正文连同标题摘要共10页，参考文献1页，补充14页；四张图、三张正文表格、全部25页经过视觉检查。字体嵌入、页边距、内部链接和导出像素一致性检查通过。记录为 `runs/reviewer_revision_20261019/final_manifest.json`，公开发布记录为同目录的 `publication_manifest.json`。
 
-MoCHI is installed from the recorded v1.1 source commit in the environment file. Third-party repositories are downloaded separately at the commits in `source_repositories.json`. Their licenses and pretrained-model terms remain applicable. The `fetch_sources.py` script fetches the historical primary repositories; the source manifest also identifies the additional functional and higher-order sources.
+## 最终完成记录，2026-10-18
 
-For the original server, use the existing system environment `/data1/doomx/anaconda3/envs/recomb-3-epistasis`. No new environment is needed there. On another Linux host, set the absolute path to its system-managed environment:
+本次剩余50项 RFA 评价全部完成并汇总。原主矩阵完成12,622/12,622项，补偿交集完成2,251/2,251项，全目标 S-all 完成1,151/1,151项，三个数字分别对应各矩阵的当前执行范围。用户取消的额外 ESM-MSR 训练与评价保留原范围记录，已有第10轮权重用于可用子集。
 
-```bash
-export SCEPI_CONDA_ENV=/absolute/system/conda/envs/recomb-3-epistasis
-source scripts/runtime.sh
-```
+RFA 的350个合格目标拟合全部完成，队列没有失败项。284个固定默认配置结果包含264次新拟合和20次已有默认权重复用；66个既有验证选择结果直接保留。另有30条任务记录缺少所需预算或训练、验证标签。284组固定配置的预测覆盖、标签权限、配置数量、优化预算、权重与日志核验通过，1,199份既有保留文件完整。三个旧兼容链接 `.work`、`.cache`、`.conda-env` 均已删除。
 
-The release runtime configures `work/tmp/`, `cache/`, and the existing environment. It does not configure a proxy. Set a proxy explicitly if the host needs one. Historical queue launchers retain the original server paths; the portable source-job runner below uses the active Python interpreter.
+当前[论文源码](paper/manuscript.tex)已更新正文与八张扩展或新增结果表，覆盖完整 C 比较、功能实验、九项 FLIP2 协议和 ESM-MSR 单折子集。主张保持实测单效应条件化，功能适配变体的预测单效应输入及混合收益单独说明。RFA 在12次 GFP 评价中输出常数，秩相关未定义。排名表采用各模型共有的有限记录，并明确记录相应测定与重复覆盖；残差表仍保留这些评价。
 
-## Reconstruct the reported tables without training
+独立重算的3,506项原主矩阵配对比较与正式汇总一致，均值最大差异为零。论文485个扩展表格数值、11,650项主结果配对比较、52行完整主结果及四幅原生图形片段核验通过，当前源码通过编辑器内置编译。正式记录为一号机的 `runs/final_main_reporting_20261018/manifest.json`、`manuscript_verification.json` 和 `runtime_completion.json`，本地保留小型副本 `work/final_main_reporting_20261018/`。源实验提交为 `875d04d6df818110001f3889758cf998321a96f6`，本轮分析与写作使用记录的工作区源码。
 
-The compact evidence files contain real saved predictions aggregated within protein and repetition. The following command independently reconstructs the two 26-row primary tables and all 1,248 random-enrichment comparisons.
+2026-10-18的交付为 `paper/manuscript.tex`、编辑器实时编译预览及 `paper/submission.pdf` 和 `paper/supplementary.pdf`。版式参照用户指定的“RECOMB-ProtDLM”会话及其实际源码，采用LLNCS v2.25。标题、作者、机构、摘要和引言连续排版，正文连同标题摘要共10页，参考文献1页，当时的补充材料13页。普通文字保持10pt，使用Letter和1 inch页边距。该次记录为 `runs/scepi_lncs_20261018/final_manifest.json`，当前版本见本轮审稿修订记录。
 
-```bash
-python reproduce.py --output work/reproduced
-```
+## 中心主张
 
-The command checks every reconstructed value against the saved reference summaries. It verifies five repetitions per eligible protein, candidate-pool equality, hypergeometric expectations, and enrichment denominators. It writes CSV tables and a verification manifest. This route requires the numerical Python dependencies and no GPU or sequence encoder.
+SCEPI 是以目标实测单效应为条件的跨蛋白相互作用预测器。实测单效应及其可用标记同时用于外部校准与相互作用网络，匹配输入移除对照确认网络内使用的独立残差和补偿选择收益。四状态构造提供参考约束及平均残差改善，其候选命中率收益按两种分组的真实结果呈现。单调映射、跨位点上下文和损失组合保留为模型与训练选择。超过参考稳定性的候选选择和功能外推完整报告。
 
-The release also includes one trained checkpoint and 32 real, held-out quartets with their recorded features. Add the model check to reproduce their saved phenotype and residual predictions on CPU:
+## 方法论文与比较设计
 
-```bash
-python reproduce.py --model-check --output work/reproduced
-```
+2026-10-16 的全文修订将实测单效应条件化作为核心贡献。标题、摘要、引言、方法、结果和讨论均采用这一定位，新增条件输入的显式定义和两种分组的正文核心消融表。四状态构造按参考约束及残差收益表述，表征、映射和训练目标的完整比较进入附录。原生预测承担外部主比较，补偿选择承担应用价值，同源组留出和匹配消融检验迁移与组件职责。现有模型、数据、权重及运行任务保留。
 
-This check requires PyTorch. It compares CPU predictions with the previously saved evaluation predictions at a tolerance of 1e-5. The example contains no target combination training labels. The verification record is described in `reproducibility/VERIFICATION.md`.
+S-all 已排除目标全部组合训练标签，主比较应覆盖留出蛋白的全部合格双突变。现有位点对交集结果保留为独立评价子集。C 允许目标组合训练标签，其未见位点对测试直接衡量组合外推。平均改善、逐蛋白胜负、重复方向及区间共同描述证据。每个蛋白获胜、每次重复同向和区间完全离零均不作为统一成立条件。
 
-The original experiment base commit is `875d04d6df818110001f3889758cf998321a96f6`. The release contains the source snapshot used for the current method, matched controls, reporting, and manuscript revisions. Its release manifest distinguishes the base commit from that snapshot.
+## 最接近的工作
 
-## Data and frozen representations
+| 来源 | 已建立的内容 | 本项目需要增加的证据 |
+| --- | --- | --- |
+| [ProteinGym](https://github.com/OATML-Markslab/ProteinGym)，NeurIPS，2023 | 标准化 DMS、公开评分与监督和零样本评估 | 按位点组合与蛋白家族切分，直接评价相互作用 |
+| [ThermoMPNN-D](https://github.com/Kuhlman-Lab/ThermoMPNN-D)，Protein Science，2025 | 比较加性与双突变模型，提供上位效应评估数据 | 超过其双突变模型并证明跨组合、跨蛋白迁移 |
+| [Kermut](https://github.com/petergroth/kermut)，NeurIPS，2024 | 用复合核和预训练表征进行监督突变效应预测 | 在相同标签预算下改进组合外推与残差预测 |
+| [MoCHI](https://link.springer.com/article/10.1186/s13059-024-03444-y)，Genome Biology，2024 | 联合建模全局非线性与特定相互作用 | 通过共享表征实现相互作用的跨蛋白预测 |
+| [ESM-MSR](https://github.com/SKTeamLab/esm-msr)，预印本，2026 | 用野生型和突变体 ESM3 表征预测稳定性及上位效应 | 在相同源数据和家族切分下检验迁移优势 |
+| [StabilityArc](https://arxiv.org/html/2610.00742v1)，预印本，2026 | 共享野生型解码器与接触条件化的对称残差 | 50 组匹配源划分重训及 Kermut 目标适配全部完成，已纳入主比较 |
 
-Data source metadata and download manifests retain the original URLs and file sizes. Tsuboyama stability data originate from Zenodo record 7992926. ProteinGym and FLIP2 source metadata are supplied with the release. Raw datasets and pretrained encoders are downloaded from their original providers.
+已核验直接先例、作者代码版本和公开数据目录。主要实验数据采用 [Tsuboyama 等的实验](https://pmc.ncbi.nlm.nih.gov/articles/PMC10412457/)，组合泛化采用 [FLIP2 v3](https://zenodo.org/records/18433203)。现有方法已经包含效应分解和双突变建模，本项目贡献由相互作用迁移及其选择收益建立。
 
-```bash
-python scripts/download_data.py --groups tsuboyama
-python scripts/extract_data.py data/raw/tsuboyama/Processed_K50_dG_datasets.zip data/raw/tsuboyama/AlphaFold_model_PDBs.zip data/raw/tsuboyama/Data_tables_for_figs.zip
-python scripts/prepare_tsuboyama.py
-python scripts/prepare_structures.py
-python scripts/download_esm2.py
-```
+## 任务与方法
 
-Frozen family partitions are supplied in `data/splits/families_30.parquet` and `families_25.parquet`. The source split seed is 20261009. The original scripts regenerate combination splits and single-label order:
+输入包括野生型序列、突变组合，以及对应设置允许访问的训练标签和结构信息。输出为组合突变表型、相互作用残差与候选排序。真值优先采用同时测得野生型、两种单突变和双突变的实验单元。
 
-```bash
-python scripts/prepare_combination_splits.py
-```
+在适合加性比较的表型尺度上，双突变残差定义为 ε = yAB − yA − yB + yWT。四项须具有相同参考背景、实验条件和单位。稳定性采用解折叠自由能，数值增加表示稳定性提高。功能测定保留各自的实验尺度。删失记录保存测量区间。
 
-To regenerate the homology partitions independently, use `download_pfam.py` and `prepare_family_splits.py` with Pfam 37.0, HMMER 3.4, and the recorded MMseqs2 version. Supplied family files preserve the actual evaluation assignments.
+预测器使用冻结 ESM-2 的参考及单突变表征。共享相互作用函数满足端点交换对称性，并在任一突变恢复为参考氨基酸时归零。补偿主实验沿用源验证选定的单调表型映射和联合优化。恒等映射与冻结主效应分别作为匹配消融。结构关系、单突变上下文和训练目标均有独立对照。
 
-Cache the ESM-2 reference and single-mutant representations for ranks 0 through 7. Each rank is an independent command on its assigned GPU:
+标签条件分别为目标无标签的 Z、允许参考及指定单突变标签的 S，以及进一步允许组合训练标签的 C。每个模型残差由自身四项预测计算。测试真值与模型输入权限分别记录。
 
-```bash
-CUDA_VISIBLE_DEVICES=0 python scripts/cache_esm2.py --rank 0 --world-size 8 --stage singles --dataset tsuboyama
-```
+## 完整实验
 
-Run the same command with each remaining rank and assigned device. After all eight manifests complete:
+1. 构建条件一致的完整实验单元，审计测量范围、重复样本及同源关系。
+2. 复现公开直接基线，并在共同数据条件下比较加性模型、全局上位效应、ESM-2、Kermut、ThermoMPNN-D、ESM-MSR、MoCHI、MAVE-NN 与 RFA。
+3. 分别执行随机组合、未见位点对、突变距离和未见家族测试。补偿主实验采用 S-all，覆盖留出同源组中目标蛋白的全部合格双突变。固定未见位点对子集独立报告。C128、Z 和 S128 的原定实验继续执行。
+4. 以固定十候选预算的补偿命中率为主要终点，以残差 RMSE 检验相互作用预测。原定稳定化 precision@10 和逐测定 Spearman 继续报告。
+5. 执行相互作用删除、结构置换、表征替换和全局映射对照，并按空间距离、测量精度及测量边界分层。
 
-```bash
-python scripts/build_training_features.py
-```
+结果图围绕补偿选择收益、严格留出残差和相互作用干预设计。
 
-The encoder revision is `08e4846e537177426273712802403f7ba8261b6c` for `facebook/esm2_t33_650M_UR50D`. Single-mutant residue states are reused across candidate pairs. The main pair model does not encode every double-mutant sequence.
+## 成立条件与计算安排
 
-## Refit the selected source models
+相互作用残差上的提升须在未见组合中保留，并带来实测候选选择的改善。若提升完全由表型变换或检测边界解释，局部相互作用的机制主张需要撤回或重定。
 
-The portable job manifest records actual selected hyperparameters and single-effect initialization dependencies. Listing jobs does not start training:
+稳定性主点值集合包含 127,892 个完整实验单元，覆盖 160 个参考背景和 488 个位点对。ThermoMPNN-D 的 74,598 条功能双突变需要与同一测定的原始单突变及参考记录连接，功能残差与组合表型各自采用对应真值。
 
-```bash
-python reproducibility/run_source_jobs.py --list
-```
+动机实验已完成。seed11 的严格留出补偿池覆盖 54 个蛋白质、27 个分组和 14,079 个候选。各方法固定相同实测单突变主效应，每个蛋白质选择十个组合。相互作用模型、加性模型、全局非线性模型分别命中 27、12、13 个；推理时关闭相互作用后命中 12 个。距离测量边界至少 0.5 kcal/mol 时，前三种方法分别命中 26、11、12 个。逐候选结果保存在一号机的 `runs/comparison_design_diagnostic/`。
 
-Refit one selected primary configuration with its exact prerequisite single model:
+全目标 S-all 矩阵的当前授权范围完成1,151/1,151项评价。23个完整模型或消融完成两种同源阈值、五组外层留出和五次重复，共1,150项；另有一项 ESM-MSR 可用单折评价。StabilityArc + Kermut 另行完成50项，两项新增关键消融完成100项。合并后的完整主比较包含26个模型及消融，共1,300项评价。ESM-MSR 单折结果在附录的共同蛋白子集单独报告，其余49项已按用户指令取消。family30 的表型比较覆盖159个蛋白、51个同源组和795条蛋白重复记录；残差比较覆盖155个蛋白、51个分组和775条记录；补偿比较覆盖120个蛋白、44个分组和600条记录。完整主比较的所有蛋白均有五次重复，先在蛋白内平均，再等权平均蛋白。
 
-```bash
-CUDA_VISIBLE_DEVICES=0 python reproducibility/run_source_jobs.py --arm interaction --threshold 30 --fold 0 --seed 11
-```
+2026-10-15 新增同容量直接残差头和移除相互作用网络实测单效应输入两项对照，100组源训练及150项含完整模型的匹配评价全部完成。两项各运行五个外层划分、五次重复和两种同源阈值，复用完整模型已选超参数和对应单效应初始化。第二项完整保留外部单效应校准公式、标签权限和源验证选择规则，权重独立重训。真实数据检查确认两个投影维度下参数数量完全匹配、默认模型输出不变、相同权重下外部校准输出一致、被移除的数值及可用标记无法进入相互作用网络。逐项核对100组训练条件并独立重算932项配对比较，均值最大差异为5.55e-17。正式记录为 `runs/key_ablations_20261015/final_manifest.json`。跨位点上下文、单调映射和辅助残差损失均作为模型或训练选择呈现。
 
-The supported arms are `interaction`, `direct_residual`, and `no_pair_measured`. Thresholds are 30 and 25; folds are 0–4; seeds are 11, 23, 47, 89, and 131. Repeating the command across the recorded grid reproduces 50 primary and 100 control fits. Existing completed fits are retained and their manifests checked before reuse. Source validation determines the checkpoint and calibration weight. All target homology groups are excluded from source fitting and selection.
+两项消融均完成 family30 和 family25 的全部外层划分与重复。family30 的直接残差头为0.635 kcal/mol残差 RMSE和10.70%原生 top-10命中率；移除网络内实测单效应输入后为0.767和8.18%；完整模型为0.595和11.22%。family25 的对应结果为直接头0.630和11.38%、移除实测输入0.814和8.15%、完整模型0.604和11.15%。实测单效应条件化在两种分组中均改善残差和候选选择；四状态差分在两种分组中均改善残差，其命中率收益随分组变化。共同主效应及0.5 kcal/mol边界分析均保留实测输入的候选收益。结果、重复方向和配对区间已写入论文，来源为 `evidence/verified_family30/`、`evidence/verified_family25/` 和 `primary_statistics.json`。
 
-Source-model selection can also be regenerated with the original single and pair grid scripts. The main model compares projection dimensions 64/128, learning rates 1e-4/3e-4/1e-3, and auxiliary phenotype weights 0.1/1. Each fit uses at most 100 epochs and patience 10. The two matched controls reuse the primary model's selected configuration. They retain initialization, source rows, optimizer, objectives, stopping rules, and target permissions.
+| 模型 | 表型 RMSE，kcal/mol | 残差 RMSE，kcal/mol | 原生 top-10 补偿命中率 | 相比该模型的平均恢复幅度提升，kcal/mol |
+| --- | ---: | ---: | ---: | ---: |
+| SCEPI | 0.657 | 0.595 | 11.22% | — |
+| ThermoMPNN-D | 0.777 | 0.805 | 7.07% | +0.183 |
+| Kermut | 0.798 | 0.847 | 5.40% | +0.201 |
+| StabilityArc + Kermut | 0.815 | 0.853 | 8.75% | +0.087 |
+| 全局非线性 | 0.911 | 0.635 | 4.45% | +0.180 |
+| 加性模型 | 0.893 | 1.091 | 6.38% | +0.130 |
+| Mean MLP | 1.405 | 0.966 | 10.07% | +0.156 |
+| Mean ridge | 1.328 | 1.002 | 11.42% | +0.098 |
 
-`direct_residual` keeps measured pair inputs and predicts the symmetric head output directly. `no_pair_measured` supplies predicted single effects and zero availability indicators inside the pair network while retaining external measured-single calibration.
+主模型的残差误差相比 ThermoMPNN-D 和 Kermut 分别降低 26.1% 和 29.8%，在两项比较中均有 136/155 个蛋白取得更低误差。主模型在全部四种候选预算下具有最高的平均恢复幅度。Mean ridge 的原生 top-10 命中率为 11.42%，该结果完整保留。
 
-## Full evaluation and supplementary methods
+相对 StabilityArc + Kermut，主模型的残差误差降低 30.3%，130/155 个蛋白取得更低误差。原生 top-10 命中率提高 2.47 个百分点，五次重复的平均差异均为正。StabilityArc + Kermut 的平均表型 Spearman 为 0.746，主模型为 0.742；相应表型 RMSE 为 0.815 和 0.657。原生表型排序、数值预测和补偿选择分别报告。
 
-`run_sall_full_target.py` reconstructs the full-target truth and evaluates saved source/target predictions. `paper_full_target_evidence.py`, `integrate_key_ablations.py`, and `summarize_full_target_evidence.py` aggregate completed arms. `analyze_random_enrichment.py` computes exact random expectations from the frozen candidate pools. The compact evidence route above reproduces their reported primary summaries without rebuilding embeddings.
+共同实测主效应下，补偿命中率为 11.27%，加性、全局非线性、ThermoMPNN-D、Kermut、Mean MLP 和 Mean ridge 分别为 4.42%、4.70%、5.30%、5.47%、7.17% 和 7.33%。四项测量距边界至少 0.5 kcal/mol 时，主模型为 11.15%，各对照分别为 4.52%、4.82%、5.27%、5.29%、7.30% 和 7.48%，覆盖 115 个蛋白。推理时移除相互作用使原生命中率降至 4.42%；移除跨位置上下文为 11.47%，仅用表型训练为 11.95%。这些具体组件与共享方法的整体贡献分别解释。
 
-| Comparison | Entry points and retained settings |
-| --- | --- |
-| ThermoMPNN-D | `prepare_thermo_training.py`, `train_thermo.py`, `run_thermo_targets.py`; source-held-out refitting, native loss and symmetry penalty, permitted target singles only in S-all |
-| Kermut | `run_kermut_targets.py`; full composite kernel and permitted target labels |
-| StabilityArc + Kermut | `cache_stabilityarc.py`, `train_stabilityarc.py`, `run_stabilityarc_targets.py`; 50 held-out source models, four decoder layers, 256 hidden dimensions, 40-epoch budget, target GP calibration |
-| Matched controls | `run_key_ablations.py`, `verify_key_ablations.py`; 100 source fits and identical primary evaluation permissions |
-| Functional/FLIP2 | `run_functional_adaptation.py`, `run_supplementary_baselines.py`, `run_mean_flip.py`; predicted-single two-stage adaptation, evaluated separately from S-all |
-| RFA | `fit_rfa.R`, `configs/rfa_fixed.json`; lambda=0, 500-iteration caps and recorded stopping criteria; 284 fixed-default and 66 previously validation-selected fits retained |
-| ESM-MSR | Available epoch-10 checkpoint, family30/fold0/seed11 only; its additional training was discontinued and is outside the complete repeated main comparison |
+共同实测主效应下，StabilityArc + Kermut 的 top-10 命中率为 8.17%，距测量边界至少 0.5 kcal/mol 时为 8.12%；主模型分别为 11.27% 和 11.15%。
 
-Mutate Everything is included in the information-use comparison. It is not a row in the current matched full-target empirical comparison. No comparison score is inferred from its published benchmark.
+family25 独立完成同样 26 个模型的 650 项评价，主模型残差 RMSE 为 0.604 kcal/mol，原生命中率为 11.15%；StabilityArc + Kermut 分别为 0.874 和 8.23%。更严格同源分组下，共同主效应及测量边界比较保留相对外部基线的平均优势。原固定未见位点对交集的 70 个残差蛋白和 63 个补偿蛋白保留在附录，独立于全目标结果。
 
-The complete original-main and compensation-intersection summaries are retained separately from the primary S-all tables. Functional results use equal-assay averaging, including within-assay averaging of the three KRAS conditions. Twelve undefined RFA GFP Spearman values remain excluded only from common finite rank intersections; their residual values remain included.
+2026-10-15 的逐项核对确认，原主矩阵中本项目模型及消融完成 7,940/7,940 项，补偿交集矩阵完成 1,000/1,000 项，全目标 S-all 完成 800/800 项。这些是不同评价矩阵中的项目方法任务数量。记录为一号机的 `runs/method_reporting_20261015/manifest.json`，本地保留小型副本 `work/method_reporting_20261015/`。原主实验的 Z、S32、S128、S-all 和 C128/C512/C2048/C-all 结果进入附录；独立同源阈值、重复及消融全部保留。
 
-## Statistical and selection definitions
+当前稿件为 [paper/manuscript.tex](paper/manuscript.tex)。源实验提交为 `875d04d6df818110001f3889758cf998321a96f6`，新增消融使用已修改的工作区源码；全目标合并证据位于一号机的 `runs/key_ablations_20261015/paper_evidence/`，独立重算保存在同目录的 `verified_family30/` 和 `verified_family25/`，本地小型记录保存在 `work/key_ablations_20261015/`。原24模型证据继续保存在 `runs/sall_full_target/paper_evidence/`。StabilityArc 的50个完整源训练和目标预测组记录在 `runs/stabilityarc_full_target/manifest.json`。
 
-The main phenotype/residual/selection cohorts contain 159/155/120 proteins. Selection requires two measured single effects at most -0.5 kcal/mol, an in-range complete quartet, reference stability at most 4.5 kcal/mol, and at least 100 candidates. A hit recovers at least 0.5 kcal/mol above the better constituent single. It can remain below the wild type. Candidate budgets are 1, 3, 10, and 30. Measurement margins are 0, 0.25, and 0.5 kcal/mol.
+2026-10-20 的当前稿件核对11,650项配对结果、52行完整结果表、3行正文条件输入消融表、4行配对区间表、8行原实验预算表及四幅内嵌图形片段，均与实际输出一致，均值最大差异为1.11e-16。输入移除对照的两项相对残差改善与正文22.4%和25.7%一致；485个扩展表格数值及1,248项随机比较也通过核验。六十项术语各有五篇独立论文的实际用例，记录见 [paper/term_use_audit.md](paper/term_use_audit.md) 和 [paper/term_evidence.csv](paper/term_evidence.csv)。正文保持方法论文定位，表格名称统一简化，完整设置与补充结果保存在附录。正文连同标题摘要共10页，另有1页参考文献和15页补充材料。保存源码通过编辑器内置编译，26页均经过实际视觉检查。投稿文件为 [paper/submission.pdf](paper/submission.pdf) 和 [paper/supplementary.pdf](paper/supplementary.pdf)，导出页面在110 dpi下与受检源 PDF 渲染逐像素一致。字体全部嵌入，文件内部链接目标有效。当前核验、源码和正式文件记录位于 `runs/writing_revision_20261020/`。
 
-Each protein contributes one value after averaging its five fitting repetitions. Homology groups are resampled together. The primary paired analysis uses 10,000 group bootstrap draws with seed 20261013; the added random analysis uses seed 20261019. Enrichment divides the equal-protein model hit rate by the equal-protein random expectation. It does not divide pooled hit counts or average undefined per-protein ratios.
+ESM-MSR 的八项源训练已按用户指令停止，已有最佳权重、日志和预测全部保留。默认配置为 family30、fold0、seed11、learning rate 2e-4、weight decay 0；PID 9352 已于 2026-10-15 退出。评价使用第10轮最佳权重，源验证残差 RMSE 为 1.07368099 kcal/mol。源记录标记人工停止，已完成13轮。该权重的源验证、源测试及八个分片的 S-all 目标评价均于 2026-10-16 03:45（北京时间）完成，记录为 `runs/msr_family/execution_policy_20261015.json`。默认配置登记在 `runs/msr_family/repeats_default_20261015/selected_hyperparameters.json`。重分配前的中间文件保存在 `runs/msr_target/archived_partial_20261015/`。
 
-The standard random expectation is 2.6290798%, based on 79,564 candidates and 1,718 measured hits. SCEPI native top-10 hit rate is 11.2166667%, giving 4.266385-fold enrichment. Saved predictions and candidate pools are unchanged by the added analysis.
+2026-10-16 按用户要求禁止新增 ESM-MSR 源训练及目标适配训练。该检查点对应单折单次评价，其余源划分涉及已参与训练或模型选择的家族，不能复用为独立留出结果。原主矩阵的498项、补偿交集矩阵的149项、全目标 S-all 矩阵的49项未完成 ESM-MSR 评价明确登记为取消后续训练的未覆盖范围，均未计入完成项。原始任务清单和计划总数保留；本次执行范围分别为12,622、2,251和1,151项，全目标 S-all 的本次执行范围已完成。范围记录为 `runs/evaluation_scope.json`，各 `current.json` 同时记录原计划总数、当前执行范围、取消项与真实完成项。
 
-## License and upstream materials
+同日排查确认 Kermut 三个分片与 MAVE-NN 八个分片因显存不足退出。恢复清单覆盖176个 Kermut C-all 目标拟合和174个 MAVE-NN 拟合。Kermut 继续原有精确 GP 设置；MAVE-NN 采用每个拟合独立进程，保留原有12项参数比较、验证选择和全部模型计算。恢复程序按空闲显存使用 GPU 0–7，复用完整结果，并将未完成拟合的旧文件保存到 `runs/prediction_completion_20261016/preserved_partial/`。33个原有 RFA 计算进程继续运行，其350个缺失预测均由现存分片负责，未发现遗漏或重复分配。逐项评估与统计汇总现已并行运行，原有汇总计算保留；每个矩阵同时只运行一个汇总进程。当前执行范围的完成状态要求逐项评估与相应汇总均完成。运行清单、进程、日志及真实数据验证保存在 `runs/prediction_completion_20261016/`。验证确认已生成新的 Kermut 和 MAVE-NN 完整预测，已有 MAVE-NN 任务正常复用，33个 RFA 进程保持运行，未启动任何 ESM-MSR 训练。旧兼容链接保留到依赖它们的任务全部退出，随后删除。
 
-The SCEPI source is provided under the repository license. Original datasets, upstream repositories, and pretrained models retain their own terms. Download third-party code and data from the recorded original sources. The manuscript and supplementary tables identify implementation choices required by incomplete upstream training specifications.
+2026-10-18 排查 RFA 耗时。系统 `lbfgs 1.2.1.2` 在原生求解器返回后逐个拼接参数，产生平方级复制开销；作者代码使用的模式稀疏矩阵在反复计算时还会重复转换。完整 C128 输入具有1,298条训练记录、1,352,020个效应系数和35,689,808个非零项。缓存数值稀疏矩阵并使用 `crossprod` 后，一次目标函数与梯度计算合计从0.571秒降至0.205秒，目标值和梯度差异均为零。真实10万维参数提取由18.807秒降至约0.001秒。L-BFGS 原设置没有迭代上限和目标值停滞判据；新日志已记录调用数量、梯度范数和原生返回码。
+
+同一 FLIP 真实目标的完整12组正则参数比较已独立复跑，8,529行原始预测及全部验证评分与作者实现完全一致。作者 R 程序耗时145.22秒，加速路径包含 Python 输入输出与报告的耗时为85.65秒，实测约1.70倍。正式模型、初始化、训练及验证权限、12组正则参数、归一化和梯度收敛阈值均保留。新增任务保存每组正则参数的权重，可以从已完成的参数组继续；单组内部仍使用作者原生求解器。负返回码如实记录，不标记为收敛。
+
+350项待完成预测已登记于一号机的 `runs/rfa_acceleration_20261018/tasks.json`。加速结果写入独立的 `runs/rfa_accelerated/`，16路 CPU 队列优先处理较小且尚未启动的模型。33个原有 RFA 进程继续运行，原权重和日志保留；等待预测的评价程序已接入核验后的加速结果。数值验证、完整拟合对照、进程记录及源码副本位于 `runs/rfa_acceleration_20261018/`，本地仅保存程序和小型核验记录。大模型的完整运行耗时继续记录，局部测速不用于推算整个矩阵的完成时间。
+
+2026-10-18 根据用户要求，RFA 剩余任务改用有限计算预算。每组新拟合最多500次 L-BFGS 迭代；正则化目标与25次迭代前相比的相对改善低于0.01%时提前停止。归一化也设置500次迭代上限，梯度阈值保持1e-5。12组正则参数、原始训练和验证权限、验证选择规则保持一致。已完成的候选模型直接复用；每组权重同时记录来源与实际停止原因。配置为 `configs/rfa_bounded.json`。
+
+原来49个无限迭代拟合及其调度进程已经停止，原目录完整保留。335份权重、日志和状态文件另存于一号机的 `runs/rfa_bounded_20261018/preserved/`。新的24路 CPU 队列在 `runs/rfa_bounded/` 生成结果，并自动进入原评价矩阵。真实数据检查确认500次上限与直接调用原生求解器的参数及目标值完全一致；复用11组旧权重、补算一组、再从完整检查点恢复的检查通过，选中模型的8,529行预测一致。依赖只安装在系统 Conda 中，R JSON 读取使用 `jsonlite 2.0.0`。完整数值和运行证据保存在 `runs/rfa_bounded_20261018/`。本次预算调整取代剩余任务原来的无限优化设置，先前已完成的结果和日志保留。
+
+新拟合与评价均直接调用系统 Conda。批次任务清单保存实际使用的解释器路径，三个旧兼容链接已在活动依赖检查后删除。首批四个真实目标的预测覆盖、标签权限和停止设置核验通过，迭代上限与相对目标早停均已触发。两项原评价已使用系统解释器成功完成，后续预测组继续自动进入评价；记录为 `runs/rfa_bounded_20261018/formal_verification.json` 和 `evaluation_runtime_verification.json`。
+
+2026-10-18 根据用户后续要求，RFA 未完成目标停止12组正则参数搜索，统一使用作者 `infer_model` 的默认值 `lambda=0`。每个缺失目标最多新增一次主拟合和一次归一化，两者保留500次迭代上限，主拟合保留原有早停。已完成结果按原配置复用；未完成目标中已经保存的默认参数检查点直接用于预测。各预测保留原参数搜索、有限预算搜索或固定默认值的实际来源。配置为 `configs/rfa_fixed.json`，新结果为 `runs/rfa_fixed/`，24路 CPU 队列及验证记录为 `runs/rfa_fixed_20261018/`。
+
+原有限预算搜索的19个拟合与20个工作、调度进程已经停止。原始目录保持完整，1,199份权重、日志及状态文件另存于一号机的 `runs/rfa_fixed_20261018/preserved/`。真实数据验证覆盖一次全新默认拟合，以及原始格式和有限预算格式两种已保存权重的复用。每个验证目标只有一组参数；恢复后没有新增求解调用，复用权重逐项一致，8,529行与1,853行预测均为有限值。验证通过后已启动固定默认值队列，原评价程序继续自动收集新预测。
+
+首批25项固定默认配置的正式预测已经核验，其中19项直接复用默认参数权重，6项完成一次新拟合。预测覆盖、训练与验证权限、单配置数量及评价目录选择均检查通过，当前没有失败任务。记录为 `runs/rfa_fixed_20261018/formal_verification.json`，实际设置和队列快照为同目录的 `implementation_manifest.json`；剩余50项汇总评价继续等待各组目标预测完成。

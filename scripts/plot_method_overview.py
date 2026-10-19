@@ -59,7 +59,7 @@ def main():
     box(ax, (7.03, 2.14), 2.64, 0.57, "$\\widehat\\mu(AB)=\\tau\\,g(\\widetilde a_i+\\widetilde a_j+r_{ij})$", fontsize=10)
     arrow(ax, (8.35, 2.11), (8.35, 1.91))
     box(ax, (7.03, 1.30), 2.64, 0.59, "Rank double mutants\nSelect the top $K$", fontsize=10)
-    box(ax, (0.27, 0.04), 3.02, 0.58, "Source quartets:\nWT, A, B, AB", color=GREEN, fill="#F3F9F6", fontsize=10)
+    box(ax, (0.27, 0.04), 3.02, 0.58, "Source cycles:\nWT, A, B, AB", color=GREEN, fill="#F3F9F6", fontsize=10)
     arrow(ax, (3.33, 0.34), (3.69, 0.34), color=GREEN)
     ax.text(5.57, 0.34, "Train shared parameters", ha="center", va="center", color=GREEN, fontsize=10)
     arrow(ax, (4.83, 0.60), (4.83, 0.89), color=GREEN, style="--")

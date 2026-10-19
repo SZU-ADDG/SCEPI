@@ -37,7 +37,7 @@
 \draw[signal] (10.8,3.63) -- (map.west);
 \node[modelbox,text width=4.5cm,minimum height=0.7cm] (selection) at (13.85,2.12) {Rank double mutants\\Select the top $K$};
 \draw[signal] (map.south) -- (selection.north);
-\node[inputbox,draw=MethodGreen,fill=MethodGreen!4,text width=4.6cm] (quartets) at (2.55,0.45) {Source quartets: WT, A, B, AB};
+\node[inputbox,draw=MethodGreen,fill=MethodGreen!4,text width=4.6cm] (quartets) at (2.55,0.45) {Source cycles: WT, A, B, AB};
 \node[align=center,text=MethodGreen] (loss) at (8.05,0.45) {Train shared parameters};
 \draw[signal,draw=MethodGreen] (quartets.east) -- (loss.west);
 \draw[signal,draw=MethodGreen,dashed] (8.05,0.98) -- (8.05,1.31);

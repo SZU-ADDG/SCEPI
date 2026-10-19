@@ -72,12 +72,12 @@ ABLATION_LABELS = {
     "interaction": "SCEPI",
     "remove_interaction": "Pair removed",
     "direct_residual": "Direct head",
-    "no_pair_measured": "$F$: measured singles removed",
-    "no_cross": "No cross",
+    "no_pair_measured": "Predicted singles",
+    "no_cross": "Local context",
     "reference_context": "WT context",
     "identity_features": "Identity features",
-    "phenotype_only": "Phenotype-only",
-    "residual_only": "Residual-only",
+    "phenotype_only": "Phenotype loss",
+    "residual_only": "Residual loss",
 }
 ABLATION_DISPLAY_COLORS = {
     arm: ("#2878B5" if arm == "interaction" else "#7B858E")
@@ -260,7 +260,7 @@ def draw_boundary(ax, values):
         )
     ax.set_xticks(x, ["0.00\n$n=120$", "0.25\n$n=120$", "0.50\n$n=115$"])
     ax.set_xlabel("Boundary margin (kcal/mol)", fontsize=10, labelpad=10)
-    ax.set_ylabel("Observed-main hit rate", fontsize=10, labelpad=4)
+    ax.set_ylabel("Hit rate", fontsize=10, labelpad=4)
     ax.set_ylim(0.0, 0.14)
     ax.set_xlim(-0.20, 2.20)
     style_axis(ax)
@@ -502,7 +502,7 @@ def add_boundary_panel(lines, values):
     }
     lines.extend(tikz_axis_start(
         108, 58, -0.20, 2.20, 0, 0.14, [0, 1, 2], ["0.00", "0.05", "0.10"],
-        "Boundary margin (kcal/mol)", "Observed-main hit rate",
+        "Boundary margin (kcal/mol)", "Hit rate",
         xticklabels=["0.00", "0.25", "0.50"],
         ytick_values=[0, 0.05, 0.10],
         extra_options=[
@@ -563,7 +563,7 @@ def write_tikz(primary_protein, primary_repeat, residual_protein, residual_repea
         (47, 58),
         "a.",
         "$K=10$, $n=120$",
-        "Observed-main hit rate",
+        "Hit rate",
         0.038,
         0.122,
         [0.04, 0.06, 0.08, 0.10, 0.12],
@@ -683,7 +683,7 @@ def main():
         PRIMARY_SHORT,
         PRIMARY_COLORS,
         "compensation_hit_rate",
-        "Observed-main hit rate",
+        "Hit rate",
         "a.",
         "$K=10$, n=120",
     )

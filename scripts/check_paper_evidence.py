@@ -12,18 +12,18 @@ LABELS = {
     "interaction": "SCEPI", "additive": "Additive", "global_nonlinear": "Global nonlinear",
     "thermo_epistatic": "ThermoMPNN-D", "thermo_additive": "ThermoMPNN additive", "kermut": "Kermut",
     "mean_mlp": "Mean MLP", "mean_ridge": "Mean ridge", "esm2_additive": "ESM-2 additive",
-    "esm2_context": "ESM-2 context", "remove_interaction": "Pair output removed at inference",
-    "no_cross": "Cross-site context removed", "reference_context": "Wild-type context only",
-    "identity_features": "Amino-acid identities and singles", "phenotype_only": "Phenotype-only training",
-    "residual_only": "Residual-only training", "frozen_main": "Frozen single-effect head",
-    "identity_mapping": "Identity phenotype map", "geometry": "Structural variant",
-    "geometry_permuted_inference": "Distance permutation, inference",
-    "geometry_permuted_retrained": "Distance permutation, retrained",
-    "geometry_rewired_inference": "Distance rewiring, inference",
-    "geometry_rewired_retrained": "Distance rewiring, retrained",
+    "esm2_context": "ESM-2 context", "remove_interaction": "Pair removed",
+    "no_cross": "Local context", "reference_context": "Wild-type context",
+    "identity_features": "Identity features", "phenotype_only": "Phenotype loss",
+    "residual_only": "Residual loss", "frozen_main": "Frozen singles",
+    "identity_mapping": "Identity map", "geometry": "Structure",
+    "geometry_permuted_inference": "Permuted distances\\textsuperscript{I}",
+    "geometry_permuted_retrained": "Permuted distances\\textsuperscript{R}",
+    "geometry_rewired_inference": "Rewired distances\\textsuperscript{I}",
+    "geometry_rewired_retrained": "Rewired distances\\textsuperscript{R}",
     "stabilityarc_kermut": "StabilityArc + Kermut",
     "direct_residual": "Direct residual head",
-    "no_pair_measured": "Measured singles removed from $F$",
+    "no_pair_measured": "Predicted singles",
 }
 
 
@@ -66,7 +66,7 @@ def main():
                          f" & {100 * values.compensation_hit_rate:.2f} & ${values.selected_mean_recovery:.3f}$")
             assert displayed in manuscript, (threshold, displayed)
             table_rows += 1
-        for arm, label in {"direct_residual": "Direct residual", "no_pair_measured": "Predicted singles in $F$"}.items():
+        for arm, label in {"direct_residual": "Direct residual", "no_pair_measured": "Predicted singles"}.items():
             if arm not in declared:
                 continue
             residual = [row for row in rows if row["control"] == arm
@@ -86,7 +86,7 @@ def main():
         summaries.append({"threshold": threshold, "grids": 25 * len(table), "comparisons": len(rows), "table_rows": len(table)})
     conditioning_rows = 0
     for arm, label, emphasized in [("interaction", "SCEPI", {0, 1, 2}),
-                                    ("no_pair_measured", "Predicted singles in $F$", set()),
+                                    ("no_pair_measured", "Predicted singles", set()),
                                     ("direct_residual", "Direct residual head", {3})]:
         primary, stricter = tables[30].loc[arm], tables[25].loc[arm]
         values = [primary.epsilon_rmse, stricter.epsilon_rmse,
@@ -130,10 +130,10 @@ def main():
     reference_rows = [indexed[("unseen_pair", condition, "interaction_C_r0")] for condition in conditions]
     coverage = "Coverage" + "".join(f" & {row['proteins']} / {row['paired_protein_repeats']}" for row in reference_rows)
     assert coverage in manuscript, coverage
-    line = "SCEPI adaptation, source" + "".join(f" & {row['reference_mean']:.3f}" for row in reference_rows)
+    line = "SCEPI adaptation\\textsuperscript{S}" + "".join(f" & {row['reference_mean']:.3f}" for row in reference_rows)
     assert line in manuscript, line
-    for arm, label in [("interaction_C_r0", "Pair removed, source initialization"),
-                       ("thermo_epistatic_C", "ThermoMPNN-D"), ("mochi_order2_C", "MoCHI, order 2")]:
+    for arm, label in [("interaction_C_r0", "Pair removed\\textsuperscript{S}"),
+                       ("thermo_epistatic_C", "ThermoMPNN-D"), ("mochi_order2_C", "MoCHI\\textsuperscript{2}")]:
         values = [indexed[("unseen_pair", condition, arm)] for condition in conditions]
         assert all(abs(row["reference_mean"] - reference["reference_mean"]) < 1e-12
                    for row, reference in zip(values, reference_rows))

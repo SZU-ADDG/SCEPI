@@ -8,34 +8,34 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 CONDITIONS = ["C128", "C512", "C2048", "Call"]
 STABILITY = {
-    "interaction_C": "SCEPI adaptation, source",
-    "interaction_C_r0": "Pair removed, source initialization",
-    "interaction_target_only_C": "SCEPI adaptation, target only",
-    "interaction_target_only_C_r0": "Pair removed, target only",
-    "original_geometry_C": "SCEPI structure, source",
-    "original_geometry_target_only_C": "SCEPI structure, target only",
+    "interaction_C": r"SCEPI adaptation\textsuperscript{S}",
+    "interaction_C_r0": r"Pair removed\textsuperscript{S}",
+    "interaction_target_only_C": r"SCEPI adaptation\textsuperscript{T}",
+    "interaction_target_only_C_r0": r"Pair removed\textsuperscript{T}",
+    "original_geometry_C": r"SCEPI structure\textsuperscript{S}",
+    "original_geometry_target_only_C": r"SCEPI structure\textsuperscript{T}",
     "thermo_epistatic_C": "ThermoMPNN-D",
     "thermo_additive_C": "ThermoMPNN additive",
     "kermut_C": "Kermut",
-    "mochi_order1_C": "MoCHI, order 1",
-    "mochi_order2_C": "MoCHI, order 2",
-    "mean_ridge_target_C": "Mean ridge, target fit",
-    "mean_mlp_target_C": "Mean MLP, target fit",
-    "mean_ridge_source_C": "Mean ridge, source prior",
-    "mean_mlp_source_C": "Mean MLP, source prior",
+    "mochi_order1_C": r"MoCHI\textsuperscript{1}",
+    "mochi_order2_C": r"MoCHI\textsuperscript{2}",
+    "mean_ridge_target_C": r"Mean ridge\textsuperscript{T}",
+    "mean_mlp_target_C": r"Mean MLP\textsuperscript{T}",
+    "mean_ridge_source_C": r"Mean ridge\textsuperscript{S}",
+    "mean_mlp_source_C": r"Mean MLP\textsuperscript{S}",
 }
 FUNCTIONAL = {
-    "transfer_shared": "SCEPI adaptation, source",
-    "transfer_remove_interaction": "Pair removed, source initialization",
-    "transfer_independent_no_r": "Independent no-pair, source initialization",
-    "target_only_shared": "SCEPI adaptation, target only",
-    "target_only_remove_interaction": "Pair removed, target only",
-    "target_only_independent_no_r": "Independent no-pair, target only",
-    "mochi_order1": "MoCHI, order 1",
-    "mochi_order2": "MoCHI, order 2",
-    "mavenn_order1": "MAVE-NN, order 1",
-    "mavenn_order2": "MAVE-NN, order 2",
-    "rfa_order2": "RFA, order 2",
+    "transfer_shared": r"SCEPI adaptation\textsuperscript{S}",
+    "transfer_remove_interaction": r"Pair removed\textsuperscript{S}",
+    "transfer_independent_no_r": r"Independent no-pair\textsuperscript{S}",
+    "target_only_shared": r"SCEPI adaptation\textsuperscript{T}",
+    "target_only_remove_interaction": r"Pair removed\textsuperscript{T}",
+    "target_only_independent_no_r": r"Independent no-pair\textsuperscript{T}",
+    "mochi_order1": r"MoCHI\textsuperscript{1}",
+    "mochi_order2": r"MoCHI\textsuperscript{2}",
+    "mavenn_order1": r"MAVE-NN\textsuperscript{1}",
+    "mavenn_order2": r"MAVE-NN\textsuperscript{2}",
+    "rfa_order2": "RFA",
     "mean_ridge": "Mean ridge",
     "mean_mlp": "Mean MLP",
 }
@@ -122,7 +122,8 @@ def main():
     assert rfa.configuration.eq("validation_selected").sum() == 66
     assert rfa.fixed_new_fits.sum() == 264 and rfa.fixed_reused_models.sum() == 20
     assert manifest["rfa_undefined_spearman_records"] == 12
-    assert "264 new fits and 20 reused default checkpoints" in manuscript
+    assert "284 use the fixed configuration and 66 use validation-selected penalties" in manuscript
+    assert "350 eligible fits, comprising 310 functional-assay fits and 40 FLIP2 fits" in manuscript
     source = pd.read_parquet(ROOT / "runs/original_main/per_protein.parquet",
                              filters=[("dataset", "==", "functional_doubles"), ("scheme", "==", "unseen_pair"),
                                       ("condition", "==", "C128"), ("mutation_order", "==", "all"),

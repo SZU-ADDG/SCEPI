@@ -1,4 +1,3 @@
-% 方法论文草稿。正文数字来自已完成的配对评价，证据来源保存在 evidence_ledger.md。
 \documentclass{llncs}
 \usepackage[letterpaper,margin=1in]{geometry}
 \usepackage{amsmath,amssymb}
@@ -12,6 +11,7 @@
 \usepackage[protrusion=false]{microtype}
 \usepackage[numbers,sort&compress]{natbib}
 \usepackage{placeins}
+\usepackage{float}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage[hidelinks,hypertexnames=false]{hyperref}
@@ -52,7 +52,7 @@
 \raggedbottom
 
 \begin{abstract}
-Selecting compensatory double mutants requires predicting how individually damaging substitutions combine. We introduce Single-mutant-Conditioned Epistasis Prediction (SCEPI), a cross-protein model that conditions a shared interaction function on measured single-mutant effects. These measurements also calibrate individual effects outside the interaction network. Source combination measurements train the model, while target double-mutant labels remain withheld. Across 155 held-out proteins, SCEPI achieves mean residual root mean squared error of 0.595 kcal/mol, compared with 0.805 for ThermoMPNN-D, 0.847 for Kermut, and 0.853 for calibrated StabilityArc. At a budget of ten candidates per protein, its compensation hit rate is 11.22\% across 120 proteins, compared with 7.07\%, 5.40\%, and 8.75\%, respectively. This rate is 4.27 times the 2.63\% expectation of uniform random selection from the same candidates. Matched input-removal controls retain external calibration and establish prediction and selection gains from measured single effects within the interaction network. Common measured main effects, stricter homology grouping, and measurement-boundary analysis preserve these gains. SCEPI uses existing single-mutant measurements to guide compensatory discovery in unseen proteins.
+Selecting compensatory double mutants requires predicting how individually damaging substitutions combine. We introduce Single-mutant-Conditioned Epistasis Prediction (SCEPI), a cross-protein model that conditions a shared interaction function on measured single-mutant effects. These measurements also calibrate individual effects outside the interaction network. Source combination measurements train the model, while target double-mutant labels remain withheld. Across 155 held-out proteins, SCEPI achieves mean residual root mean squared error of 0.595 kcal/mol, compared with 0.805 for ThermoMPNN-D, 0.847 for Kermut, and 0.853 for calibrated StabilityArc. At a budget of ten candidates per protein, its compensation hit rate is 11.22\% across 120 proteins, compared with 7.07\%, 5.40\%, and 8.75\%, respectively. This rate is 4.27 times the 2.63\% expectation of uniform random selection from the same candidates. Matched input-removal controls retain external calibration and establish prediction and selection gains from measured single effects within the interaction network. The gains persist with the same measured single-effect sum, stricter homology grouping, and measurement-boundary analysis. SCEPI uses existing single-mutant measurements to guide compensatory discovery in unseen proteins.
 \end{abstract}
 
 \section{Introduction}
@@ -63,9 +63,9 @@ Complete wild-type, single-mutant, and double-mutant measurements define observe
 
 Transferable combination predictors learn from structure or sequence representations \citep{dieckhaus2025,ouyang2023,feller2026}. Target-specific regression also uses measured variants \citep{groth2024}. These capabilities motivate a question about the additional value of supplying target single-mutant measurements directly to a shared interaction function.
 
-We introduce SCEPI, which conditions a shared interaction function on available single-mutant effects and their observation indicators. The same measurements calibrate individual effects outside that function. The pair function combines these inputs with reference and single-mutant representations. Its four-state contrast vanishes at either wild-type endpoint and cancels endpoint-only offsets. Source combination measurements train the shared parameters.
+We introduce SCEPI, which conditions a shared interaction function on available single-mutant effects and their observation indicators. The same measurements calibrate individual effects outside that function. The pair function combines these inputs with reference and single-mutant representations. A double-mutant cycle cancels endpoint-only offsets and enforces zero interaction at either wild-type endpoint. Source combination measurements train the shared parameters.
 
-Matched input-removal controls retain external calibration, model capacity, training samples, and selection procedures. Removing the measured pair inputs increases residual error and reduces compensation hit rate under both homology groupings. The full-target comparison gives SCEPI a top-10 hit rate of 11.22\%, compared with 7.07\% for ThermoMPNN-D, 5.40\% for Kermut, and 8.75\% for calibrated StabilityArc. Every method receives zero target double-mutant training labels. Common measured main effects and measurement-boundary analysis preserve the selection gains. A same-capacity direct-head comparison tests the four-state reference constraints.
+Matched input-removal controls retain external calibration, model capacity, training samples, and selection procedures. Removing the measured pair inputs increases residual error and reduces compensation hit rate under both homology groupings. The full-target comparison gives SCEPI a top-10 hit rate of 11.22\%, compared with 7.07\% for ThermoMPNN-D, 5.40\% for Kermut, and 8.75\% for calibrated StabilityArc. Every method receives zero target double-mutant training labels. Fixing the measured single-effect sum and excluding measurements near assay limits preserve the selection gains. A same-capacity direct-head comparison tests the reference constraints.
 
 \section{Related work}
 
@@ -78,14 +78,14 @@ Matched input-removal controls retain external calibration, model capacity, trai
 \setlength{\tabcolsep}{4pt}
 \caption{Single-mutant information use. The final column records direct measured-value inputs to the pair network. ThermoMPNN-D target-head fitting refers to our single-only target protocol. Mutate Everything is included for the methodological comparison.}
 \label{tab:information}
-\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.20\textwidth}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}p{0.28\textwidth}>{\raggedright\arraybackslash}p{0.22\textwidth}@{}}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.30\textwidth}>{\raggedright\arraybackslash}p{0.20\textwidth}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}p{0.20\textwidth}@{}}
 \toprule
 Method & Source use of single labels & Target-single use & Measured pair inputs \\
 \midrule
-ThermoMPNN-D \citep{dieckhaus2025} & Over-and-back augmentation & Target-head fitting & No \\
-Mutate Everything \citep{ouyang2023} & Single supervision and residual targets & Predicted singles at inference & No \\
+ThermoMPNN-D \citep{dieckhaus2025} & Data augmentation & Head adaptation & No \\
+Mutate Everything \citep{ouyang2023} & Residual targets & Predicted effects & No \\
 StabilityArc + Kermut \citep{feller2026,groth2024} & Decoder supervision & Target GP posterior & No \\
-SCEPI & Joint phenotype and residual supervision & External calibration and pair conditioning & Effects and availability \\
+SCEPI & Joint loss & Calibration and conditioning & Effects and masks \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -137,12 +137,12 @@ SCEPI combines a source-trained interaction function with measured target single
 \draw[signal] (10.8,3.63) -- (map.west);
 \node[modelbox,text width=4.5cm,minimum height=0.7cm] (selection) at (13.85,2.12) {Rank double mutants\\Select the top $K$};
 \draw[signal] (map.south) -- (selection.north);
-\node[inputbox,draw=MethodGreen,fill=MethodGreen!4,text width=4.6cm] (quartets) at (2.55,0.45) {Source quartets: WT, A, B, AB};
+\node[inputbox,draw=MethodGreen,fill=MethodGreen!4,text width=4.6cm] (quartets) at (2.55,0.45) {Source cycles: WT, A, B, AB};
 \node[align=center,text=MethodGreen] (loss) at (8.05,0.45) {Train shared parameters};
 \draw[signal,draw=MethodGreen] (quartets.east) -- (loss.west);
 \draw[signal,draw=MethodGreen,dashed] (8.05,0.98) -- (8.05,1.31);
 \end{tikzpicture}
-\caption{SCEPI conditions shared interaction predictions on single-mutant measurements. (a) A frozen encoder supplies reference and mutation features from the reference sequence and its single mutants. (b) Calibrated single effects and their availability indicators condition every evaluation of the shared symmetric pair function. Its four-state contrast defines the pair output and enforces reference-state constraints. (c) The same single effects enter the external main-effect sum before phenotype prediction. Double-mutant predictions then rank candidates at a fixed budget. Complete source quartets and source observations supervise SCEPI. Target double-mutant outcomes are reserved for evaluation.}
+\caption{SCEPI conditions shared interaction predictions on single-mutant measurements. (a) A frozen encoder supplies reference and mutation features from the reference sequence and its single mutants. (b) Calibrated single effects and their availability indicators condition every evaluation of the shared symmetric pair function. Subtraction around the double-mutant cycle enforces the reference constraints. (c) The same single effects enter the external sum before phenotype prediction. Double-mutant predictions then rank candidates at a fixed budget. Complete source cycles and source observations supervise SCEPI. Target double-mutant outcomes are reserved for evaluation.}
 \label{fig:method}
 \end{figure}
 
@@ -153,7 +153,7 @@ Let $s_p$ be a reference protein and $M$ a set of substitutions at distinct site
 \epsilon_p(A,B)=y_p(AB)-y_p(A)-y_p(B)+y_p(\varnothing).
 \label{eq:observed}
 \end{equation}
-The four observations share a reference background, assay condition, and phenotype scale. We call them a complete quartet. Stability is expressed as unfolding free energy, with positive changes indicating increased stability. Target single-mutant labels are available in the main compensation task. Target test double-mutant labels are used to evaluate predictions and selected candidates.
+The four observations form a double-mutant cycle \citep{horovitz1996}. They share a reference background, assay condition, and phenotype scale. Stability is expressed as unfolding free energy, with positive changes indicating increased stability. Target single-mutant labels are available in the main compensation task. Target test double-mutant labels evaluate predictions and selected candidates.
 
 \subsection{Mutation representations and calibrated single effects}
 
@@ -186,7 +186,7 @@ Let $\Psi_\theta(i,a;j,b\mid c_{ij})$ denote the ordered network. We average bot
 F_\theta(i,a;j,b)=\tfrac12\bigl[\Psi_\theta(i,a;j,b\mid c_{ij})
 +\Psi_\theta(j,b;i,a\mid c_{ji})\bigr].
 \end{equation}
-The conditioning inputs enter every evaluation of $F$. We parameterize the pair output by its four-state contrast,
+The conditioning inputs enter every evaluation of $F$. The pair output uses the same subtraction over the four states,
 \begin{equation}
 r_{ij}(a,b)=F(i,a;j,b)-F(i,a;j,w_j)-F(i,w_i;j,b)+F(i,w_i;j,w_j).
 \label{eq:pair}
@@ -225,7 +225,7 @@ R_p(A,B)=y_p(AB)-\max\{y_p(A),y_p(B)\}.
 \end{equation}
 A compensatory hit satisfies $R_p(A,B)\geq\delta$. The candidate task focuses on pairs whose two measured single effects are each at most $-\delta$.
 
-We also compare interaction information with a common measured main effect. Each method $m$ ranks the same candidates by
+To isolate interaction information, we fix the measured single-effect sum across methods. Each method $m$ ranks the same candidates by
 \begin{equation}
 s_m(A,B)=\mu_p^{\mathrm{obs}}(A)+\mu_p^{\mathrm{obs}}(B)+\widehat\epsilon_{m,p}(A,B).
 \label{eq:selection}
@@ -236,19 +236,20 @@ Uniform random selection samples $K$ candidates without replacement from the sam
 
 \section{Experimental setting}
 
-We use the cDNA-display proteolysis stability measurements of Tsuboyama et al. \citep{tsuboyama2023}. The accepted double-mutant set contains 182,663 variants across 190 reference backgrounds. Its complete, point-valued quartets number 127,892 across 160 backgrounds and 488 site pairs. The retrospective evaluation cohort requires all four measurements to lie inside the assay range of $[-1,5]$ kcal/mol. Model training also retains interval-valued observations through the observation likelihood.
+We use the cDNA-display proteolysis stability measurements of Tsuboyama et al. \citep{tsuboyama2023}. The accepted double-mutant set contains 182,663 variants across 190 reference backgrounds. It supplies 127,892 complete, point-valued double-mutant cycles across 160 backgrounds and 488 site pairs. The retrospective evaluation requires all four measurements to lie inside the assay range of $[-1,5]$ kcal/mol. Model training also retains interval-valued observations through the observation likelihood.
 
 The primary evaluation holds out homology groups and scores all accepted target double mutants. Grouping uses 30\% sequence identity and at least 80\% bidirectional coverage. Related reference backgrounds remain together, and annotated family relations further merge groups. Source training and validation exclude the outer test partition. S-all supplies all permitted target single-mutant labels and excludes every target double-mutant label from fitting. Homology groups and annotated families have separate coverage records.
 
 Comparators include independently trained additive and global nonlinear models, ThermoMPNN-D, Kermut, StabilityArc + Kermut, mean ridge, and mean MLP. The global model retains the monotone map and omits the pair term. The mean-representation controls fit ridge regression or a multilayer perceptron (MLP) to averaged mutation representations. Source-trained baselines are retrained on the same source partitions, with checkpoints selected by source validation. StabilityArc scores supply the prior mean for Kermut target calibration \citep{feller2026,groth2024}. All methods receive zero target double-mutant labels and score the same candidates. Appendices~\ref{app:training} and~\ref{app:stabilityarc} give their architectures, source supervision, target adaptation, and structural inputs.
 
-Phenotype evaluation requires at least 30 point-valued target measurements per protein. It covers 159 proteins and 51 homology groups. Residual evaluation requires at least 30 complete, in-range quartets and covers 155 proteins from the same 51 groups. Compensation selection requires at least 100 eligible candidates per protein and reference stability at most 4.5 kcal/mol. Its cohort contains 120 proteins and 44 groups. We use candidate budgets $K\in\{1,3,10,30\}$ and recovery threshold $\delta=0.5$ kcal/mol. Metrics are calculated within each protein, averaged over matched repetitions, and then averaged equally across proteins. Hyperparameters and label-mixing weights are chosen using source-validation measurements.
+Prediction error uses root mean squared error (RMSE). Phenotype evaluation requires at least 30 point-valued target measurements per protein. It covers 159 proteins and 51 homology groups. Residual evaluation requires at least 30 complete, in-range cycles and covers 155 proteins from the same 51 groups. Compensation selection requires at least 100 eligible candidates per protein and reference stability at most 4.5 kcal/mol. Its cohort contains 120 proteins and 44 groups. We use candidate budgets $K\in\{1,3,10,30\}$ and recovery threshold $\delta=0.5$ kcal/mol. Metrics are calculated within each protein, averaged over matched repetitions, and then averaged equally across proteins. Hyperparameters and label-mixing weights are chosen using source-validation measurements.
 
-The quartet boundary margin is the smallest distance of any endpoint from either assay limit. Margins of 0.25 and 0.5 kcal/mol retain 120 and 115 compensation proteins; the latter covers 43 groups. The designated site-pair subset and target combination adaptation have separate evaluations. Statistical and repetition details appear in the appendix.
+For each cycle, the margin is the smallest distance of any measurement from either assay limit. Margins of 0.25 and 0.5 kcal/mol retain 120 and 115 compensation proteins; the latter covers 43 groups. The designated site-pair subset and target combination adaptation have separate evaluations. Statistical and repetition details appear in the appendix.
 
 Additional information conditions measure the value of target labels. Z permits no target measurements. S32 and S128 permit the reference and the specified number of target single-mutant labels. The C conditions additionally permit 128, 512, 2,048, or all available training double-mutant labels. Their designated site-pair holdout excludes test pairs from target combination fitting. Separate adaptation experiments cover six functional assays and nine FLIP2 split protocols \citep{didi2026}. Appendix~\ref{app:externaladaptation} defines their measurement units, model variants, and evaluation populations.
 
 \section{Results}
+\interlinepenalty=10000
 
 \subsection{Measured single effects improve interaction prediction and selection}
 
@@ -256,12 +257,12 @@ Conditioning the pair function on measured single effects improves prediction an
 
 Measured pair inputs reduce residual RMSE by 22.4\% under the primary grouping and 25.7\% under the stricter grouping. Native top-10 hit rates improve by 3.03 and 3.00 percentage points. Both mean gains are positive in every matched training repetition under each grouping. The residual and compensation cohorts contain the same 155 and 120 proteins across controls.
 
-The input contribution remains when every method uses a common measured main-effect sum. Hit-rate gains over the input-removal control are 3.08 and 3.02 percentage points under the two groupings. At the 0.5 kcal/mol quartet boundary margin, the gains are 3.11 and 3.13 points. These comparisons identify selection information supplied by measured inputs within the interaction function.
+The input contribution remains when every method uses the same measured single-effect sum. Hit-rate gains over the input-removal control are 3.08 and 3.02 percentage points under the two groupings. At the 0.5 kcal/mol measurement margin, the gains are 3.11 and 3.13 points. These comparisons identify selection information supplied by measured inputs within the interaction function.
 
 \begin{table}[!tbp]
 \centering
 \setlength{\tabcolsep}{4pt}
-\caption{Matched pair-function comparisons under 30\% and 25\% homology grouping. Residual prediction covers 155 proteins, and native top-10 selection covers 120. The predicted-singles control removes measured values and availability indicators from $F$ while retaining external calibration. The direct head keeps those inputs and replaces the four-state contrast with the same network's direct output.}
+\caption{Matched pair-function comparisons under 30\% and 25\% homology grouping. Residual prediction covers 155 proteins, and native top-10 selection covers 120. The predicted-singles control removes measured values and availability indicators from $F$ while retaining external calibration. The direct head keeps those inputs and replaces cycle subtraction with the same network's direct output.}
 \label{tab:conditioning}
 \begin{tabular}{lrrrr}
 \toprule
@@ -269,8 +270,31 @@ The input contribution remains when every method uses a common measured main-eff
 Pair function & 30\% & 25\% & 30\% & 25\% \\
 \midrule
 SCEPI & \textbf{0.595} & \textbf{0.604} & \textbf{11.22} & 11.15 \\
-Predicted singles in $F$ & 0.767 & 0.814 & 8.18 & 8.15 \\
+Predicted singles & 0.767 & 0.814 & 8.18 & 8.15 \\
 Direct residual head & 0.635 & 0.630 & 10.70 & \textbf{11.38} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\setlength{\tabcolsep}{4pt}
+\caption{Full-target prediction and native top-10 compensation selection in held-out homology groups. Phenotype, residual, and selection cohorts contain 159, 155, and 120 proteins. RMSE uses kcal/mol. Values are equal-protein means over matched repetitions. Enrichment is relative to uniform random selection from the same candidates. All models receive zero target double-mutant training labels.}
+\label{tab:diagnostic}
+\begin{tabular}{lrrrrr}
+\toprule
+Predictor & Phenotype & Residual & Hit rate & Recovery & Enrichment \\
+ & RMSE & RMSE & (\%) & (kcal/mol) & ($\times$) \\
+\midrule
+SCEPI & \textbf{0.657} & \textbf{0.595} & 11.22 & \textbf{$-0.257$} & 4.27 \\
+ThermoMPNN-D & 0.777 & 0.805 & 7.07 & $-0.440$ & 2.69 \\
+Kermut & 0.798 & 0.847 & 5.40 & $-0.458$ & 2.05 \\
+StabilityArc + Kermut & 0.815 & 0.853 & 8.75 & $-0.344$ & 3.33 \\
+Global nonlinear & 0.911 & 0.635 & 4.45 & $-0.437$ & 1.69 \\
+Additive & 0.893 & 1.091 & 6.38 & $-0.387$ & 2.43 \\
+Mean MLP & 1.405 & 0.966 & 10.07 & $-0.413$ & 3.83 \\
+Mean ridge & 1.328 & 1.002 & \textbf{11.42} & $-0.354$ & \textbf{4.34} \\
+Uniform random & --- & --- & 2.63 & $-0.900$ & 1.00 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -279,9 +303,9 @@ Direct residual head & 0.635 & 0.630 & 10.70 & \textbf{11.38} \\
 
 SCEPI achieves a mean top-10 compensation hit rate of 11.22\% using its native predictions (Table~\ref{tab:diagnostic}). ThermoMPNN-D achieves 7.07\%, Kermut 5.40\%, and the global nonlinear model 4.45\%. SCEPI improves their hit rates by 4.15, 5.82, and 6.77 percentage points. Its mean selected recovery exceeds these methods by 0.183, 0.201, and 0.180 kcal/mol. Recovery is higher in 86 of 120 proteins against ThermoMPNN-D and in 93 of 120 against Kermut. Figure~\ref{fig:compensation} shows the full budget curves and all protein-level hit-rate differences.
 
-The additive model reaches a native hit rate of 6.38\%. SCEPI raises this rate by 4.83 percentage points and improves mean recovery by 0.130 kcal/mol. Mean MLP and mean ridge reach 10.07\% and 11.42\%. SCEPI has the highest mean selected recovery among the seven baselines at every evaluated budget. At $K=10$, its recovery advantage over mean ridge is 0.098 kcal/mol. Native ranking therefore distinguishes successful discoveries from the continuous quality of the selected candidates.
+SCEPI has the highest mean selected recovery among the seven baselines at every evaluated budget. At $K=10$, its recovery advantage over mean ridge is 0.098 kcal/mol. Mean ridge has a hit rate of 11.42\%, compared with SCEPI's 11.22\% and mean MLP's 10.07\%. Against the additive model, SCEPI improves hit rate by 4.83 percentage points and mean recovery by 0.130 kcal/mol. The additive hit rate is 6.38\%.
 
-StabilityArc + Kermut achieves an 8.75\% top-10 compensation hit rate. SCEPI improves this rate by 2.47 percentage points and increases mean recovery by 0.087 kcal/mol. Mean recovery is higher in 73 of 120 proteins. This comparison evaluates SCEPI against a second source-trained architecture with explicit pair effects and target single-mutant calibration.
+SCEPI improves top-10 hit rate over StabilityArc + Kermut by 2.47 percentage points and mean recovery by 0.087 kcal/mol. StabilityArc + Kermut reaches an 8.75\% hit rate. SCEPI gives higher recovery in 73 of 120 proteins. Both methods learn pair effects across source proteins and use target single-mutant measurements.
 
 SCEPI enriches compensatory hits 4.27-fold over uniform random selection at $K=10$. The same 120 proteins contain 79,564 eligible candidates. Random selection has an expected equal-protein hit rate of 2.63\% and mean recovery of $-0.900$ kcal/mol. SCEPI increases the hit rate by 8.59 percentage points and mean recovery by 0.643 kcal/mol. Enrichment is 5.52, 4.90, 4.27, and 3.26 at budgets 1, 3, 10, and 30, respectively (Figure~\ref{fig:compensation}a,b).
 
@@ -435,29 +459,6 @@ SCEPI enriches compensatory hits 4.27-fold over uniform random selection at $K=1
 \caption{SCEPI compensatory discovery in full-target S-all evaluation. (a) Native hit rate and (b) mean recovery across candidate budgets. Dashed black lines show exact uniform-random expectations from the same candidates. (c) Protein-level top-10 hit-rate gains after averaging repetitions within each of 120 proteins. Open points denote proteins; segments, ticks, and diamonds denote interquartile ranges, medians, and means. (d) Repetition-level gains in the same control order. Open points are equal-protein means; diamonds and whiskers show their mean and standard deviation. All predictors use identical candidates and native phenotype scores. StabilityArc + Kermut uses source-held-out scores with target calibration.}
 \label{fig:compensation}
 \end{figure}
-
-\begin{table}[t]
-\centering
-\setlength{\tabcolsep}{4pt}
-\caption{Full-target prediction and native top-10 compensation selection in held-out homology groups. Phenotype, residual, and selection cohorts contain 159, 155, and 120 proteins. RMSE uses kcal/mol. Values are equal-protein means over matched repetitions. Enrichment is relative to uniform random selection from the same candidates. All models receive zero target double-mutant training labels.}
-\label{tab:diagnostic}
-\begin{tabular}{lrrrrr}
-\toprule
-Predictor & Phenotype & Residual & Hit rate & Recovery & Enrichment \\
- & RMSE & RMSE & (\%) & (kcal/mol) & ($\times$) \\
-\midrule
-SCEPI & \textbf{0.657} & \textbf{0.595} & 11.22 & \textbf{$-0.257$} & 4.27 \\
-ThermoMPNN-D & 0.777 & 0.805 & 7.07 & $-0.440$ & 2.69 \\
-Kermut & 0.798 & 0.847 & 5.40 & $-0.458$ & 2.05 \\
-StabilityArc + Kermut & 0.815 & 0.853 & 8.75 & $-0.344$ & 3.33 \\
-Global nonlinear & 0.911 & 0.635 & 4.45 & $-0.437$ & 1.69 \\
-Additive & 0.893 & 1.091 & 6.38 & $-0.387$ & 2.43 \\
-Mean MLP & 1.405 & 0.966 & 10.07 & $-0.413$ & 3.83 \\
-Mean ridge & 1.328 & 1.002 & \textbf{11.42} & $-0.354$ & \textbf{4.34} \\
-Uniform random & --- & --- & 2.63 & $-0.900$ & 1.00 \\
-\bottomrule
-\end{tabular}
-\end{table}
 
 \subsection{The learned function predicts interactions in unseen combinations}
 
@@ -645,11 +646,11 @@ Uniform random & --- & --- & 2.63 & $-0.900$ & 1.00 \\
 
 Mean residual RMSE is 0.595 kcal/mol for SCEPI, 0.805 for ThermoMPNN-D, and 0.847 for Kermut. The respective error reductions are 26.1\% and 29.8\%. SCEPI has lower protein-level residual RMSE in 136 of 155 proteins against either method (Figure~\ref{fig:prediction}a).
 
-StabilityArc + Kermut has a residual RMSE of 0.853 kcal/mol. SCEPI reduces this error by 30.3\% and improves residual prediction in 130 of 155 proteins. Both methods learn pair effects across source proteins and use the permitted target single labels.
+SCEPI reduces residual RMSE by 30.3\% relative to StabilityArc + Kermut, which reaches 0.853 kcal/mol. Its error is lower in 130 of 155 proteins.
 
-The global nonlinear control reaches 0.635 kcal/mol, and the additive control reaches 1.091 kcal/mol. Their comparison separates the contribution of a learned phenotype map from the additional pair function. SCEPI reduces the global control's mean residual error by 6.4\%. Its error is lower in 92 of 155 proteins. The complete per-protein comparison retains both directions of difference.
+SCEPI reduces the global nonlinear control's mean residual error by 6.4\%, with lower error in 92 of 155 proteins. The global control reaches 0.635 kcal/mol, compared with 1.091 kcal/mol for the additive model. This comparison separates phenotype nonlinearity from the additional pair function.
 
-Native phenotype prediction provides a separate test of SCEPI. Its phenotype RMSE is 0.657 kcal/mol and its mean Spearman correlation is 0.742. ThermoMPNN-D reaches 0.777 and 0.673, while Kermut reaches 0.798 and 0.696. StabilityArc + Kermut reaches 0.815 and 0.746. SCEPI has lower phenotype RMSE in 117 of 159 proteins against ThermoMPNN-D and in 114 of 159 against Kermut. Its mean phenotype and residual prediction errors also improve over both target-fitted mean-representation baselines. Figure~\ref{fig:prediction}b--d shows the protein-level differences and repetition-level residual gains.
+SCEPI's phenotype RMSE is 0.657 kcal/mol. Its mean Spearman correlation is 0.742. ThermoMPNN-D reaches 0.777 and 0.673, while Kermut reaches 0.798 and 0.696. StabilityArc + Kermut reaches 0.815 and 0.746. SCEPI has lower phenotype RMSE in 117 of 159 proteins against ThermoMPNN-D and in 114 of 159 against Kermut. Its mean phenotype and residual errors also improve over both target-fitted mean-representation baselines. Figure~\ref{fig:prediction}b--d shows the protein-level differences and repetition-level residual gains.
 
 With 128 target double-mutant training labels, the source-initialized SCEPI adaptation variant reaches unseen-site-pair RMSE of 0.567 kcal/mol across 70 proteins. Kermut reaches 0.758, ThermoMPNN-D 0.775, second-order MoCHI 0.859, and the target-only SCEPI adaptation variant 0.799. Table~\ref{tab:combinationbudgets} reports every comparator across the four budgets.
 
@@ -681,7 +682,7 @@ xtick={0.04,0.06,0.08,0.1,0.12},
 ytick={0,1,2,3,4,5,6,7},
 yticklabels={SCEPI,Additive,Global nonlinear,ThermoMPNN-D,Kermut,StabilityArc + Kermut,Mean MLP,Mean ridge},
 yticklabel style={font=\fontsize{10}{12}\selectfont, text=black!78},
-xlabel={Observed-main hit rate}, ylabel={},
+xlabel={Hit rate}, ylabel={},
 clip=false,
 ]
 \node[anchor=south west, font=\bfseries\fontsize{10}{12}\selectfont] at (rel axis cs:-0.18,1.04) {a.};
@@ -741,7 +742,7 @@ xtick={0,1,2},
 ytick={0,0.05,0.1},
 yticklabels={0.00,0.05,0.10},
 yticklabel style={font=\fontsize{10}{12}\selectfont, text=black!78},
-xlabel={Boundary margin (kcal/mol)}, ylabel={Observed-main hit rate},
+xlabel={Boundary margin (kcal/mol)}, ylabel={Hit rate},
 clip=false,
 xticklabels={0.00,0.25,0.50},
 legend to name=componentanalysislegend,
@@ -784,7 +785,7 @@ label style={font=\fontsize{10}{12}\selectfont, text=black!78},
 xticklabel style={/pgf/number format/fixed, /pgf/number format/precision=2},
 xtick={0.6,0.8,1},
 ytick={0,1,2,3,4,5,6,7,8},
-yticklabels={SCEPI,Pair removed,Direct head,$F$: measured singles removed,No cross,WT context,Identity features,Phenotype-only,Residual-only},
+yticklabels={SCEPI,Pair removed,Direct head,Predicted singles,Local context,WT context,Identity features,Phenotype loss,Residual loss},
 yticklabel style={font=\fontsize{10}{12}\selectfont, text=black!78},
 xlabel={Residual RMSE (kcal/mol)}, ylabel={},
 clip=false,
@@ -904,25 +905,28 @@ clip=false,
 \end{axis}
 \node[anchor=north, yshift=-3mm, font=\fontsize{10}{12}\selectfont] at (current bounding box.south) {\pgfplotslegendfromname{componentanalysislegend}};
 \end{tikzpicture}
-\caption{Measured-single conditioning and component comparisons under 30\% identity grouping. (a) Top-10 hit rates with common measured main effects. (b) Quartet boundary-margin sensitivity; cohort sizes appear below the axis. (c) Residual RMSE and (d) native hit rate share the labeled control order. The direct head has matched capacity. The input-removal control retains external calibration and removes measured effects and availability from $F$. Open points are equal-protein repetition means; diamonds and whiskers show their mean and standard deviation. Residual and standard selection cohorts contain 155 and 120 held-out proteins.}
+\caption{Measured-single conditioning and component comparisons under 30\% identity grouping. (a) Top-10 hit rates with the same measured single-effect sum. (b) Sensitivity to distance from assay limits; cohort sizes appear below the axis. (c) Residual RMSE and (d) native hit rate share the labeled control order. The direct head has matched capacity. The input-removal control retains external calibration and removes measured effects and availability from $F$. Open points are equal-protein repetition means; diamonds and whiskers show their mean and standard deviation. Residual and selection cohorts contain 155 and 120 held-out proteins.}
 \label{fig:components}
 \end{figure}
 
-Fixing the main-effect sum across methods preserves the selection advantage (Figure~\ref{fig:components}a; Appendix Table~\ref{tab:commonmain}). SCEPI achieves a compensation hit rate of 11.27\%, compared with 4.42\% for additivity and 4.70\% for global nonlinearity. ThermoMPNN-D reaches 5.30\%, Kermut reaches 5.47\%, and StabilityArc + Kermut reaches 8.17\%. Mean MLP and mean ridge reach 7.17\% and 7.33\%. Mean selected recovery improves by 0.176, 0.161, 0.224, and 0.200 kcal/mol over the first four controls. Its improvement over StabilityArc + Kermut is 0.095 kcal/mol. These paired scores use an identical measured single-effect sum. Their differences come from each method's predicted four-term nonadditivity.
+Fixing the measured single-effect sum across methods preserves the selection advantage (Figure~\ref{fig:components}a; Appendix Table~\ref{tab:commonmain}). SCEPI achieves a compensation hit rate of 11.27\%, compared with 4.42\% for additivity and 4.70\% for global nonlinearity. ThermoMPNN-D reaches 5.30\%, Kermut reaches 5.47\%, and StabilityArc + Kermut reaches 8.17\%. Mean MLP and mean ridge reach 7.17\% and 7.33\%. Mean selected recovery improves by 0.176, 0.161, 0.224, and 0.200 kcal/mol over the first four controls. Its improvement over StabilityArc + Kermut is 0.095 kcal/mol. These paired scores differ through each method's predicted four-term nonadditivity.
 
-At a quartet margin of at least 0.5 kcal/mol, SCEPI's hit rate is 11.15\%. Additivity reaches 4.52\%, global nonlinearity 4.82\%, ThermoMPNN-D 5.27\%, and Kermut 5.29\%. StabilityArc + Kermut reaches 8.12\%. Mean MLP and mean ridge reach 7.30\% and 7.48\%. The advantage extends to combinations whose measured endpoints are separated from both assay limits. Figure~\ref{fig:components}a,b displays the common-main-effect and margin comparisons.
+At a margin of at least 0.5 kcal/mol, SCEPI's hit rate is 11.15\%. Additivity reaches 4.52\%, global nonlinearity 4.82\%, ThermoMPNN-D 5.27\%, and Kermut 5.29\%. StabilityArc + Kermut reaches 8.12\%. Mean MLP and mean ridge reach 7.30\% and 7.48\%. The advantage extends to combinations whose measurements are separated from both assay limits (Figure~\ref{fig:components}a,b).
 
 \subsection{Reference constraints improve residual prediction}
 
-The four-state contrast improves mean residual accuracy against the same-capacity direct head. The direct head's residual RMSE is 0.635 kcal/mol under the primary grouping and 0.630 kcal/mol under the stricter grouping. SCEPI's corresponding errors are 0.595 and 0.604 kcal/mol. Its native hit-rate gain is 0.52 percentage points under the primary grouping and $-0.23$ points under the stricter grouping. The contrast supplies exact reference constraints and a residual-prediction benefit across both groupings. Tables~\ref{tab:allcomponents} and~\ref{tab:threshold25} report the complete prediction and selection results.
+Cycle subtraction improves mean residual accuracy against the same-capacity direct head. The direct head's residual RMSE is 0.635 kcal/mol under the primary grouping and 0.630 kcal/mol under the stricter grouping. SCEPI's corresponding errors are 0.595 and 0.604 kcal/mol. Its native hit-rate gain is 0.52 percentage points under the primary grouping and $-0.23$ points under the stricter grouping. This parameterization supplies exact reference constraints and a residual-prediction benefit across both groupings. Tables~\ref{tab:allcomponents} and~\ref{tab:threshold25} report the prediction and selection results.
 
 Removing the learned pair term at inference retains the trained single head and phenotype map. Native hit rate falls from 11.22\% to 4.42\%, and residual RMSE rises from 0.595 to 1.072 kcal/mol. This intervention establishes the pair output's contribution within the trained predictor (Figure~\ref{fig:components}c,d). Representation, mapping, and training-objective variants are reported with their complete results in the appendix.
 
+\interlinepenalty=0
 \section{Discussion}
 
-SCEPI transfers an interaction function conditioned on measured single effects. Matched controls establish the additional prediction and selection value beyond external calibration under both homology groupings. This input mechanism complements StabilityArc's cross-protein prior for target Gaussian-process adaptation \citep{feller2026}. The full-target comparison demonstrates its use when target single measurements are available and combination labels remain withheld.
+SCEPI makes existing single-mutant measurements useful for selecting compensatory combinations in unseen proteins. Source combination measurements train a shared function, and target single effects condition its predictions. This information supports candidate selection before target combination labels are collected. The retrospective comparisons quantify that selection benefit at a fixed budget and across held-out homology groups.
 
-The four-state construction supplies exact reference constraints and lower mean residual error than a matched direct head. Its compensation hit-rate differences vary across groupings. Functional and higher-order tests evaluate a separate two-stage variant with predicted single effects. Their heterogeneous gains define the task-dependent performance of target adaptation.
+Measured inputs extend the use of target labels beyond fitting single effects or a Gaussian-process posterior. StabilityArc supplies a source-trained prior for target adaptation \citep{feller2026}. SCEPI also uses the observed single effects within the shared interaction function. The matched removal experiment identifies the value of that input location while retaining external calibration. Selection gains persist when every method uses the same measured single-effect sum.
+
+The reference constraints and the measured inputs serve distinct roles. The constraints define zero interaction at a wild-type endpoint and improve mean residual accuracy against a direct head. Their hit-rate differences vary across groupings. Conditioning on measured target observations improves both prediction and compensatory selection under the two homology groupings.
 
 \section{Conclusion}
 
@@ -966,6 +970,12 @@ P. M. Groth, M. H. Kerrn, L. Olsen, J. Salomon, and W. Boomsma.
 \newblock Kermut: Composite kernel regression for protein variant effects.
 \newblock In \emph{Advances in Neural Information Processing Systems}, volume 37, 2024.
 \newblock doi:10.52202/079017-0929.
+
+\bibitem{horovitz1996}
+A. Horovitz.
+\newblock Double-mutant cycles: a powerful tool for analyzing protein structure and function.
+\newblock \emph{Folding \& Design}, 1(6):R121--R126, 1996.
+\newblock doi:10.1016/S1359-0278(96)00056-9.
 
 \bibitem{lin2023}
 Z. Lin et al.
@@ -1055,15 +1065,15 @@ For $u=\widetilde a_i(a)$ and $v=\widetilde a_j(b)$, the predicted phenotype con
 \end{align}
 Their sum is $\widehat\epsilon_p$. With the identity map and unit scale, the phenotype contrast equals $r_{ij}$. With a nonlinear map, the complete contrast includes both contributions.
 
-Symmetry of $F$ implies symmetry of its four-state contrast. Setting $b=w_j$ makes its first two terms equal and its last two terms equal, giving $r_{ij}(a,w_j)=0$. The other reference constraint follows identically. For an endpoint term $v_i(a)$, the contrast contains $v_i(a)-v_i(a)-v_i(w_i)+v_i(w_i)=0$. The second endpoint term and the constant cancel in the same way. These are algebraic properties of the parameterization. Real-data model checks also verify endpoint exchange and reference-state outputs.
+Symmetry of $F$ implies symmetry of the cycle subtraction. Setting $b=w_j$ makes its first two terms equal and its last two terms equal, giving $r_{ij}(a,w_j)=0$. The other reference constraint follows identically. For an endpoint term $v_i(a)$, the subtraction contains $v_i(a)-v_i(a)-v_i(w_i)+v_i(w_i)=0$. The second endpoint term and the constant cancel in the same way. These are algebraic properties of the parameterization. Real-data model checks also verify endpoint exchange and reference-state outputs.
 
 \subsection*{Matched controls for the pair function}
 
 The input-removal control supplies model-predicted single effects $a_i(a),a_j(b)$ to every evaluation of $F$ and sets its observation indicators to zero. Equation~\eqref{eq:calibration} continues to define the external single-effect sum. Measured values and their availability indicators therefore reach that sum through the original permission rule. The pair network receives neither channel. Its input dimensions and parameter count remain unchanged.
 
-The direct-head control predicts $r_{ij}(a,b)=F(i,a;j,b)$ with the same symmetric network. Its projections, endpoint features, measured inputs, hidden dimensions, and parameter count match the four-state model. This intervention isolates the reference contrast while retaining endpoint symmetry and the external single-effect calibration.
+The direct-head control predicts $r_{ij}(a,b)=F(i,a;j,b)$ with the same symmetric network. Its projections, endpoint features, measured inputs, hidden dimensions, and parameter count match SCEPI. This intervention isolates cycle subtraction while retaining endpoint symmetry and the external single-effect calibration.
 
-Both controls reuse the full model's source-selected hyperparameters in each outer partition. They use the same pretrained single checkpoint for each training repetition, random initialization, source rows, sampler, optimizer, objectives, and checkpoint-selection rule. The maximum epoch budget and early-stopping patience are identical. Realized stopping epochs and fitted weights may differ. The label-mixing weight follows the same source-validation procedure. Full-target evaluation retains the same proteins, candidate pools, measurement margins, budgets, and aggregation. The stricter homology grouping repeats this comparison independently. These controls separate the predictive effects of the four-state construction and measured pair inputs from their algebraic definitions.
+Both controls reuse the full model's source-selected hyperparameters in each outer partition. They use the same pretrained single checkpoint for each training repetition, random initialization, source rows, sampler, optimizer, objectives, and checkpoint-selection rule. The maximum epoch budget and early-stopping patience are identical. Realized stopping epochs and fitted weights may differ. The label-mixing weight follows the same source-validation procedure. Full-target evaluation retains the same proteins, candidate pools, measurement margins, budgets, and aggregation. The stricter homology grouping repeats this comparison independently. These controls measure the predictive contributions of cycle subtraction and measured pair inputs.
 
 \section{Repetitions, aggregation, and statistical analysis}
 
@@ -1073,7 +1083,7 @@ At each repetition, all compared methods use the same permitted target labels an
 
 Uncertainty uses 10,000 homology-group bootstrap draws with statistical seed 20261013. Each draw samples groups with replacement and retains all member proteins. Its effect is the equal-protein mean over the sampled groups. Repeated model fits are averaged within protein before resampling. Comparisons with the same group membership use the same resampling draws. A bootstrap positive fraction is the fraction of resampled mean differences above zero. It describes uncertainty in the observed paired mean under this resampling scheme. Tables~\ref{tab:nativeuncertainty} and~\ref{tab:marginuncertainty} report the top-10 endpoint. Table~\ref{tab:pairfunctionuncertainty} reports the matched pair-function controls.
 
-\begin{table}[t]
+\begin{table}[H]
 \centering
 \caption{Paired native top-10 hit-rate advantage of SCEPI. Gains and 95\% bootstrap intervals are in percentage points. Positive fractions refer to resampled mean gains. Every comparison includes 120 proteins, 44 groups, and five model repetitions.}
 \label{tab:nativeuncertainty}
@@ -1092,9 +1102,9 @@ Mean ridge & $-0.20$ & [$-4.10$, 1.92] & 0.4312 \\
 \end{tabular}
 \end{table}
 
-\begin{table}[t]
+\begin{table}[H]
 \centering
-\caption{Paired top-10 hit-rate advantage under common measured main effects at quartet margin $\geq0.5$ kcal/mol. Gains and 95\% bootstrap intervals are in percentage points. Every comparison includes 115 proteins, 43 groups, and five model repetitions.}
+\caption{Paired top-10 hit-rate advantage with the same measured single-effect sum at margin $\geq0.5$ kcal/mol. Gains and 95\% bootstrap intervals are in percentage points. Every comparison includes 115 proteins, 43 groups, and five model repetitions.}
 \label{tab:marginuncertainty}
 \begin{tabular}{lrr}
 \toprule
@@ -1111,7 +1121,7 @@ Mean ridge & 3.67 & [0.77, 6.13] \\
 \end{tabular}
 \end{table}
 
-\begin{table}[t]
+\begin{table}[H]
 \centering
 \setlength{\tabcolsep}{6pt}
 \caption{Paired advantage of SCEPI over matched pair-function controls under the 30\% and 25\% identity groupings. Residual RMSE reductions are in kcal/mol; native top-10 hit-rate gains are in percentage points. Brackets give 95\% homology-group bootstrap intervals. Residual and selection comparisons contain 155 and 120 proteins, respectively. Each protein has five matched repetitions.}
@@ -1120,9 +1130,9 @@ Mean ridge & 3.67 & [0.77, 6.13] \\
 \toprule
 Grouping & Pair-function control & Residual reduction & Hit-rate gain \\
 \midrule
-30\% & Predicted singles in $F$ & 0.172 [0.152, 0.211] & 3.03 [0.72, 4.32] \\
+30\% & Predicted singles & 0.172 [0.152, 0.211] & 3.03 [0.72, 4.32] \\
 30\% & Direct residual & 0.041 [$-0.014$, 0.073] & 0.52 [$-3.04$, 2.46] \\
-25\% & Predicted singles in $F$ & 0.210 [0.155, 0.263] & 3.00 [$-0.06$, 4.36] \\
+25\% & Predicted singles & 0.210 [0.155, 0.263] & 3.00 [$-0.06$, 4.36] \\
 25\% & Direct residual & 0.026 [$-0.019$, 0.042] & $-0.23$ [$-1.58$, 0.81] \\
 \bottomrule
 \end{tabular}
@@ -1133,14 +1143,14 @@ Measured pair inputs improve both mean residual error and native hit rate in all
 \section{Source model selection and implementation}
 \label{app:training}
 
-Complete source quartets provide the residual target in Equation~\eqref{eq:observed}. For source proteins $P$, the residual objective gives equal weight to proteins and site pairs,
+Complete source cycles provide the residual target in Equation~\eqref{eq:observed}. For source proteins $P$, the residual objective gives equal weight to proteins and site pairs,
 \begin{equation}
 \mathcal L_\epsilon=
 \frac{1}{|P|}\sum_{p\in P}\frac{1}{|J_p|}\sum_{(i,j)\in J_p}
 \frac{1}{|Q_{pij}|}\sum_{q\in Q_{pij}}
 \operatorname{Huber}\!\left(\frac{\widehat\epsilon_q-\epsilon_q}{s}\right),
 \end{equation}
-where $J_p$ contains measured site pairs and $Q_{pij}$ contains their quartets. The stability scale is $s=1$ kcal/mol. Sampling across proteins, then pairs, then quartets implements this weighting.
+where $J_p$ contains measured site pairs and $Q_{pij}$ contains their cycles. The stability scale is $s=1$ kcal/mol. Sampling across proteins, then pairs, then cycles implements this weighting.
 
 The fitted objective is $\mathcal L_\epsilon+\lambda_y\mathcal L_y$. The observation term $\mathcal L_y$ is the negative log-likelihood for the predicted phenotype. Point observations use a Gaussian density; interval observations use the corresponding Gaussian interval probability. Each original observation appears once in this term. This criterion jointly fits the single head, pair function, and phenotype map. Residual-only and phenotype-only models are trained separately.
 
@@ -1150,12 +1160,12 @@ Training samples three single-label availability conditions. With probability 0.
 
 Frozen sequence representations are cached by reference and single-mutant sequence. The pair predictor reuses those caches across double mutants. The structural variant adds C$\alpha$ distance and residue confidence from the reference structure. Geometry permutations preserve the recorded distance values while changing their pair assignments. Inference interventions use the fitted structural model. Retrained interventions also use the changed assignments during fitting. Each comparison retains the same outer partition and information condition.
 
-ThermoMPNN-D is retrained on source proteins with its double-mutant head and over-and-back augmentation. Its additive counterpart is trained separately. Kermut fits the permitted target labels with the full composite kernel. Mean ridge and mean MLP fit those target labels using mean-pooled residue representations. ESM-2 additive and context scores provide fixed pretrained representation controls. The main external comparison evaluates each method's native predictions; the common-main-effect comparison replaces its single-effect sum with the same measured sum.
+ThermoMPNN-D is retrained on source proteins with its double-mutant head and the published single-mutant data augmentation \citep{dieckhaus2025}. Its additive counterpart is trained separately. Kermut fits the permitted target labels with the full composite kernel. Mean ridge and mean MLP fit those target labels using mean-pooled residue representations. ESM-2 additive and context scores provide fixed pretrained representation controls. The main external comparison evaluates each method's native predictions. Equation~\eqref{eq:selection} replaces each method's single-effect sum with the same measured sum.
 
 \section{StabilityArc architecture and target calibration}
 \label{app:stabilityarc}
 
-The StabilityArc comparison uses frozen ESMC-600M wild-type residue embeddings and the author's symmetrized, APC-corrected, entropy-weighted attention contacts \citep{feller2026}. Its decoder has four layers, hidden dimension 256, and eight attention heads with rotary position encoding. The full amino-acid embedding, sequence-distance features, and symmetric contact-aware pair residual are retained. Each of the ten source partitions is trained with the five fixed training seeds, giving 50 source models. Every source model excludes its target homology groups from both fitting and validation.
+The StabilityArc comparison uses frozen ESMC-600M wild-type residue embeddings and attention-derived contacts \citep{feller2026}. Contact scores use symmetrization, average product correction (APC), and attention entropy weighting. Its decoder has four layers, hidden dimension 256, and eight attention heads with rotary position encoding. The full amino-acid embedding, sequence-distance features, and symmetric contact-aware pair residual are retained. Each of the ten source partitions is trained with the five fixed training seeds, giving 50 source models. Every source model excludes its target homology groups from both fitting and validation.
 
 Each source model is trained for 40 epochs with AdamW, learning rate $10^{-4}$, and weight decay $10^{-3}$. Each assay contributes at most 40,000 measured variants per epoch. The objective combines Huber loss with 1,024 measured ranking pairs per assay. The Huber threshold is 1, and the two losses have equal weights. Double-mutant regression targets use the source-assay single-mutant median and median absolute deviation. Ranking uses measured stability order. Checkpoints are selected by source-validation double-mutant Spearman correlation. The public release supplies the architecture and a pooled checkpoint; the matched source-partition models are retrained here. Equal loss weights are an explicit implementation choice because the release does not specify them.
 
@@ -1163,9 +1173,9 @@ Target calibration uses the full Kermut covariance and Gaussian likelihood \cite
 
 \section{Component comparison details}
 
-\begin{table}[!htbp]
+\begin{table}[H]
 \centering
-\caption{Top-10 compensation hit rates under a common measured single-mutant main-effect sum. Each method contributes its own predicted four-term residual. The standard and margin cohorts contain 120 and 115 proteins, respectively.}
+\caption{Top-10 compensation hit rates with the same measured single-effect sum. Each method contributes its own predicted four-term residual. The standard and margin cohorts contain 120 and 115 proteins, respectively.}
 \label{tab:commonmain}
 \begin{tabular}{lrr}
 \toprule
@@ -1183,7 +1193,7 @@ Mean ridge & 7.33 & 7.48 \\
 \end{tabular}
 \end{table}
 
-\begin{table}[!htbp]
+\begin{table}[H]
 \centering
 \setlength{\tabcolsep}{5pt}
 \caption{Full-target S-all results for predictors and model variants. RMSE and recovery are in kcal/mol. Hit rates are native top-10 compensation percentages. The phenotype, residual, and selection cohorts contain 159, 155, and 120 proteins. Each predictor is evaluated across five outer partitions and five training repetitions.}
@@ -1203,26 +1213,26 @@ Mean MLP & 1.405 & 0.966 & 10.07 & $-0.413$ \\
 Mean ridge & 1.328 & 1.002 & 11.42 & $-0.354$ \\
 ESM-2 additive & 1.173 & 1.091 & 2.50 & $-0.794$ \\
 ESM-2 context & 1.107 & 0.864 & 8.50 & $-0.499$ \\
-Pair output removed at inference & 1.151 & 1.072 & 4.42 & $-0.432$ \\
+Pair removed & 1.151 & 1.072 & 4.42 & $-0.432$ \\
 Direct residual head & 0.700 & 0.635 & 10.70 & $-0.302$ \\
-Measured singles removed from $F$ & 0.810 & 0.767 & 8.18 & $-0.396$ \\
-Cross-site context removed & 0.637 & 0.575 & 11.47 & $-0.258$ \\
-Wild-type context only & 0.643 & 0.573 & 10.53 & $-0.273$ \\
-Amino-acid identities and singles & 0.617 & 0.557 & 9.12 & $-0.290$ \\
-Phenotype-only training & 0.619 & 0.562 & 11.95 & $-0.229$ \\
-Residual-only training & 1.071 & 0.686 & 8.72 & $-0.334$ \\
-Frozen single-effect head & 0.689 & 0.619 & 9.75 & $-0.282$ \\
-Identity phenotype map & 0.651 & 0.593 & 11.13 & $-0.257$ \\
-Structural variant & 0.644 & 0.583 & 10.82 & $-0.263$ \\
-Distance permutation, inference & 0.648 & 0.586 & 10.95 & $-0.261$ \\
-Distance permutation, retrained & 0.650 & 0.590 & 10.53 & $-0.270$ \\
-Distance rewiring, inference & 0.646 & 0.585 & 10.78 & $-0.264$ \\
-Distance rewiring, retrained & 0.633 & 0.572 & 10.47 & $-0.257$ \\
+Predicted singles & 0.810 & 0.767 & 8.18 & $-0.396$ \\
+Local context & 0.637 & 0.575 & 11.47 & $-0.258$ \\
+Wild-type context & 0.643 & 0.573 & 10.53 & $-0.273$ \\
+Identity features & 0.617 & 0.557 & 9.12 & $-0.290$ \\
+Phenotype loss & 0.619 & 0.562 & 11.95 & $-0.229$ \\
+Residual loss & 1.071 & 0.686 & 8.72 & $-0.334$ \\
+Frozen singles & 0.689 & 0.619 & 9.75 & $-0.282$ \\
+Identity map & 0.651 & 0.593 & 11.13 & $-0.257$ \\
+Structure & 0.644 & 0.583 & 10.82 & $-0.263$ \\
+Permuted distances\textsuperscript{I} & 0.648 & 0.586 & 10.95 & $-0.261$ \\
+Permuted distances\textsuperscript{R} & 0.650 & 0.590 & 10.53 & $-0.270$ \\
+Rewired distances\textsuperscript{I} & 0.646 & 0.585 & 10.78 & $-0.264$ \\
+Rewired distances\textsuperscript{R} & 0.633 & 0.572 & 10.47 & $-0.257$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Inference-time pair removal keeps trained main effects and the map fixed. Retrained additive and global nonlinear models optimize their own parameters. Representation variants retain the same reference-constrained pair construction. The identity-only variant adjusts its hidden width to approximate the main model's trainable parameter count. These comparisons measure component and objective choices within the shared-model class.
+Pair removal keeps the trained single-effect predictions and phenotype map fixed. The predicted-singles control replaces measured inputs inside $F$ and retains measured single-effect calibration outside $F$. Local context omits cross-site changes. Wild-type context uses reference-sequence representations. Identity features use amino-acid identities and single effects, with hidden width adjusted to match the main model's parameter count. The remaining variants change the training loss, freeze the single-effect head, replace the phenotype map with the identity, or add structural distances. Superscripts I and R denote distance interventions during inference and retraining, respectively. Retrained additive and global nonlinear models optimize their own parameters.
 
 Removing cross-site context yields 0.575 kcal/mol residual RMSE and an 11.47\% native hit rate under the primary grouping. The amino-acid-identity version reaches 0.557 kcal/mol and 9.12\%. Phenotype-only training reaches 0.562 kcal/mol and 11.95\%. Under the stricter grouping, phenotype-only training lowers residual RMSE from 0.604 to 0.584 kcal/mol and raises hit rate from 11.15\% to 11.98\%. The identity phenotype map gives 0.593 kcal/mol and 11.13\% under the primary grouping. Cross-site context, the flexible map, and the residual objective remain model and fitting choices with these individual results.
 
@@ -1230,13 +1240,13 @@ Removing cross-site context yields 0.575 kcal/mol residual RMSE and an 11.47\% n
 
 Grouping at 25\% identity with the same coverage requirement produces 45 groups in the phenotype and residual cohorts. The compensation cohort contains 39 groups, and its 0.5 kcal/mol margin subset contains 38. Protein membership remains unchanged. All predictors and components are evaluated across five outer partitions and five training repetitions under this grouping (Table~\ref{tab:threshold25}). SCEPI's residual RMSE is 0.604 kcal/mol, compared with 0.771 for ThermoMPNN-D, 0.847 for Kermut, 0.874 for StabilityArc + Kermut, and 0.650 for global nonlinearity. Its native compensation hit rate is 11.15\%, compared with 6.97\%, 5.40\%, and 8.23\% for the three external methods. Its mean selected recovery exceeds StabilityArc + Kermut by 0.092 kcal/mol.
 
-Under common measured main effects, top-10 hit rates are 11.17\% for SCEPI, 4.42\% for additivity, 4.63\% for global nonlinearity, 5.68\% for ThermoMPNN-D, 5.47\% for Kermut, 8.57\% for mean MLP, and 5.83\% for mean ridge. At margin 0.5 kcal/mol, the corresponding rates are 11.23\%, 4.52\%, 4.75\%, 5.65\%, 5.29\%, 8.77\%, and 5.83\%. The stricter grouping preserves the average compensation advantage and the common-main-effect comparison.
+With the same measured single-effect sum, top-10 hit rates are 11.17\% for SCEPI, 4.42\% for additivity, 4.63\% for global nonlinearity, 5.68\% for ThermoMPNN-D, 5.47\% for Kermut, 8.57\% for mean MLP, and 5.83\% for mean ridge. At margin 0.5 kcal/mol, the corresponding rates are 11.23\%, 4.52\%, 4.75\%, 5.65\%, 5.29\%, 8.77\%, and 5.83\%. The stricter grouping preserves the average compensation advantage with this fixed sum.
 
-StabilityArc + Kermut reaches an 8.02\% common-main-effect hit rate and 7.95\% at margin 0.5 kcal/mol. The paired comparison retains the same proteins and label permissions. Thus the additional source-trained comparator preserves the interaction-selection advantage under both homology thresholds.
+StabilityArc + Kermut reaches an 8.02\% hit rate with the fixed single-effect sum and 7.95\% at margin 0.5 kcal/mol. The paired comparison retains the same proteins and label permissions. SCEPI's selection advantage over this source-trained comparator persists under both homology thresholds.
 
-The matched direct residual head reaches 0.630 kcal/mol residual RMSE and an 11.38\% native hit rate. SCEPI lowers residual error to 0.604 kcal/mol and has an 11.15\% native hit rate. Removing measured pair inputs while retaining the external calibration gives 0.814 kcal/mol and 8.15\%. Common-main-effect hit rates are 11.45\% for the direct head and 8.15\% for the removed-input control. SCEPI reaches 11.17\%. These controls retain the residual-accuracy contribution of the reference contrast and the prediction and selection contribution of measured pair inputs.
+The matched direct residual head reaches 0.630 kcal/mol residual RMSE and an 11.38\% native hit rate. SCEPI lowers residual error to 0.604 kcal/mol and has an 11.15\% native hit rate. Removing measured pair inputs while retaining the external calibration gives 0.814 kcal/mol and 8.15\%. With the same measured single-effect sum, hit rates are 11.45\% for the direct head and 8.15\% for the removed-input control. SCEPI reaches 11.17\%. These controls retain the residual-accuracy contribution of cycle subtraction and the prediction and selection contribution of measured pair inputs.
 
-\begin{table}[!htbp]
+\begin{table}[H]
 \centering
 \setlength{\tabcolsep}{5pt}
 \caption{Full-target S-all sensitivity comparison at 25\% sequence identity. The columns use the same units and protein cohorts as Table~\ref{tab:allcomponents}. Each predictor is evaluated across five outer partitions and five training repetitions.}
@@ -1256,21 +1266,21 @@ Mean MLP & 1.211 & 0.922 & 11.20 & $-0.400$ \\
 Mean ridge & 1.638 & 1.039 & 11.25 & $-0.393$ \\
 ESM-2 additive & 1.173 & 1.091 & 2.50 & $-0.794$ \\
 ESM-2 context & 1.104 & 0.864 & 8.50 & $-0.499$ \\
-Pair output removed at inference & 1.151 & 1.073 & 4.42 & $-0.432$ \\
+Pair removed & 1.151 & 1.073 & 4.42 & $-0.432$ \\
 Direct residual head & 0.699 & 0.630 & 11.38 & $-0.257$ \\
-Measured singles removed from $F$ & 0.855 & 0.814 & 8.15 & $-0.386$ \\
-Cross-site context removed & 0.664 & 0.587 & 11.07 & $-0.266$ \\
-Wild-type context only & 0.655 & 0.588 & 10.12 & $-0.294$ \\
-Amino-acid identities and singles & 0.622 & 0.554 & 9.82 & $-0.287$ \\
-Phenotype-only training & 0.653 & 0.584 & 11.98 & $-0.235$ \\
-Residual-only training & 1.166 & 0.682 & 9.77 & $-0.311$ \\
-Frozen single-effect head & 0.684 & 0.611 & 11.32 & $-0.256$ \\
-Identity phenotype map & 0.680 & 0.609 & 11.07 & $-0.252$ \\
-Structural variant & 0.683 & 0.609 & 11.75 & $-0.240$ \\
-Distance permutation, inference & 0.685 & 0.611 & 11.93 & $-0.241$ \\
-Distance permutation, retrained & 0.677 & 0.606 & 11.75 & $-0.238$ \\
-Distance rewiring, inference & 0.684 & 0.609 & 11.62 & $-0.243$ \\
-Distance rewiring, retrained & 0.688 & 0.615 & 10.62 & $-0.257$ \\
+Predicted singles & 0.855 & 0.814 & 8.15 & $-0.386$ \\
+Local context & 0.664 & 0.587 & 11.07 & $-0.266$ \\
+Wild-type context & 0.655 & 0.588 & 10.12 & $-0.294$ \\
+Identity features & 0.622 & 0.554 & 9.82 & $-0.287$ \\
+Phenotype loss & 0.653 & 0.584 & 11.98 & $-0.235$ \\
+Residual loss & 1.166 & 0.682 & 9.77 & $-0.311$ \\
+Frozen singles & 0.684 & 0.611 & 11.32 & $-0.256$ \\
+Identity map & 0.680 & 0.609 & 11.07 & $-0.252$ \\
+Structure & 0.683 & 0.609 & 11.75 & $-0.240$ \\
+Permuted distances\textsuperscript{I} & 0.685 & 0.611 & 11.93 & $-0.241$ \\
+Permuted distances\textsuperscript{R} & 0.677 & 0.606 & 11.75 & $-0.238$ \\
+Rewired distances\textsuperscript{I} & 0.684 & 0.609 & 11.62 & $-0.243$ \\
+Rewired distances\textsuperscript{R} & 0.688 & 0.615 & 10.62 & $-0.257$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1279,7 +1289,7 @@ Distance rewiring, retrained & 0.688 & 0.615 & 10.62 & $-0.257$ \\
 
 The separate site-pair evaluation uses the designated unseen-site-pair test subset within each target protein. It intersects this subset with the same held-out homology groups. Site-pair split seeds are 11, 23, 47, 89, and 131. Candidate eligibility can change across these splits. The residual comparison contains 70 proteins, 34 groups, and 339 paired protein-repetition records. Compensation contains 63 proteins, 32 groups, and 269 records. Table~\ref{tab:pairsubset} reports this subset without combining its values with the full-target results.
 
-\begin{table}[!htbp]
+\begin{table}[H]
 \centering
 \caption{Repeated S-all evaluation on the designated unseen-site-pair subset within held-out homology groups. Each eligible protein is averaged over its available repetitions.}
 \label{tab:pairsubset}
@@ -1296,7 +1306,7 @@ Additive & 1.080 & 4.71 & $-0.493$ \\
 \end{tabular}
 \end{table}
 
-Common-main-effect top-10 hit rates on this subset are 5.78\% for SCEPI, 3.29\% for ThermoMPNN-D, 3.07\% for Kermut, 3.91\% for global nonlinearity, and 3.62\% for additivity. At margin 0.5 kcal/mol, the corresponding rates are 5.38\%, 3.12\%, 2.67\%, 3.64\%, and 3.34\%. That margin cohort contains 62 proteins, 32 groups, and 263 paired protein-repetition records. Homology-group resampling with 10,000 draws and seed 20261010 gives an additive-comparison gain of 2.04 percentage points and a 95\% interval of [0.67, 3.31]. Its gain over global nonlinearity is 1.74 points with an interval of [0.49, 3.12]. In S-all, every target double label is withheld from fitting. The site-pair subset therefore defines an additional evaluation population. The target-combination-adaptation experiments use the pair split to test extrapolation from permitted training combinations.
+With the same measured single-effect sum, top-10 hit rates on this subset are 5.78\% for SCEPI, 3.29\% for ThermoMPNN-D, 3.07\% for Kermut, 3.91\% for global nonlinearity, and 3.62\% for additivity. At margin 0.5 kcal/mol, the corresponding rates are 5.38\%, 3.12\%, 2.67\%, 3.64\%, and 3.34\%. That margin cohort contains 62 proteins, 32 groups, and 263 paired protein-repetition records. Homology-group resampling with 10,000 draws and seed 20261010 gives an additive-comparison gain of 2.04 percentage points and a 95\% interval of [0.67, 3.31]. Its gain over global nonlinearity is 1.74 points with an interval of [0.49, 3.12]. In S-all, every target double label is withheld from fitting. The site-pair subset defines an additional evaluation population. The target-combination-adaptation experiments use the pair split to test extrapolation from permitted training combinations.
 
 \section{Target-label budgets and unseen-site-pair prediction}
 
@@ -1304,7 +1314,7 @@ The transferred predictor benefits from partial target single-mutant measurement
 
 The family-level comparison varies only the target information condition. Source training and validation remain outside each target homology group. All eligible target double mutants enter evaluation. Each condition retains 155 residual-evaluation proteins and 775 protein-repetition records. Kermut requires target measurements, so the Z comparison lists source-trained predictors.
 
-\begin{table}[!htbp]
+\begin{table}[H]
 \centering
 \caption{Residual RMSE in kcal/mol at different target single-mutant budgets under 30\% homology grouping. Each row covers the same 155 proteins and five training repetitions. Z supplies no target labels; S-all supplies all permitted target single-mutant labels.}
 \label{tab:singlebudgets}
@@ -1322,7 +1332,7 @@ S-all & 0.595 & 1.091 & 0.635 & 0.805 & 0.847 \\
 
 The ESM-MSR comparison uses the epoch-10 source-validation checkpoint from family30, fold 0, and repetition seed 11. We compare every method on its matched held-out proteins in that fold. Residual evaluation retains 61 proteins; phenotype evaluation retains 65. Table~\ref{tab:msrsubset} reports Z and S-all separately. This checkpoint covers one fold and one repetition. Its results remain separate from the complete five-fold, five-repetition comparison.
 
-\begin{table}[!htbp]
+\begin{table}[H]
 \centering
 \setlength{\tabcolsep}{4pt}
 \caption{Matched comparison with the available epoch-10 ESM-MSR checkpoint. RMSE uses kcal/mol. Columns report residual RMSE, phenotype RMSE, and phenotype Spearman correlation. Every method shares the same 61 residual proteins and 65 phenotype proteins within each information condition. Kermut requires target labels and is omitted in Z.}
@@ -1343,14 +1353,14 @@ Kermut & --- & --- & --- & 0.829 & 0.793 & 0.731 \\
 \end{tabular}
 \end{table}
 
-The C comparison fits the SCEPI adaptation variant to permitted target training combinations. Its source initialization uses an identity phenotype map and a single-effect head held fixed during source pair fitting. Target adaptation retains that head and updates the pair network and observation noise. Target validation selects the stopping point. The target-only variant fits its single-effect head without supervised source weights. Both variants retain the same target single-label permissions. Pair removal sets the fitted pair output to zero at inference. The tables label the two versions as SCEPI adaptation, source and SCEPI adaptation, target only. These configurations are evaluated separately from the jointly trained S-all predictor.
+The C comparison fits the SCEPI adaptation variant to permitted target training combinations. Its source initialization uses an identity phenotype map and a single-effect head held fixed during source pair fitting. Target adaptation retains that head and updates the pair network and observation noise. Target validation selects the stopping point. The target-only variant fits its single-effect head without supervised source weights. Both variants retain the same target single-label permissions. Pair removal sets the fitted pair output to zero at inference. Superscripts S and T denote source initialization and target-only fitting. For mean ridge and mean MLP, S denotes a source prior and T denotes target fitting. Numerical superscripts on MoCHI and MAVE-NN specify interaction order. These adaptation models are evaluated separately from the jointly trained S-all predictor.
 
-Each budget includes proteins with enough permitted training combinations and eligible test quartets. Every comparator in a table uses the same protein-repetition intersection. Unseen-site-pair evaluation excludes all test pairs from target combination fitting. Random splitting shares site pairs between training and test combinations. The auxiliary two-pair cohort retains its designated pair split. Coverage reports proteins and matched protein-repetition records. Metrics average repetitions within protein before equal-protein averaging.
+Each budget includes proteins with enough permitted training combinations and complete test cycles. Every comparator in a table uses the same protein-repetition intersection. Unseen-site-pair evaluation excludes all test pairs from target combination fitting. Random splitting shares site pairs between training and test combinations. The auxiliary two-pair cohort retains its designated pair split. Coverage reports proteins and matched protein-repetition records. Metrics average repetitions within protein before equal-protein averaging.
 
-\begin{table}[!htbp]
+\begin{table}[H]
 \centering
 \setlength{\tabcolsep}{4pt}
-\caption{Unseen-site-pair residual RMSE in kcal/mol after target combination adaptation. Coverage lists proteins and matched protein-repetition records. All listed methods use the same cohort at each budget. Source initialization and target-only fitting are distinguished. C-all uses all permitted training combinations. Test site pairs remain excluded from fitting.}
+\caption{Unseen-site-pair residual RMSE in kcal/mol after target combination adaptation. Coverage lists proteins and matched protein-repetition records. All methods share the cohort at each budget. Superscripts S and T denote source initialization and target fitting; numerical superscripts give interaction order. C-all uses all permitted training combinations. Test site pairs remain excluded from fitting.}
 \label{tab:combinationbudgets}
 \begin{tabular}{lrrrr}
 \toprule
@@ -1358,29 +1368,29 @@ Predictor & C128 & C512 & C2048 & C-all \\
 \midrule
 Coverage & 70 / 339 & 45 / 219 & 4 / 17 & 70 / 339 \\
 \midrule
-SCEPI adaptation, source & 0.567 & 0.570 & 0.424 & 0.559 \\
-Pair removed, source initialization & 1.080 & 1.163 & 0.967 & 1.080 \\
-SCEPI adaptation, target only & 0.799 & 0.788 & 0.495 & 0.774 \\
-Pair removed, target only & 1.080 & 1.163 & 0.967 & 1.080 \\
-SCEPI structure, source & \textbf{0.558} & \textbf{0.563} & \textbf{0.408} & \textbf{0.551} \\
-SCEPI structure, target only & 0.795 & 0.785 & 0.467 & 0.772 \\
+SCEPI adaptation\textsuperscript{S} & 0.567 & 0.570 & 0.424 & 0.559 \\
+Pair removed\textsuperscript{S} & 1.080 & 1.163 & 0.967 & 1.080 \\
+SCEPI adaptation\textsuperscript{T} & 0.799 & 0.788 & 0.495 & 0.774 \\
+Pair removed\textsuperscript{T} & 1.080 & 1.163 & 0.967 & 1.080 \\
+SCEPI structure\textsuperscript{S} & \textbf{0.558} & \textbf{0.563} & \textbf{0.408} & \textbf{0.551} \\
+SCEPI structure\textsuperscript{T} & 0.795 & 0.785 & 0.467 & 0.772 \\
 ThermoMPNN-D & 0.775 & 0.787 & 0.618 & 0.771 \\
 ThermoMPNN additive & 1.080 & 1.163 & 0.967 & 1.080 \\
 Kermut & 0.758 & 0.770 & 0.577 & 0.740 \\
-MoCHI, order 1 & 0.857 & 0.946 & 0.834 & 0.900 \\
-MoCHI, order 2 & 0.859 & 0.935 & 0.845 & 0.895 \\
-Mean ridge, target fit & 0.933 & 0.994 & 0.767 & 0.921 \\
-Mean MLP, target fit & 0.666 & 0.635 & 0.430 & 0.620 \\
-Mean ridge, source prior & 1.000 & 1.067 & 0.917 & 0.999 \\
-Mean MLP, source prior & 0.849 & 0.882 & 0.670 & 0.816 \\
+MoCHI\textsuperscript{1} & 0.857 & 0.946 & 0.834 & 0.900 \\
+MoCHI\textsuperscript{2} & 0.859 & 0.935 & 0.845 & 0.895 \\
+Mean ridge\textsuperscript{T} & 0.933 & 0.994 & 0.767 & 0.921 \\
+Mean MLP\textsuperscript{T} & 0.666 & 0.635 & 0.430 & 0.620 \\
+Mean ridge\textsuperscript{S} & 1.000 & 1.067 & 0.917 & 0.999 \\
+Mean MLP\textsuperscript{S} & 0.849 & 0.882 & 0.670 & 0.816 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\begin{table}[!htbp]
+\begin{table}[H]
 \centering
 \setlength{\tabcolsep}{4pt}
-\caption{Random-split residual RMSE in kcal/mol after target combination adaptation. The cohort and averaging rule are shared by every row within each budget. Random splitting evaluates new amino-acid combinations at site pairs that may appear in training.}
+\caption{Random-split residual RMSE in kcal/mol after target combination adaptation. Every row shares the cohort and averaging rule within each budget. Superscripts follow Table~\ref{tab:combinationbudgets}. Random splitting evaluates new amino-acid combinations at site pairs represented in training.}
 \label{tab:combinationrandom}
 \begin{tabular}{lrrrr}
 \toprule
@@ -1388,29 +1398,29 @@ Predictor & C128 & C512 & C2048 & C-all \\
 \midrule
 Coverage & 125 / 601 & 90 / 450 & 11 / 55 & 125 / 601 \\
 \midrule
-SCEPI adaptation, source & 0.355 & 0.315 & 0.279 & 0.277 \\
-Pair removed, source initialization & 1.065 & 1.122 & 1.212 & 1.065 \\
-SCEPI adaptation, target only & 0.401 & 0.358 & 0.311 & 0.311 \\
-Pair removed, target only & 1.065 & 1.122 & 1.212 & 1.065 \\
-SCEPI structure, source & \textbf{0.351} & \textbf{0.310} & \textbf{0.273} & \textbf{0.274} \\
-SCEPI structure, target only & 0.399 & 0.350 & 0.303 & 0.304 \\
+SCEPI adaptation\textsuperscript{S} & 0.355 & 0.315 & 0.279 & 0.277 \\
+Pair removed\textsuperscript{S} & 1.065 & 1.122 & 1.212 & 1.065 \\
+SCEPI adaptation\textsuperscript{T} & 0.401 & 0.358 & 0.311 & 0.311 \\
+Pair removed\textsuperscript{T} & 1.065 & 1.122 & 1.212 & 1.065 \\
+SCEPI structure\textsuperscript{S} & \textbf{0.351} & \textbf{0.310} & \textbf{0.273} & \textbf{0.274} \\
+SCEPI structure\textsuperscript{T} & 0.399 & 0.350 & 0.303 & 0.304 \\
 ThermoMPNN-D & 0.424 & 0.394 & 0.381 & 0.385 \\
 ThermoMPNN additive & 1.065 & 1.122 & 1.212 & 1.065 \\
 Kermut & 0.447 & 0.405 & 0.355 & 0.346 \\
-MoCHI, order 1 & 0.737 & 0.802 & 0.991 & 0.810 \\
-MoCHI, order 2 & 0.736 & 0.800 & 0.997 & 0.813 \\
-Mean ridge, target fit & 0.527 & 0.498 & 0.568 & 0.449 \\
-Mean MLP, target fit & 0.389 & 0.339 & 0.283 & 0.305 \\
-Mean ridge, source prior & 0.971 & 1.031 & 1.124 & 0.967 \\
-Mean MLP, source prior & 0.749 & 0.746 & 0.726 & 0.690 \\
+MoCHI\textsuperscript{1} & 0.737 & 0.802 & 0.991 & 0.810 \\
+MoCHI\textsuperscript{2} & 0.736 & 0.800 & 0.997 & 0.813 \\
+Mean ridge\textsuperscript{T} & 0.527 & 0.498 & 0.568 & 0.449 \\
+Mean MLP\textsuperscript{T} & 0.389 & 0.339 & 0.283 & 0.305 \\
+Mean ridge\textsuperscript{S} & 0.971 & 1.031 & 1.124 & 0.967 \\
+Mean MLP\textsuperscript{S} & 0.749 & 0.746 & 0.726 & 0.690 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\begin{table}[!htbp]
+\begin{table}[H]
 \centering
 \setlength{\tabcolsep}{4pt}
-\caption{Residual RMSE in kcal/mol on the auxiliary two-pair cohort. Coverage lists proteins and matched protein-repetition records. This protocol contains the source-prior and pair-network comparisons shown here.}
+\caption{Residual RMSE in kcal/mol on the auxiliary two-pair cohort. Coverage lists proteins and matched protein-repetition records. Superscripts follow Table~\ref{tab:combinationbudgets}.}
 \label{tab:combinationsecondary}
 \begin{tabular}{lrr}
 \toprule
@@ -1418,17 +1428,17 @@ Predictor & C128 & C-all \\
 \midrule
 Coverage & 27 / 131 & 29 / 140 \\
 \midrule
-SCEPI adaptation, source & 0.683 & 0.687 \\
-Pair removed, source initialization & 1.163 & 1.172 \\
-SCEPI adaptation, target only & 1.138 & 1.149 \\
-Pair removed, target only & 1.163 & 1.172 \\
-SCEPI structure, source & \textbf{0.653} & \textbf{0.659} \\
-SCEPI structure, target only & 1.147 & 1.157 \\
+SCEPI adaptation\textsuperscript{S} & 0.683 & 0.687 \\
+Pair removed\textsuperscript{S} & 1.163 & 1.172 \\
+SCEPI adaptation\textsuperscript{T} & 1.138 & 1.149 \\
+Pair removed\textsuperscript{T} & 1.163 & 1.172 \\
+SCEPI structure\textsuperscript{S} & \textbf{0.653} & \textbf{0.659} \\
+SCEPI structure\textsuperscript{T} & 1.147 & 1.157 \\
 ThermoMPNN-D & 0.813 & 0.823 \\
 ThermoMPNN additive & 1.163 & 1.172 \\
 Kermut & 0.840 & 0.827 \\
-Mean ridge, source prior & 1.063 & 1.074 \\
-Mean MLP, source prior & 1.002 & 1.001 \\
+Mean ridge\textsuperscript{S} & 1.063 & 1.074 \\
+Mean MLP\textsuperscript{S} & 1.002 & 1.001 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1436,18 +1446,18 @@ Mean MLP, source prior & 1.002 & 1.001 \\
 \section{Functional assays and higher-order target adaptation}
 \label{app:externaladaptation}
 
-The functional double-mutant cohort contains 74,598 double mutants from six ProteinGym assays \citep{notin2023}. Measurements retain their original scales. The three KRAS abundance blocks remain separate measurement conditions. The resulting eight conditions contain 7,898 single mutants. Seven conditions supply measured wild-type values and 70,198 complete quartets. HIS7 contributes phenotype-ranking tests and has no observed wild type for quartet evaluation. Table~\ref{tab:functionalcoverage} lists the full coverage. Each fit uses only its permitted measurement condition.
+The functional double-mutant cohort contains 74,598 double mutants from six ProteinGym assays \citep{notin2023}. Measurements retain their original scales. The three KRAS abundance blocks remain separate measurement conditions. The resulting eight conditions contain 7,898 single mutants. Seven conditions supply measured wild-type values and 70,198 complete cycles. HIS7 contributes phenotype-ranking tests and has no observed wild type for cycle evaluation. Table~\ref{tab:functionalcoverage} lists the coverage. Each fit uses only its permitted measurement condition.
 
-We evaluate random combination splits and held-out site pairs at C128, C512, C2048, and C-all. Each condition supplies its permitted single mutants and training combinations. Test combinations remain excluded from fitting and validation. The C2048 condition excludes HIS7 because its training pool is smaller than the budget. Phenotype rank correlation is computed on measured test double mutants. Residual evaluation requires at least 30 complete test quartets. To compare assay scales, residual RMSE is divided by the population standard deviation of permitted training point values. Tables report equal-assay means. Repetitions are averaged within condition, the three KRAS conditions are averaged within their assay, and assays receive equal weight.
+We evaluate random combination splits and held-out site pairs at C128, C512, C2048, and C-all. Each condition supplies its permitted single mutants and training combinations. Test combinations remain excluded from fitting and validation. The C2048 condition excludes HIS7 because its training pool is smaller than the budget. Phenotype rank correlation is computed on measured test double mutants. Residual evaluation requires at least 30 complete test cycles. To compare assay scales, residual RMSE is divided by the population standard deviation of permitted training point values. Tables report equal-assay means. Repetitions are averaged within condition, the three KRAS conditions are averaged within their assay, and assays receive equal weight.
 
-\begin{table}[!htbp]
+\begin{table}[H]
 \centering
 \setlength{\tabcolsep}{5pt}
-\caption{Accepted functional double-mutant data and complete measured quartets. Each row retains its original measurement condition. The three KRAS conditions belong to one abundance assay. HIS7 lacks an observed wild type and contributes no complete quartets.}
+\caption{Accepted functional double-mutant data and complete measured cycles. Each row retains its original measurement condition. The three KRAS conditions belong to one abundance assay. HIS7 lacks an observed wild type and contributes no complete cycles.}
 \label{tab:functionalcoverage}
 \begin{tabular}{lrrr}
 \toprule
-Assay condition & Singles & Doubles & Complete quartets \\
+Assay condition & Singles & Doubles & Complete cycles \\
 \midrule
 D7PM05\_CLYGR fluorescence & 1,169 & 10,148 & 9,517 \\
 GFP\_AEQVI fluorescence & 1,084 & 12,777 & 11,954 \\
@@ -1467,18 +1477,18 @@ The functional SCEPI adaptation variant first fits single-effect predictions and
 
 The independent no-pair control fits the first stage without adding pair effects. Inference-time pair removal uses the fitted two-stage model and sets its pair output to zero. Learning rates are $10^{-4}$, $3\times10^{-4}$, and $10^{-3}$. Target-only models compare projection dimensions 64 and 128. Pair fitting compares observation-loss weights 0.1 and 1. Each stage runs for at most 100 epochs with ten-epoch validation patience. Target validation selects phenotype rank correlation, with identifiable phenotype RMSE breaking ties.
 
-MoCHI and MAVE-NN compare first-order and second-order sequence models \citep{faure2024,tareen2022}. RFA uses second-order effects with the author's sigmoid phenotype link \citep{park2024}. Its fixed configuration sets $\lambda=0$. New optimizations use at most 500 L-BFGS iterations, gradient threshold $10^{-5}$, and relative objective tolerance $10^{-4}$ over 25 iterations. Normalization has a separate 500-iteration cap. Existing checkpoints with the same default penalty are reused without further optimization. Retained validation-selected predictions use the original twelve penalties, $\lambda/n\in\{0,10^{-6},10^{-5.5},\ldots,10^{-1}\}$. Their fitted configurations and stopping records remain associated with the reported predictions. No test outcomes enter fitting or configuration selection.
+MoCHI and MAVE-NN compare first-order and second-order sequence models \citep{faure2024,tareen2022}. Reference-free analysis (RFA) uses second-order effects with the author's sigmoid phenotype link \citep{park2024}. The fixed configuration sets $\lambda=0$. Its optimization budget is 500 L-BFGS iterations, with gradient threshold $10^{-5}$ and relative objective tolerance $10^{-4}$ over 25 iterations. Normalization has a separate 500-iteration cap. The validation-selected configuration compares twelve penalties, $\lambda/n\in\{0,10^{-6},10^{-5.5},\ldots,10^{-1}\}$. Test outcomes are excluded from fitting and configuration selection.
 
-The RFA records contain 350 eligible fits, comprising 310 functional-assay fits and 40 FLIP2 fits. The fixed default supplies 284 results through 264 new fits and 20 reused default checkpoints. The remaining 66 results retain their earlier validation-selected configurations. Thirty additional task records lack the required budget or target training and validation labels. Their exclusion is recorded separately from fitted results.
+RFA covers 350 eligible fits, comprising 310 functional-assay fits and 40 FLIP2 fits. Of these, 284 use the fixed configuration and 66 use validation-selected penalties. Thirty additional tasks lack the required sample budget or target training and validation labels and are excluded from fitting.
 
 RFA gives constant GFP predictions in all five C128 repetitions under each split and in two unseen-pair C512 repetitions. Their twelve Spearman correlations are undefined. Rank comparisons use the same finite protein-repetition records for every method. C128 therefore excludes GFP and retains five assays, seven conditions, and 35 records. Unseen-pair C512 retains six assays, eight conditions, and 38 records. The other six-assay rank columns contain 40 records. C2048 retains five assays and 35 records after excluding HIS7. Residual evaluation retains all seven eligible conditions and 35 records at every budget, including the constant-prediction cases.
 
 Tables~\ref{tab:functionalresidual} and \ref{tab:functionalrank} separate residual prediction from phenotype ranking. At C128 on unseen pairs, the source-initialized interaction variant has normalized residual RMSE 0.508. Its pair-removed control has 0.551, and the target-only interaction variant has 0.537. First-order MAVE-NN reaches 0.484. At C-all, RFA reaches 0.409 and the source-initialized variant reaches 0.448. On the full six-assay unseen-pair ranking cohort at C128, the source-initialized variant has Spearman correlation 0.730, compared with 0.741 after pair removal. The pair fit improves residual accuracy in this setting while the phenotype-ranking comparison favors the no-pair control.
 
-\begin{table}[!htbp]
+\begin{table}[H]
 \centering
 \setlength{\tabcolsep}{3.5pt}
-\caption{Normalized residual RMSE on functional double mutants. Every column contains five assays, seven measurement conditions, and five repetitions. Errors are divided by each condition's training phenotype standard deviation before equal-assay averaging. C-all uses the permitted training combinations. Lower values are better.}
+\caption{Normalized residual RMSE on functional double mutants. Every column contains five assays, seven measurement conditions, and five repetitions. Errors are divided by each condition's training phenotype standard deviation before equal-assay averaging. Superscripts S and T denote source initialization and target-only fitting; numerical superscripts give interaction order. C-all uses the permitted training combinations.}
 \label{tab:functionalresidual}
 \begin{tabular}{lrrrrrrrr}
 \toprule
@@ -1486,27 +1496,27 @@ Tables~\ref{tab:functionalresidual} and \ref{tab:functionalrank} separate residu
 \cmidrule(lr){2-5}\cmidrule(lr){6-9}
 Predictor & C128 & C512 & C2048 & C-all & C128 & C512 & C2048 & C-all \\
 \midrule
-SCEPI adaptation, source & 0.503 & 0.484 & 0.465 & 0.435 & 0.508 & 0.491 & 0.472 & 0.448 \\
-Pair removed, source initialization & 0.551 & 0.529 & 0.508 & 0.478 & 0.551 & 0.532 & 0.514 & 0.488 \\
-Independent no-pair, source initialization & 0.551 & 0.529 & 0.508 & 0.480 & 0.551 & 0.532 & 0.514 & 0.490 \\
-SCEPI adaptation, target only & 0.537 & 0.515 & 0.489 & 0.439 & 0.537 & 0.519 & 0.491 & 0.459 \\
-Pair removed, target only & 0.549 & 0.527 & 0.499 & 0.459 & 0.549 & 0.530 & 0.502 & 0.469 \\
-Independent no-pair, target only & 0.549 & 0.527 & 0.499 & 0.459 & 0.549 & 0.530 & 0.502 & 0.469 \\
-MoCHI, order 1 & 0.545 & 0.497 & 0.453 & 0.452 & 0.543 & 0.499 & 0.458 & 0.427 \\
-MoCHI, order 2 & 0.532 & 0.498 & 0.453 & 0.444 & 0.533 & 0.497 & 0.464 & 0.430 \\
-MAVE-NN, order 1 & 0.476 & 0.457 & 0.429 & 0.407 & 0.484 & 0.464 & 0.431 & 0.415 \\
-MAVE-NN, order 2 & 0.481 & 0.460 & 0.442 & 0.425 & 0.484 & 0.461 & 0.446 & 0.437 \\
-RFA, order 2 & 0.544 & 0.524 & 0.446 & 0.398 & 0.548 & 0.528 & 0.441 & 0.409 \\
+SCEPI adaptation\textsuperscript{S} & 0.503 & 0.484 & 0.465 & 0.435 & 0.508 & 0.491 & 0.472 & 0.448 \\
+Pair removed\textsuperscript{S} & 0.551 & 0.529 & 0.508 & 0.478 & 0.551 & 0.532 & 0.514 & 0.488 \\
+Independent no-pair\textsuperscript{S} & 0.551 & 0.529 & 0.508 & 0.480 & 0.551 & 0.532 & 0.514 & 0.490 \\
+SCEPI adaptation\textsuperscript{T} & 0.537 & 0.515 & 0.489 & 0.439 & 0.537 & 0.519 & 0.491 & 0.459 \\
+Pair removed\textsuperscript{T} & 0.549 & 0.527 & 0.499 & 0.459 & 0.549 & 0.530 & 0.502 & 0.469 \\
+Independent no-pair\textsuperscript{T} & 0.549 & 0.527 & 0.499 & 0.459 & 0.549 & 0.530 & 0.502 & 0.469 \\
+MoCHI\textsuperscript{1} & 0.545 & 0.497 & 0.453 & 0.452 & 0.543 & 0.499 & 0.458 & 0.427 \\
+MoCHI\textsuperscript{2} & 0.532 & 0.498 & 0.453 & 0.444 & 0.533 & 0.497 & 0.464 & 0.430 \\
+MAVE-NN\textsuperscript{1} & 0.476 & 0.457 & 0.429 & 0.407 & 0.484 & 0.464 & 0.431 & 0.415 \\
+MAVE-NN\textsuperscript{2} & 0.481 & 0.460 & 0.442 & 0.425 & 0.484 & 0.461 & 0.446 & 0.437 \\
+RFA & 0.544 & 0.524 & 0.446 & 0.398 & 0.548 & 0.528 & 0.441 & 0.409 \\
 Mean ridge & 0.749 & 0.687 & 0.633 & 0.576 & 0.792 & 0.716 & 0.651 & 0.610 \\
 Mean MLP & 0.800 & 0.715 & 0.657 & 0.604 & 0.793 & 0.738 & 0.673 & 0.619 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\begin{table}[!htbp]
+\begin{table}[H]
 \centering
 \setlength{\tabcolsep}{3.5pt}
-\caption{Phenotype Spearman correlation on common finite records for functional double mutants. Every model has five fitting repetitions. Assay counts are given for each budget. Conditions are averaged within assay before equal-assay averaging. Higher values are better.}
+\caption{Phenotype Spearman correlation on common finite records for functional double mutants. Every model has five fitting repetitions. Assay counts are given for each budget. Conditions are averaged within assay before equal-assay averaging. Superscripts follow Table~\ref{tab:functionalresidual}.}
 \label{tab:functionalrank}
 \begin{tabular}{lrrrrrrrr}
 \toprule
@@ -1516,17 +1526,17 @@ Predictor & C128 & C512 & C2048 & C-all & C128 & C512 & C2048 & C-all \\
 \midrule
 Assays & 5 & 6 & 5 & 6 & 5 & 6 & 5 & 6 \\
 \midrule
-SCEPI adaptation, source & 0.739 & 0.731 & 0.828 & 0.771 & 0.748 & 0.737 & 0.827 & 0.763 \\
-Pair removed, source initialization & 0.754 & 0.734 & 0.830 & 0.767 & 0.758 & 0.742 & 0.829 & 0.767 \\
-Independent no-pair, source initialization & 0.755 & 0.734 & 0.830 & 0.769 & 0.755 & 0.745 & 0.830 & 0.767 \\
-SCEPI adaptation, target only & 0.716 & 0.719 & 0.824 & 0.766 & 0.731 & 0.734 & 0.824 & 0.769 \\
-Pair removed, target only & 0.720 & 0.723 & 0.823 & 0.767 & 0.733 & 0.733 & 0.824 & 0.769 \\
-Independent no-pair, target only & 0.720 & 0.723 & 0.823 & 0.766 & 0.732 & 0.733 & 0.824 & 0.769 \\
-MoCHI, order 1 & 0.706 & 0.711 & 0.824 & 0.772 & 0.707 & 0.718 & 0.833 & 0.760 \\
-MoCHI, order 2 & 0.713 & 0.727 & 0.836 & 0.773 & 0.721 & 0.738 & 0.844 & 0.766 \\
-MAVE-NN, order 1 & 0.726 & 0.731 & 0.830 & 0.775 & 0.753 & 0.741 & 0.838 & 0.769 \\
-MAVE-NN, order 2 & 0.726 & 0.732 & 0.831 & 0.769 & 0.751 & 0.741 & 0.840 & 0.763 \\
-RFA, order 2 & 0.705 & 0.692 & 0.791 & 0.747 & 0.716 & 0.692 & 0.798 & 0.739 \\
+SCEPI adaptation\textsuperscript{S} & 0.739 & 0.731 & 0.828 & 0.771 & 0.748 & 0.737 & 0.827 & 0.763 \\
+Pair removed\textsuperscript{S} & 0.754 & 0.734 & 0.830 & 0.767 & 0.758 & 0.742 & 0.829 & 0.767 \\
+Independent no-pair\textsuperscript{S} & 0.755 & 0.734 & 0.830 & 0.769 & 0.755 & 0.745 & 0.830 & 0.767 \\
+SCEPI adaptation\textsuperscript{T} & 0.716 & 0.719 & 0.824 & 0.766 & 0.731 & 0.734 & 0.824 & 0.769 \\
+Pair removed\textsuperscript{T} & 0.720 & 0.723 & 0.823 & 0.767 & 0.733 & 0.733 & 0.824 & 0.769 \\
+Independent no-pair\textsuperscript{T} & 0.720 & 0.723 & 0.823 & 0.766 & 0.732 & 0.733 & 0.824 & 0.769 \\
+MoCHI\textsuperscript{1} & 0.706 & 0.711 & 0.824 & 0.772 & 0.707 & 0.718 & 0.833 & 0.760 \\
+MoCHI\textsuperscript{2} & 0.713 & 0.727 & 0.836 & 0.773 & 0.721 & 0.738 & 0.844 & 0.766 \\
+MAVE-NN\textsuperscript{1} & 0.726 & 0.731 & 0.830 & 0.775 & 0.753 & 0.741 & 0.838 & 0.769 \\
+MAVE-NN\textsuperscript{2} & 0.726 & 0.732 & 0.831 & 0.769 & 0.751 & 0.741 & 0.840 & 0.763 \\
+RFA & 0.705 & 0.692 & 0.791 & 0.747 & 0.716 & 0.692 & 0.798 & 0.739 \\
 Mean ridge & 0.602 & 0.592 & 0.695 & 0.662 & 0.617 & 0.597 & 0.691 & 0.659 \\
 Mean MLP & 0.557 & 0.548 & 0.662 & 0.649 & 0.566 & 0.555 & 0.661 & 0.641 \\
 \bottomrule
@@ -1537,10 +1547,10 @@ FLIP2 evaluates TrpB one-to-many, two-to-many, and by-position splits; amylase o
 
 Tables~\ref{tab:flipenzymes} and \ref{tab:fliphydro} report every split. Source-initialized pair fitting improves the TrpB by-position correlation from 0.167 to 0.233. It lowers the one-to-many correlation from 0.252 to $-0.214$. On Hydro three-to-many, the corresponding values are 0.356 and 0.201. The source-initialized independent no-pair model attains 0.703 on amylase. These results give separate comparisons of source initialization, target fitting, and inference-time pair removal. They establish task-dependent performance for the predicted-single adaptation variant.
 
-\begin{table}[!htbp]
+\begin{table}[H]
 \centering
 \setlength{\tabcolsep}{4.5pt}
-\caption{FLIP2 phenotype Spearman correlation on TrpB, amylase, and IRED. All values use the official test split and average five repetitions. TrpB columns distinguish one-to-many, two-to-many, and by-position protocols. Amylase uses one-to-many; IRED uses two-to-many. Higher values are better.}
+\caption{FLIP2 phenotype Spearman correlation on TrpB, amylase, and IRED. All values use the official test split and average five repetitions. TrpB columns distinguish one-to-many, two-to-many, and by-position protocols. Amylase uses one-to-many; IRED uses two-to-many. Superscripts follow Table~\ref{tab:functionalresidual}.}
 \label{tab:flipenzymes}
 \begin{tabular}{lrrrrr}
 \toprule
@@ -1548,43 +1558,43 @@ Tables~\ref{tab:flipenzymes} and \ref{tab:fliphydro} report every split. Source-
 \cmidrule(lr){2-4}
 Predictor & 1-to-many & 2-to-many & By position & 1-to-many & 2-to-many \\
 \midrule
-SCEPI adaptation, source & $-0.214$ & 0.155 & 0.233 & 0.697 & 0.200 \\
-Pair removed, source initialization & 0.252 & 0.172 & 0.167 & 0.697 & 0.221 \\
-Independent no-pair, source initialization & 0.252 & 0.215 & 0.172 & 0.703 & 0.221 \\
-SCEPI adaptation, target only & 0.388 & 0.206 & 0.180 & 0.677 & 0.222 \\
-Pair removed, target only & 0.388 & 0.413 & 0.180 & 0.677 & 0.219 \\
-Independent no-pair, target only & 0.388 & 0.413 & 0.180 & 0.677 & 0.219 \\
-MoCHI, order 1 & 0.247 & 0.481 & 0.256 & 0.593 & 0.173 \\
-MoCHI, order 2 & 0.336 & 0.482 & 0.218 & 0.621 & 0.191 \\
-MAVE-NN, order 1 & 0.245 & 0.393 & 0.254 & 0.574 & 0.175 \\
-MAVE-NN, order 2 & 0.338 & 0.460 & 0.135 & 0.584 & 0.175 \\
-RFA, order 2 & 0.319 & 0.180 & 0.263 & 0.625 & 0.181 \\
+SCEPI adaptation\textsuperscript{S} & $-0.214$ & 0.155 & 0.233 & 0.697 & 0.200 \\
+Pair removed\textsuperscript{S} & 0.252 & 0.172 & 0.167 & 0.697 & 0.221 \\
+Independent no-pair\textsuperscript{S} & 0.252 & 0.215 & 0.172 & 0.703 & 0.221 \\
+SCEPI adaptation\textsuperscript{T} & 0.388 & 0.206 & 0.180 & 0.677 & 0.222 \\
+Pair removed\textsuperscript{T} & 0.388 & 0.413 & 0.180 & 0.677 & 0.219 \\
+Independent no-pair\textsuperscript{T} & 0.388 & 0.413 & 0.180 & 0.677 & 0.219 \\
+MoCHI\textsuperscript{1} & 0.247 & 0.481 & 0.256 & 0.593 & 0.173 \\
+MoCHI\textsuperscript{2} & 0.336 & 0.482 & 0.218 & 0.621 & 0.191 \\
+MAVE-NN\textsuperscript{1} & 0.245 & 0.393 & 0.254 & 0.574 & 0.175 \\
+MAVE-NN\textsuperscript{2} & 0.338 & 0.460 & 0.135 & 0.584 & 0.175 \\
+RFA & 0.319 & 0.180 & 0.263 & 0.625 & 0.181 \\
 Mean ridge & 0.454 & 0.466 & 0.283 & 0.693 & 0.199 \\
 Mean MLP & 0.437 & 0.485 & 0.302 & 0.695 & 0.173 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\begin{table}[!htbp]
+\begin{table}[H]
 \centering
 \setlength{\tabcolsep}{4pt}
-\caption{FLIP2 Hydro phenotype Spearman correlation. Three-to-many averages three target backgrounds; each remaining column holds out the indicated background. Every value averages five repetitions. Dashes indicate local fits without target-background training labels. Higher values are better.}
+\caption{FLIP2 Hydro phenotype Spearman correlation. Three-to-many averages three target backgrounds; each remaining column holds out the indicated background. Every value averages five repetitions. Dashes indicate local fits without target-background training labels. Superscripts follow Table~\ref{tab:functionalresidual}.}
 \label{tab:fliphydro}
 \begin{tabular}{lrrrr}
 \toprule
 Predictor & Three-to-many & P01053 & P06241 & P0A9X9 \\
 \midrule
-SCEPI adaptation, source & 0.201 & 0.368 & 0.193 & 0.025 \\
-Pair removed, source initialization & 0.356 & 0.420 & 0.197 & 0.188 \\
-Independent no-pair, source initialization & 0.356 & 0.420 & 0.215 & 0.188 \\
-SCEPI adaptation, target only & 0.059 & 0.408 & 0.219 & 0.036 \\
-Pair removed, target only & 0.284 & 0.408 & 0.251 & 0.193 \\
-Independent no-pair, target only & 0.284 & 0.404 & 0.258 & 0.209 \\
-MoCHI, order 1 & 0.549 & --- & --- & --- \\
-MoCHI, order 2 & 0.557 & --- & --- & --- \\
-MAVE-NN, order 1 & 0.554 & --- & --- & --- \\
-MAVE-NN, order 2 & 0.565 & --- & --- & --- \\
-RFA, order 2 & 0.519 & --- & --- & --- \\
+SCEPI adaptation\textsuperscript{S} & 0.201 & 0.368 & 0.193 & 0.025 \\
+Pair removed\textsuperscript{S} & 0.356 & 0.420 & 0.197 & 0.188 \\
+Independent no-pair\textsuperscript{S} & 0.356 & 0.420 & 0.215 & 0.188 \\
+SCEPI adaptation\textsuperscript{T} & 0.059 & 0.408 & 0.219 & 0.036 \\
+Pair removed\textsuperscript{T} & 0.284 & 0.408 & 0.251 & 0.193 \\
+Independent no-pair\textsuperscript{T} & 0.284 & 0.404 & 0.258 & 0.209 \\
+MoCHI\textsuperscript{1} & 0.549 & --- & --- & --- \\
+MoCHI\textsuperscript{2} & 0.557 & --- & --- & --- \\
+MAVE-NN\textsuperscript{1} & 0.554 & --- & --- & --- \\
+MAVE-NN\textsuperscript{2} & 0.565 & --- & --- & --- \\
+RFA & 0.519 & --- & --- & --- \\
 Mean ridge & 0.586 & 0.239 & 0.025 & 0.168 \\
 Mean MLP & 0.614 & 0.317 & 0.303 & 0.025 \\
 \bottomrule
@@ -1593,11 +1603,11 @@ Mean MLP & 0.614 & 0.317 & 0.303 & 0.025 \\
 
 \section{Interpretation of the selection endpoint}
 
-Complete, point-valued quartets define the retrospective evaluation cohort. Their double-mutant outcomes are excluded from model training and candidate scores. Measurement status and the quartet margin define evaluation strata. The margin is the minimum of $y+1$ and $5-y$ across all four observed endpoints. A threshold of 0.5 kcal/mol excludes quartets close to either assay endpoint. This analysis conditions the evaluation on measured outcomes inside the assay range.
+Complete, point-valued double-mutant cycles define the retrospective evaluation cohort. Their double-mutant outcomes are excluded from model training and candidate scores. Measurement status and distance from assay limits define evaluation strata. The margin is the minimum of $y+1$ and $5-y$ across all four observations. A threshold of 0.5 kcal/mol excludes cycles close to either assay limit. This analysis conditions the evaluation on measured outcomes inside the assay range.
 
 Recovery is $y_{AB}-\max(y_A,y_B)$. A hit requires at least 0.5 kcal/mol recovery, and both singles must individually lose at least 0.5 kcal/mol relative to wild type. Hit rate and mean recovery have different roles: the first measures successful budgeted discoveries, and the second measures continuous candidate quality. A candidate can meet the recovery criterion while remaining less stable than wild type.
 
-General stability ranking is evaluated on a broader continuous pool of 65 proteins in one repetition with seed 11. With common measured main effects, top-10 mean stability changes differ from additive and global nonlinear ranking by $-0.0018$ and $-0.0054$ kcal/mol, respectively.
+General stability ranking is evaluated on a broader continuous pool of 65 proteins in one repetition with seed 11. With the same measured single-effect sum, top-10 mean stability changes differ from additive and global nonlinear ranking by $-0.0018$ and $-0.0054$ kcal/mol, respectively.
 
 \section{Random selection and compensatory enrichment}
 \label{app:random}
@@ -1616,7 +1626,7 @@ This ratio uses the same equal-protein aggregation as the primary results. It re
 
 The random comparison uses the same fixed model predictions, candidate eligibility, recovery threshold, budgets, and measurement margins as the other selection comparisons. Each predictor's five repetitions are averaged within protein before aggregation. Uncertainty uses 10,000 paired homology-group bootstrap draws with seed 20261019. Each draw resamples model and random results together and recalculates both means and their ratio. These intervals quantify sampling uncertainty in the observed cohort. The exact random expectation has no Monte Carlo ranking error.
 
-\begin{table}[!htbp]
+\begin{table}[H]
 \centering
 \caption{SCEPI native selection relative to exact uniform random selection under 30\% homology grouping. The same 120 proteins and 44 groups enter every budget. Random hit rate is 2.63\%. Hit-rate gains are percentage points; recovery gains are kcal/mol. Brackets give 95\% homology-group bootstrap intervals for enrichment.}
 \label{tab:randombudgets}
@@ -1632,15 +1642,15 @@ Budget & SCEPI hit rate (\%) & Hit-rate gain & Enrichment ($\times$) & Recovery 
 \end{tabular}
 \end{table}
 
-At $K=10$, SCEPI's hit-rate gain over random selection has a 95\% interval of [4.01, 12.07] percentage points. Its recovery gain has an interval of [0.499, 0.720] kcal/mol. The stricter homology grouping gives 4.24-fold native enrichment. A 0.5 kcal/mol quartet margin retains 115 proteins and 75,017 candidates. Native enrichment is 4.15 and 4.19 under the 30\% and 25\% groupings. Common-main-effect enrichment is 4.17 and 4.20 in the same margin cohorts (Table~\ref{tab:randomsensitivity}).
+At $K=10$, SCEPI's hit-rate gain over random selection has a 95\% interval of [4.01, 12.07] percentage points. Its recovery gain has an interval of [0.499, 0.720] kcal/mol. The stricter homology grouping gives 4.24-fold native enrichment. A margin of 0.5 kcal/mol retains 115 proteins and 75,017 candidates. Native enrichment is 4.15 and 4.19 under the 30\% and 25\% groupings. With the same measured single-effect sum, enrichment is 4.17 and 4.20 in these cohorts (Table~\ref{tab:randomsensitivity}).
 
-\begin{table}[!htbp]
+\begin{table}[H]
 \centering
-\caption{Top-10 random-selection sensitivity. Random rates and model rates are equal-protein means. Native and common-main-effect columns report SCEPI enrichment over the same random expectation. The 30\% grouping has 44/44/43 groups at the three margins; the 25\% grouping has 39/39/38.}
+\caption{Top-10 random-selection sensitivity. Random rates and model rates are equal-protein means. The last two columns report SCEPI enrichment with native predictions and the fixed measured single-effect sum. Both use the same random expectation. The 30\% grouping has 44/44/43 groups at the three margins; the 25\% grouping has 39/39/38.}
 \label{tab:randomsensitivity}
 \begin{tabular}{rrrrrr}
 \toprule
-Grouping & Margin & Proteins & Random hit (\%) & Native ($\times$) & Common main ($\times$) \\
+Grouping & Margin & Proteins & Random hit (\%) & Native ($\times$) & Fixed sum ($\times$) \\
 \midrule
 30\% & 0.00 & 120 & 2.63 & 4.27 & 4.29 \\
 30\% & 0.25 & 120 & 2.68 & 4.17 & 4.19 \\
