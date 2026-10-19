@@ -53,7 +53,6 @@
 
 \begin{abstract}
 Selecting compensatory double mutants requires predicting how individually damaging substitutions combine. We introduce Single-mutant-Conditioned Epistasis Prediction (SCEPI), a cross-protein model that conditions a shared interaction function on measured single-mutant effects. These measurements also calibrate individual effects outside the interaction network. Source combination measurements train the model, while target double-mutant labels remain withheld. Across 155 held-out proteins, SCEPI achieves mean residual root mean squared error of 0.595 kcal/mol, compared with 0.805 for ThermoMPNN-D, 0.847 for Kermut, and 0.853 for calibrated StabilityArc. At a budget of ten candidates per protein, its compensation hit rate is 11.22\% across 120 proteins, compared with 7.07\%, 5.40\%, and 8.75\%, respectively. This rate is 4.27 times the 2.63\% expectation of uniform random selection from the same candidates. Matched input-removal controls retain external calibration and establish prediction and selection gains from measured single effects within the interaction network. Common measured main effects, stricter homology grouping, and measurement-boundary analysis preserve these gains. SCEPI uses existing single-mutant measurements to guide compensatory discovery in unseen proteins.
-\keywords{Protein stability \and Epistasis \and Compensatory mutations \and Deep mutational scanning \and Double-mutant selection}
 \end{abstract}
 
 \section{Introduction}
