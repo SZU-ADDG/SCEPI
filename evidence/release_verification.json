@@ -1,0 +1,15 @@
+{
+  "complete": true,
+  "primary_model_rows": 52,
+  "primary_values_checked": 312,
+  "random_comparisons": 1248,
+  "random_values_checked": 8736,
+  "paired_selection_records": 738400,
+  "mean_tolerance": 1e-12,
+  "intervals": "Saved group-bootstrap intervals; this command independently reconstructs all reported means.",
+  "model_check": {
+    "real_held_out_quartets": 32,
+    "device": "cpu",
+    "saved_prediction_tolerance": 1e-05
+  }
+}

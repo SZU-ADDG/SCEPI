@@ -1,0 +1,70 @@
+{
+  "source": "paper/manuscript.tex",
+  "class": "paper/llncs.cls",
+  "template": "llncs, 2026/09/03 v2.25",
+  "reference_thread": "01a14cbe-62b4-79b3-b08f-d1e774ec1e0c",
+  "source_experiment_base_commit": "875d04d6df818110001f3889758cf998321a96f6",
+  "main_text_pages_including_title_and_abstract": 10,
+  "reference_pages": 1,
+  "supplementary_pages": 14,
+  "total_pages": 25,
+  "separate_title_pages": 0,
+  "letter_format": true,
+  "margin_inches": 1,
+  "ordinary_font_size_pt": 10,
+  "builtin_compiler_status": "success",
+  "all_source_pages_visually_reviewed": true,
+  "native_figure_fragments_embedded": 4,
+  "public_code": "https://github.com/SZU-ADDG/SCEPI",
+  "exports": [
+    {
+      "path": "paper/submission.pdf",
+      "pages": 11,
+      "page_labels": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11"
+      ],
+      "all_fonts_embedded": true,
+      "retained_internal_links": 45,
+      "dangling_internal_links": 0,
+      "omitted_cross_document_links": 11,
+      "render_dpi": 110,
+      "render_matches_visually_inspected_source": true
+    },
+    {
+      "path": "paper/supplementary.pdf",
+      "pages": 14,
+      "page_labels": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S11",
+        "S12",
+        "S13",
+        "S14"
+      ],
+      "all_fonts_embedded": true,
+      "retained_internal_links": 17,
+      "dangling_internal_links": 0,
+      "omitted_cross_document_links": 9,
+      "render_dpi": 110,
+      "render_matches_visually_inspected_source": true
+    }
+  ]
+}

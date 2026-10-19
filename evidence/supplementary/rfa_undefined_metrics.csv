@@ -1,0 +1,13 @@
+dataset,scheme,condition,metric,protein_id,seed
+functional_doubles,random,C128,phenotype_spearman,func_0001,11
+functional_doubles,random,C128,phenotype_spearman,func_0001,23
+functional_doubles,random,C128,phenotype_spearman,func_0001,47
+functional_doubles,random,C128,phenotype_spearman,func_0001,89
+functional_doubles,random,C128,phenotype_spearman,func_0001,131
+functional_doubles,unseen_pair,C128,phenotype_spearman,func_0001,11
+functional_doubles,unseen_pair,C128,phenotype_spearman,func_0001,23
+functional_doubles,unseen_pair,C128,phenotype_spearman,func_0001,47
+functional_doubles,unseen_pair,C128,phenotype_spearman,func_0001,89
+functional_doubles,unseen_pair,C128,phenotype_spearman,func_0001,131
+functional_doubles,unseen_pair,C512,phenotype_spearman,func_0001,23
+functional_doubles,unseen_pair,C512,phenotype_spearman,func_0001,131

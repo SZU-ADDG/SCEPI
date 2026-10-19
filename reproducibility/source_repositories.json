@@ -1,0 +1,80 @@
+[
+  {
+    "name": "ThermoMPNN-D",
+    "path": "external/ThermoMPNN-D",
+    "url": "https://github.com/Kuhlman-Lab/ThermoMPNN-D.git",
+    "commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "name": "kermut",
+    "path": "external/kermut",
+    "url": "https://github.com/petergroth/kermut.git",
+    "commit": "e6500221b5159a1896272bfc4a3c6e3896eb0027"
+  },
+  {
+    "name": "ProteinGym",
+    "path": "external/ProteinGym",
+    "url": "https://github.com/OATML-Markslab/ProteinGym.git",
+    "commit": "144fe22b07dfaeec2b366f2346203a9838a55b4c"
+  },
+  {
+    "name": "esm-msr",
+    "path": "external/esm-msr",
+    "url": "https://github.com/SKTeamLab/esm-msr.git",
+    "commit": "6ecea374ecf2c661065449227a0e93cb825d5162"
+  },
+  {
+    "name": "pymochi",
+    "path": "external/pymochi",
+    "url": "https://github.com/lehner-lab/MoCHI.git",
+    "commit": "ad6c1e152799b5c323c80dcac99872fe4d4fbb16"
+  },
+  {
+    "name": "mochi-v1.1",
+    "path": "external/mochi-v1.1",
+    "url": "https://github.com/lehner-lab/MoCHI.git",
+    "commit": "b71c73806c2b7049bc05c499258c1cea6013189f"
+  },
+  {
+    "name": "esm",
+    "path": "external/esm",
+    "url": "https://github.com/facebookresearch/esm.git",
+    "commit": "2b369911bb5b4b0dda914521b9475cad1656b2ac"
+  },
+  {
+    "name": "RFA",
+    "path": "external/RFA",
+    "url": "https://github.com/JoeThorntonLab/RFA.git",
+    "commit": "7a1a8725315a027d9563f6d9b12749174cffefc0"
+  },
+  {
+    "name": "FLIP",
+    "path": "external/FLIP",
+    "url": "https://github.com/J-SNACKKB/FLIP.git",
+    "commit": "62cace8735f5610e2743cf06ce0f944b37fffaa6"
+  },
+  {
+    "name": "mutation-predictability",
+    "path": "external/mutation-predictability",
+    "url": "https://github.com/florisvdf/mutation-predictability.git",
+    "commit": "aea601d50493892fc6a73601beb90b8d0c93cd52"
+  },
+  {
+    "name": "ProteinMPNN",
+    "path": "external/ProteinMPNN",
+    "url": "https://github.com/dauparas/ProteinMPNN.git",
+    "commit": "8907e6671bfbfc92303b5f79c4b5e6ce47cdef57"
+  },
+  {
+    "name": "nuclease_design",
+    "path": "external/nuclease_design",
+    "url": "https://github.com/google-deepmind/nuclease_design.git",
+    "commit": "702284847c4558567d8288169a86dc147cfaab32"
+  },
+  {
+    "name": "fuzzy_specificity",
+    "path": "external/fuzzy_specificity",
+    "url": "https://github.com/lehner-lab/fuzzy_specificity.git",
+    "commit": "8a47080ecd6af2774a7b40d1e0643a79554684c3"
+  }
+]

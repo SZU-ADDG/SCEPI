@@ -1,0 +1,22 @@
+{
+  "family30/fold0": {
+    "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed11",
+    "validation_score": 0.7239308288409072
+  },
+  "family30/fold1": {
+    "run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+    "validation_score": 0.740847355063997
+  },
+  "family30/fold2": {
+    "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_combined_seed11",
+    "validation_score": 0.6651626654165097
+  },
+  "family30/fold3": {
+    "run": "runs/e3/family30/fold3/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+    "validation_score": 0.6991717946609781
+  },
+  "family30/fold4": {
+    "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+    "validation_score": 0.6704807592474538
+  }
+}

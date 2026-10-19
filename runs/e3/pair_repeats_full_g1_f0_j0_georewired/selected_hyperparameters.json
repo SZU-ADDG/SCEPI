@@ -1,0 +1,42 @@
+{
+  "family30/fold0": {
+    "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g1_f0_j0_georewired_combined_seed11",
+    "validation_score": 0.7406646583927355
+  },
+  "family30/fold1": {
+    "run": "runs/e3/family30/fold1/pair/full_p128_lr0.0001_ly1_g1_f0_j0_georewired_combined_seed11",
+    "validation_score": 0.7644827859955339
+  },
+  "family30/fold2": {
+    "run": "runs/e3/family30/fold2/pair/full_p128_lr0.001_ly0.1_g1_f0_j0_georewired_combined_seed11",
+    "validation_score": 0.6800940581008965
+  },
+  "family30/fold3": {
+    "run": "runs/e3/family30/fold3/pair/full_p64_lr0.001_ly1_g1_f0_j0_georewired_combined_seed11",
+    "validation_score": 0.6739508004875039
+  },
+  "family30/fold4": {
+    "run": "runs/e3/family30/fold4/pair/full_p64_lr0.0003_ly1_g1_f0_j0_georewired_combined_seed11",
+    "validation_score": 0.6863445171293762
+  },
+  "family25/fold0": {
+    "run": "runs/e3/family25/fold0/pair/full_p64_lr0.0001_ly0.1_g1_f0_j0_georewired_combined_seed11",
+    "validation_score": 0.6072993800282387
+  },
+  "family25/fold1": {
+    "run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g1_f0_j0_georewired_combined_seed11",
+    "validation_score": 0.7066562707507222
+  },
+  "family25/fold2": {
+    "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g1_f0_j0_georewired_combined_seed11",
+    "validation_score": 0.6829745436621164
+  },
+  "family25/fold3": {
+    "run": "runs/e3/family25/fold3/pair/full_p64_lr0.0001_ly1_g1_f0_j0_georewired_combined_seed11",
+    "validation_score": 0.7784286208792455
+  },
+  "family25/fold4": {
+    "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0003_ly0.1_g1_f0_j0_georewired_combined_seed11",
+    "validation_score": 0.7363455544139428
+  }
+}

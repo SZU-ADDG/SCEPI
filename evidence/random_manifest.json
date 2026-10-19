@@ -1,0 +1,40 @@
+{
+  "complete": true,
+  "source_commit": "875d04d6df818110001f3889758cf998321a96f6",
+  "analysis_script": "scripts/analyze_random_enrichment.py",
+  "source_evidence": "runs/key_ablations_20261015/paper_evidence",
+  "run_path": "runs/reviewer_revision_20261019/random_enrichment",
+  "target_combination_labels_used_for_fitting": 0,
+  "analysis_type": "Post-review retrospective random-selection analysis",
+  "random_selection": "Uniform sampling without replacement from each unchanged eligible protein candidate pool.",
+  "random_expectation": "Exact pool hit fraction and pool mean recovery; no Monte Carlo random rankings.",
+  "enrichment": "Ratio of equal-protein mean model hit rate to equal-protein mean random hit rate; not a mean of per-protein ratios.",
+  "aggregation": "Average five matched fitting repetitions within protein, then give proteins equal weight.",
+  "uncertainty": "10000 paired homology-group bootstrap draws; both numerator and denominator resampled together.",
+  "bootstrap_seed": 20261019,
+  "thresholds": [
+    30,
+    25
+  ],
+  "margins": [
+    0.0,
+    0.25,
+    0.5
+  ],
+  "budgets": [
+    1,
+    3,
+    10,
+    30
+  ],
+  "random_protein_budget_records": 2840,
+  "paired_repetition_records_checked": 738400,
+  "paired_protein_records": 147680,
+  "summary_rows": 1248,
+  "checks": [
+    "candidate eligibility",
+    "five matched repetitions",
+    "pool-size equality with original evaluation",
+    "hypergeometric mean and variance"
+  ]
+}

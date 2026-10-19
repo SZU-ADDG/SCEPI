@@ -1,0 +1,36 @@
+{
+  "complete": true,
+  "source_commit": "875d04d6df818110001f3889758cf998321a96f6",
+  "source_run_path": "runs/key_ablations_20261015/paper_evidence",
+  "paired_comparisons_checked": 11650,
+  "manuscript_table_rows_checked": 52,
+  "matched_control_interval_rows_checked": 4,
+  "main_conditioning_table_rows_checked": 3,
+  "conditioning_relative_residual_reductions_percent": [
+    22.396913722262628,
+    25.747042224870786
+  ],
+  "maximum_mean_difference": 1.1102230246251565e-16,
+  "floating_tie_tolerance": 1e-12,
+  "native_figure_fragments_embedded": 4,
+  "thresholds": [
+    {
+      "threshold": 30,
+      "grids": 650,
+      "comparisons": 5825,
+      "table_rows": 26
+    },
+    {
+      "threshold": 25,
+      "grids": 650,
+      "comparisons": 5825,
+      "table_rows": 26
+    }
+  ],
+  "original_budget_table_rows_checked": 8,
+  "runtime": {
+    "numpy": "1.26.4",
+    "pandas": "2.2.3"
+  },
+  "full_planned_matrix_complete": false
+}

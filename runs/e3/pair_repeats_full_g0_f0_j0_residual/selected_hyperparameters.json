@@ -1,0 +1,42 @@
+{
+  "family30/fold0": {
+    "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f0_j0_residual_seed11",
+    "validation_score": 0.7357165256638386
+  },
+  "family30/fold1": {
+    "run": "runs/e3/family30/fold1/pair/full_p64_lr0.0001_ly0.1_g0_f0_j0_residual_seed11",
+    "validation_score": 0.7857663508606056
+  },
+  "family30/fold2": {
+    "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f0_j0_residual_seed11",
+    "validation_score": 0.7071656629840454
+  },
+  "family30/fold3": {
+    "run": "runs/e3/family30/fold3/pair/full_p64_lr0.0001_ly0.1_g0_f0_j0_residual_seed11",
+    "validation_score": 0.742876792460969
+  },
+  "family30/fold4": {
+    "run": "runs/e3/family30/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f0_j0_residual_seed11",
+    "validation_score": 0.6971150033653104
+  },
+  "family25/fold0": {
+    "run": "runs/e3/family25/fold0/pair/full_p128_lr0.001_ly0.1_g0_f0_j0_residual_seed11",
+    "validation_score": 0.6022195488874028
+  },
+  "family25/fold1": {
+    "run": "runs/e3/family25/fold1/pair/full_p64_lr0.0001_ly0.1_g0_f0_j0_residual_seed11",
+    "validation_score": 0.7417335588140944
+  },
+  "family25/fold2": {
+    "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f0_j0_residual_seed11",
+    "validation_score": 0.6965602082047498
+  },
+  "family25/fold3": {
+    "run": "runs/e3/family25/fold3/pair/full_p64_lr0.0001_ly0.1_g0_f0_j0_residual_seed11",
+    "validation_score": 0.7823547014304686
+  },
+  "family25/fold4": {
+    "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f0_j0_residual_seed11",
+    "validation_score": 0.7364046675892937
+  }
+}

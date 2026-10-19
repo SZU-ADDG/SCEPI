@@ -1,0 +1,247 @@
+\begin{tikzpicture}[font=\sffamily\fontsize{10}{12}\selectfont]
+\definecolor{SharedBlue}{HTML}{2878B5}
+\definecolor{ThermoOrange}{HTML}{E68632}
+\definecolor{KermutGreen}{HTML}{32936F}
+\definecolor{StabilityArcTeal}{HTML}{3F9BA8}
+\definecolor{GlobalGold}{HTML}{B89B3C}
+\definecolor{AdditiveGray}{HTML}{6F7785}
+\definecolor{MeanPurple}{HTML}{9368A6}
+\definecolor{RidgeRose}{HTML}{AC6D79}
+\definecolor{NeutralGray}{HTML}{7B858E}
+\begin{axis}[
+at={(47mm,58mm)}, anchor=south west,
+width=49mm, height=42mm,
+scale only axis,
+xmin=0.038, xmax=0.122, ymin=-0.55, ymax=7.45,
+axis line style={draw=gray!65},
+grid=major, grid style={draw=gray!20, line width=0.35pt},
+tick label style={font=\fontsize{10}{12}\selectfont, text=black!68},
+label style={font=\fontsize{10}{12}\selectfont, text=black!78},
+xticklabel style={/pgf/number format/fixed, /pgf/number format/precision=2},
+xtick={0.04,0.06,0.08,0.1,0.12},
+ytick={0,1,2,3,4,5,6,7},
+yticklabels={SCEPI,Additive,Global nonlinear,ThermoMPNN-D,Kermut,StabilityArc + Kermut,Mean MLP,Mean ridge},
+yticklabel style={font=\fontsize{10}{12}\selectfont, text=black!78},
+xlabel={Observed-main hit rate}, ylabel={},
+clip=false,
+]
+\node[anchor=south west, font=\bfseries\fontsize{10}{12}\selectfont] at (rel axis cs:-0.18,1.04) {a.};
+\node[anchor=south east, font=\fontsize{10}{12}\selectfont, text=black!60] at (rel axis cs:1,1.04) {$K=10$, $n=120$};
+\draw[SharedBlue, line width=0.65pt] (axis cs:0.109111545165,0) -- (axis cs:0.116221788168,0);
+\draw[SharedBlue, line width=0.65pt] (axis cs:0.109111545165,-0.1) -- (axis cs:0.109111545165,0.1);
+\draw[SharedBlue, line width=0.65pt] (axis cs:0.116221788168,-0.1) -- (axis cs:0.116221788168,0.1);
+\addplot[only marks, mark=o, mark size=2.1pt, color=SharedBlue, mark options={draw=SharedBlue, fill=white}] coordinates {(0.114166666667,0) (0.114166666667,0) (0.1075,0) (0.110833333333,0) (0.116666666667,0)};
+\addplot[only marks, mark=diamond*, mark size=2.7pt, color=SharedBlue, mark options={draw=SharedBlue, fill=white}] coordinates {(0.112666666667,0)};
+\draw[AdditiveGray, line width=0.65pt] (axis cs:0.044166666667,1) -- (axis cs:0.044166666667,1);
+\draw[AdditiveGray, line width=0.65pt] (axis cs:0.044166666667,0.9) -- (axis cs:0.044166666667,1.1);
+\draw[AdditiveGray, line width=0.65pt] (axis cs:0.044166666667,0.9) -- (axis cs:0.044166666667,1.1);
+\addplot[only marks, mark=o, mark size=2.1pt, color=AdditiveGray, mark options={draw=AdditiveGray, fill=white}] coordinates {(0.044166666667,1) (0.044166666667,1) (0.044166666667,1) (0.044166666667,1) (0.044166666667,1)};
+\addplot[only marks, mark=diamond*, mark size=2.7pt, color=AdditiveGray, mark options={draw=AdditiveGray, fill=white}] coordinates {(0.044166666667,1)};
+\draw[GlobalGold, line width=0.65pt] (axis cs:0.045736187426,2) -- (axis cs:0.048263812574,2);
+\draw[GlobalGold, line width=0.65pt] (axis cs:0.045736187426,1.9) -- (axis cs:0.045736187426,2.1);
+\draw[GlobalGold, line width=0.65pt] (axis cs:0.048263812574,1.9) -- (axis cs:0.048263812574,2.1);
+\addplot[only marks, mark=o, mark size=2.1pt, color=GlobalGold, mark options={draw=GlobalGold, fill=white}] coordinates {(0.045833333333,2) (0.049166666667,2) (0.046666666667,2) (0.046666666667,2) (0.046666666667,2)};
+\addplot[only marks, mark=diamond*, mark size=2.7pt, color=GlobalGold, mark options={draw=GlobalGold, fill=white}] coordinates {(0.047,2)};
+\draw[ThermoOrange, line width=0.65pt] (axis cs:0.047360358561,3) -- (axis cs:0.058639641439,3);
+\draw[ThermoOrange, line width=0.65pt] (axis cs:0.047360358561,2.9) -- (axis cs:0.047360358561,3.1);
+\draw[ThermoOrange, line width=0.65pt] (axis cs:0.058639641439,2.9) -- (axis cs:0.058639641439,3.1);
+\addplot[only marks, mark=o, mark size=2.1pt, color=ThermoOrange, mark options={draw=ThermoOrange, fill=white}] coordinates {(0.059166666667,3) (0.058333333333,3) (0.050833333333,3) (0.050833333333,3) (0.045833333333,3)};
+\addplot[only marks, mark=diamond*, mark size=2.7pt, color=ThermoOrange, mark options={draw=ThermoOrange, fill=white}] coordinates {(0.053,3)};
+\draw[KermutGreen, line width=0.65pt] (axis cs:0.054210231202,4) -- (axis cs:0.055123102131,4);
+\draw[KermutGreen, line width=0.65pt] (axis cs:0.054210231202,3.9) -- (axis cs:0.054210231202,4.1);
+\draw[KermutGreen, line width=0.65pt] (axis cs:0.055123102131,3.9) -- (axis cs:0.055123102131,4.1);
+\addplot[only marks, mark=o, mark size=2.1pt, color=KermutGreen, mark options={draw=KermutGreen, fill=white}] coordinates {(0.054166666667,4) (0.055,4) (0.055,4) (0.055,4) (0.054166666667,4)};
+\addplot[only marks, mark=diamond*, mark size=2.7pt, color=KermutGreen, mark options={draw=KermutGreen, fill=white}] coordinates {(0.054666666667,4)};
+\draw[StabilityArcTeal, line width=0.65pt] (axis cs:0.08,5) -- (axis cs:0.083333333333,5);
+\draw[StabilityArcTeal, line width=0.65pt] (axis cs:0.08,4.9) -- (axis cs:0.08,5.1);
+\draw[StabilityArcTeal, line width=0.65pt] (axis cs:0.083333333333,4.9) -- (axis cs:0.083333333333,5.1);
+\addplot[only marks, mark=o, mark size=2.1pt, color=StabilityArcTeal, mark options={draw=StabilityArcTeal, fill=white}] coordinates {(0.080833333333,5) (0.084166666667,5) (0.08,5) (0.0825,5) (0.080833333333,5)};
+\addplot[only marks, mark=diamond*, mark size=2.7pt, color=StabilityArcTeal, mark options={draw=StabilityArcTeal, fill=white}] coordinates {(0.081666666667,5)};
+\draw[MeanPurple, line width=0.65pt] (axis cs:0.067893589526,6) -- (axis cs:0.075439743808,6);
+\draw[MeanPurple, line width=0.65pt] (axis cs:0.067893589526,5.9) -- (axis cs:0.067893589526,6.1);
+\draw[MeanPurple, line width=0.65pt] (axis cs:0.075439743808,5.9) -- (axis cs:0.075439743808,6.1);
+\addplot[only marks, mark=o, mark size=2.1pt, color=MeanPurple, mark options={draw=MeanPurple, fill=white}] coordinates {(0.075,6) (0.07,6) (0.070833333333,6) (0.066666666667,6) (0.075833333333,6)};
+\addplot[only marks, mark=diamond*, mark size=2.7pt, color=MeanPurple, mark options={draw=MeanPurple, fill=white}] coordinates {(0.071666666667,6)};
+\draw[RidgeRose, line width=0.65pt] (axis cs:0.073333333333,7) -- (axis cs:0.073333333333,7);
+\draw[RidgeRose, line width=0.65pt] (axis cs:0.073333333333,6.9) -- (axis cs:0.073333333333,7.1);
+\draw[RidgeRose, line width=0.65pt] (axis cs:0.073333333333,6.9) -- (axis cs:0.073333333333,7.1);
+\addplot[only marks, mark=o, mark size=2.1pt, color=RidgeRose, mark options={draw=RidgeRose, fill=white}] coordinates {(0.073333333333,7) (0.073333333333,7) (0.073333333333,7) (0.073333333333,7) (0.073333333333,7)};
+\addplot[only marks, mark=diamond*, mark size=2.7pt, color=RidgeRose, mark options={draw=RidgeRose, fill=white}] coordinates {(0.073333333333,7)};
+\end{axis}
+\begin{axis}[
+at={(108mm,58mm)}, anchor=south west,
+width=49mm, height=42mm,
+scale only axis,
+xmin=-0.2, xmax=2.2, ymin=0, ymax=0.14,
+axis line style={draw=gray!65},
+grid=major, grid style={draw=gray!20, line width=0.35pt},
+tick label style={font=\fontsize{10}{12}\selectfont, text=black!68},
+label style={font=\fontsize{10}{12}\selectfont, text=black!78},
+xticklabel style={/pgf/number format/fixed, /pgf/number format/precision=2},
+xtick={0,1,2},
+ytick={0,0.05,0.1},
+yticklabels={0.00,0.05,0.10},
+yticklabel style={font=\fontsize{10}{12}\selectfont, text=black!78},
+xlabel={Boundary margin (kcal/mol)}, ylabel={Observed-main hit rate},
+clip=false,
+xticklabels={0.00,0.25,0.50},
+legend to name=componentanalysislegend,
+legend style={draw=none, font=\fontsize{10}{12}\selectfont, legend columns=4, column sep=3pt, row sep=0pt},
+legend cell align=left,
+xlabel style={yshift=-6pt},
+]
+\node[anchor=south west, font=\bfseries\fontsize{10}{12}\selectfont] at (rel axis cs:0.02,1.04) {b.};
+\node[anchor=south east, font=\fontsize{10}{12}\selectfont, text=black!60] at (rel axis cs:1,1.04) {compensation, $K=10$};
+\addplot[forget plot, draw=none] coordinates {(0,0)};
+\addplot[color=SharedBlue, line width=1.25pt, mark=o, mark size=2.5pt, mark options={draw=SharedBlue, fill=white}] coordinates {(0,0.112666666667) (1,0.112333333333) (2,0.11147826087)};
+\addlegendentry{SCEPI}
+\addplot[color=AdditiveGray, line width=0.75pt, mark=o, mark size=2.0pt, mark options={draw=AdditiveGray, fill=white}] coordinates {(0,0.044166666667) (1,0.044166666667) (2,0.045217391304)};
+\addlegendentry{Additive}
+\addplot[color=GlobalGold, line width=0.75pt, mark=o, mark size=2.0pt, mark options={draw=GlobalGold, fill=white}] coordinates {(0,0.047) (1,0.047666666667) (2,0.048173913043)};
+\addlegendentry{Global nonlinear}
+\addplot[color=ThermoOrange, line width=0.75pt, mark=o, mark size=2.0pt, mark options={draw=ThermoOrange, fill=white}] coordinates {(0,0.053) (1,0.053166666667) (2,0.052695652174)};
+\addlegendentry{ThermoMPNN-D}
+\addplot[color=KermutGreen, line width=0.75pt, mark=o, mark size=2.0pt, mark options={draw=KermutGreen, fill=white}] coordinates {(0,0.054666666667) (1,0.054666666667) (2,0.052869565217)};
+\addlegendentry{Kermut}
+\addplot[color=StabilityArcTeal, line width=0.75pt, mark=o, mark size=2.0pt, mark options={draw=StabilityArcTeal, fill=white}] coordinates {(0,0.081666666667) (1,0.081) (2,0.081217391304)};
+\addlegendentry{StabilityArc + Kermut}
+\addplot[color=MeanPurple, line width=0.75pt, mark=o, mark size=2.0pt, mark options={draw=MeanPurple, fill=white}] coordinates {(0,0.071666666667) (1,0.071666666667) (2,0.073043478261)};
+\addlegendentry{Mean MLP}
+\addplot[color=RidgeRose, line width=0.75pt, mark=o, mark size=2.0pt, mark options={draw=RidgeRose, fill=white}] coordinates {(0,0.073333333333) (1,0.073333333333) (2,0.074782608696)};
+\addlegendentry{Mean ridge}
+\node[anchor=north, font=\fontsize{10}{12}\selectfont] at (axis cs:0,-0.015) {$n=120$};
+\node[anchor=north, font=\fontsize{10}{12}\selectfont] at (axis cs:1,-0.015) {$n=120$};
+\node[anchor=north, font=\fontsize{10}{12}\selectfont] at (axis cs:2,-0.015) {$n=115$};
+\end{axis}
+\begin{axis}[
+at={(47mm,-5mm)}, anchor=south west,
+width=49mm, height=42mm,
+scale only axis,
+xmin=0.54, xmax=1.1, ymin=-0.55, ymax=8.45,
+axis line style={draw=gray!65},
+grid=major, grid style={draw=gray!20, line width=0.35pt},
+tick label style={font=\fontsize{10}{12}\selectfont, text=black!68},
+label style={font=\fontsize{10}{12}\selectfont, text=black!78},
+xticklabel style={/pgf/number format/fixed, /pgf/number format/precision=2},
+xtick={0.6,0.8,1},
+ytick={0,1,2,3,4,5,6,7,8},
+yticklabels={SCEPI,Pair removed,Direct head,$F$: measured singles removed,No cross,WT context,Identity features,Phenotype-only,Residual-only},
+yticklabel style={font=\fontsize{10}{12}\selectfont, text=black!78},
+xlabel={Residual RMSE (kcal/mol)}, ylabel={},
+clip=false,
+]
+\node[anchor=south west, font=\bfseries\fontsize{10}{12}\selectfont] at (rel axis cs:-0.18,1.04) {c.};
+\node[anchor=south east, font=\fontsize{10}{12}\selectfont, text=black!60] at (rel axis cs:1,1.04) {margin=0, $n=155$};
+\draw[SharedBlue, line width=0.65pt] (axis cs:0.589554353326,0) -- (axis cs:0.600288980528,0);
+\draw[SharedBlue, line width=0.65pt] (axis cs:0.589554353326,-0.1) -- (axis cs:0.589554353326,0.1);
+\draw[SharedBlue, line width=0.65pt] (axis cs:0.600288980528,-0.1) -- (axis cs:0.600288980528,0.1);
+\addplot[only marks, mark=o, mark size=2.1pt, color=SharedBlue, mark options={draw=SharedBlue, fill=white}] coordinates {(0.598992261885,0) (0.590145092199,0) (0.601485961992,0) (0.589199937619,0) (0.594785080941,0)};
+\addplot[only marks, mark=diamond*, mark size=2.7pt, color=SharedBlue, mark options={draw=SharedBlue, fill=white}] coordinates {(0.594921666927,0)};
+\draw[NeutralGray, line width=0.65pt] (axis cs:1.070899949193,1) -- (axis cs:1.073756156706,1);
+\draw[NeutralGray, line width=0.65pt] (axis cs:1.070899949193,0.9) -- (axis cs:1.070899949193,1.1);
+\draw[NeutralGray, line width=0.65pt] (axis cs:1.073756156706,0.9) -- (axis cs:1.073756156706,1.1);
+\addplot[only marks, mark=o, mark size=2.1pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(1.070475193296,1) (1.073139013667,1) (1.07382542944,1) (1.073028028815,1) (1.071172599528,1)};
+\addplot[only marks, mark=diamond*, mark size=2.7pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(1.072328052949,1)};
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.629229766608,2) -- (axis cs:0.641747913245,2);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.629229766608,1.9) -- (axis cs:0.629229766608,2.1);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.641747913245,1.9) -- (axis cs:0.641747913245,2.1);
+\addplot[only marks, mark=o, mark size=2.1pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.62527975964,2) (0.636104285896,2) (0.641305313886,2) (0.639736981682,2) (0.635017858528,2)};
+\addplot[only marks, mark=diamond*, mark size=2.7pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.635488839926,2)};
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.760026844283,3) -- (axis cs:0.773215441463,3);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.760026844283,2.9) -- (axis cs:0.760026844283,3.1);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.773215441463,2.9) -- (axis cs:0.773215441463,3.1);
+\addplot[only marks, mark=o, mark size=2.1pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.775494886872,3) (0.770714898652,3) (0.760761898427,3) (0.759997606939,3) (0.766136423474,3)};
+\addplot[only marks, mark=diamond*, mark size=2.7pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.766621142873,3)};
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.566983871942,4) -- (axis cs:0.582974940361,4);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.566983871942,3.9) -- (axis cs:0.566983871942,4.1);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.582974940361,3.9) -- (axis cs:0.582974940361,4.1);
+\addplot[only marks, mark=o, mark size=2.1pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.586390157439,4) (0.569926057903,4) (0.569422644803,4) (0.568715017373,4) (0.58044315324,4)};
+\addplot[only marks, mark=diamond*, mark size=2.7pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.574979406152,4)};
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.568381259857,5) -- (axis cs:0.578478256681,5);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.568381259857,4.9) -- (axis cs:0.568381259857,5.1);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.578478256681,4.9) -- (axis cs:0.578478256681,5.1);
+\addplot[only marks, mark=o, mark size=2.1pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.572133224102,5) (0.571269973784,5) (0.568957168741,5) (0.572694966385,5) (0.582093458332,5)};
+\addplot[only marks, mark=diamond*, mark size=2.7pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.573429758269,5)};
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.555992740282,6) -- (axis cs:0.557612412021,6);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.555992740282,5.9) -- (axis cs:0.555992740282,6.1);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.557612412021,5.9) -- (axis cs:0.557612412021,6.1);
+\addplot[only marks, mark=o, mark size=2.1pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.556336115381,6) (0.557826047813,6) (0.556171125497,6) (0.557531444818,6) (0.556148147248,6)};
+\addplot[only marks, mark=diamond*, mark size=2.7pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.556802576151,6)};
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.556262803518,7) -- (axis cs:0.5674429992,7);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.556262803518,6.9) -- (axis cs:0.556262803518,7.1);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.5674429992,6.9) -- (axis cs:0.5674429992,7.1);
+\addplot[only marks, mark=o, mark size=2.1pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.565649752349,7) (0.568499780704,7) (0.554005934252,7) (0.55970210828,7) (0.56140693121,7)};
+\addplot[only marks, mark=diamond*, mark size=2.7pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.561852901359,7)};
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.681276608724,8) -- (axis cs:0.690285198591,8);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.681276608724,7.9) -- (axis cs:0.681276608724,8.1);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.690285198591,7.9) -- (axis cs:0.690285198591,8.1);
+\addplot[only marks, mark=o, mark size=2.1pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.687648947499,8) (0.692899886806,8) (0.682925940511,8) (0.682843837754,8) (0.682585905718,8)};
+\addplot[only marks, mark=diamond*, mark size=2.7pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.685780903658,8)};
+\end{axis}
+\begin{axis}[
+at={(108mm,-5mm)}, anchor=south west,
+width=49mm, height=42mm,
+scale only axis,
+xmin=0.035, xmax=0.14, ymin=-0.55, ymax=8.45,
+axis line style={draw=gray!65},
+grid=major, grid style={draw=gray!20, line width=0.35pt},
+tick label style={font=\fontsize{10}{12}\selectfont, text=black!68},
+label style={font=\fontsize{10}{12}\selectfont, text=black!78},
+xticklabel style={/pgf/number format/fixed, /pgf/number format/precision=2},
+xtick={0.04,0.08,0.12},
+ytick={0,1,2,3,4,5,6,7,8},
+yticklabels={,,,,,,,,},
+yticklabel style={font=\fontsize{10}{12}\selectfont, text=black!78},
+xlabel={Native hit rate}, ylabel={},
+clip=false,
+]
+\node[anchor=south west, font=\bfseries\fontsize{10}{12}\selectfont] at (rel axis cs:0.02,1.04) {d.};
+\node[anchor=south east, font=\fontsize{10}{12}\selectfont, text=black!60] at (rel axis cs:1,1.04) {$K=10$, $n=120$};
+\draw[SharedBlue, line width=0.65pt] (axis cs:0.10880222846,0) -- (axis cs:0.115531104873,0);
+\draw[SharedBlue, line width=0.65pt] (axis cs:0.10880222846,-0.1) -- (axis cs:0.10880222846,0.1);
+\draw[SharedBlue, line width=0.65pt] (axis cs:0.115531104873,-0.1) -- (axis cs:0.115531104873,0.1);
+\addplot[only marks, mark=o, mark size=2.1pt, color=SharedBlue, mark options={draw=SharedBlue, fill=white}] coordinates {(0.113333333333,0) (0.114166666667,0) (0.1075,0) (0.11,0) (0.115833333333,0)};
+\addplot[only marks, mark=diamond*, mark size=2.7pt, color=SharedBlue, mark options={draw=SharedBlue, fill=white}] coordinates {(0.112166666667,0)};
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.044166666667,1) -- (axis cs:0.044166666667,1);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.044166666667,0.9) -- (axis cs:0.044166666667,1.1);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.044166666667,0.9) -- (axis cs:0.044166666667,1.1);
+\addplot[only marks, mark=o, mark size=2.1pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.044166666667,1) (0.044166666667,1) (0.044166666667,1) (0.044166666667,1) (0.044166666667,1)};
+\addplot[only marks, mark=diamond*, mark size=2.7pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.044166666667,1)};
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.103339019561,2) -- (axis cs:0.110660980439,2);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.103339019561,1.9) -- (axis cs:0.103339019561,2.1);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.110660980439,1.9) -- (axis cs:0.110660980439,2.1);
+\addplot[only marks, mark=o, mark size=2.1pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.104166666667,2) (0.111666666667,2) (0.108333333333,2) (0.108333333333,2) (0.1025,2)};
+\addplot[only marks, mark=diamond*, mark size=2.7pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.107,2)};
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.074535121985,3) -- (axis cs:0.089131544682,3);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.074535121985,2.9) -- (axis cs:0.074535121985,3.1);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.089131544682,2.9) -- (axis cs:0.089131544682,3.1);
+\addplot[only marks, mark=o, mark size=2.1pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.070833333333,3) (0.083333333333,3) (0.08,3) (0.084166666667,3) (0.090833333333,3)};
+\addplot[only marks, mark=diamond*, mark size=2.7pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.081833333333,3)};
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.105855373408,4) -- (axis cs:0.123477959925,4);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.105855373408,3.9) -- (axis cs:0.105855373408,4.1);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.123477959925,3.9) -- (axis cs:0.123477959925,4.1);
+\addplot[only marks, mark=o, mark size=2.1pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.100833333333,4) (0.120833333333,4) (0.120833333333,4) (0.110833333333,4) (0.12,4)};
+\addplot[only marks, mark=diamond*, mark size=2.7pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.114666666667,4)};
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.100176083851,5) -- (axis cs:0.110490582816,5);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.100176083851,4.9) -- (axis cs:0.100176083851,5.1);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.110490582816,4.9) -- (axis cs:0.110490582816,5.1);
+\addplot[only marks, mark=o, mark size=2.1pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.099166666667,5) (0.106666666667,5) (0.101666666667,5) (0.1125,5) (0.106666666667,5)};
+\addplot[only marks, mark=diamond*, mark size=2.7pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.105333333333,5)};
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.086772857891,6) -- (axis cs:0.095560475442,6);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.086772857891,5.9) -- (axis cs:0.086772857891,6.1);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.095560475442,5.9) -- (axis cs:0.095560475442,6.1);
+\addplot[only marks, mark=o, mark size=2.1pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.095,6) (0.089166666667,6) (0.096666666667,6) (0.088333333333,6) (0.086666666667,6)};
+\addplot[only marks, mark=diamond*, mark size=2.7pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.091166666667,6)};
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.109368914723,7) -- (axis cs:0.129631085277,7);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.109368914723,6.9) -- (axis cs:0.109368914723,7.1);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.129631085277,6.9) -- (axis cs:0.129631085277,7.1);
+\addplot[only marks, mark=o, mark size=2.1pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.13,7) (0.115,7) (0.125,7) (0.123333333333,7) (0.104166666667,7)};
+\addplot[only marks, mark=diamond*, mark size=2.7pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.1195,7)};
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.081256458925,8) -- (axis cs:0.093076874409,8);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.081256458925,7.9) -- (axis cs:0.081256458925,8.1);
+\draw[NeutralGray, line width=0.65pt] (axis cs:0.093076874409,7.9) -- (axis cs:0.093076874409,8.1);
+\addplot[only marks, mark=o, mark size=2.1pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.0775,8) (0.085833333333,8) (0.0925,8) (0.09,8) (0.09,8)};
+\addplot[only marks, mark=diamond*, mark size=2.7pt, color=NeutralGray, mark options={draw=NeutralGray, fill=white}] coordinates {(0.087166666667,8)};
+\end{axis}
+\node[anchor=north, yshift=-3mm, font=\fontsize{10}{12}\selectfont] at (current bounding box.south) {\pgfplotslegendfromname{componentanalysislegend}};
+\end{tikzpicture}

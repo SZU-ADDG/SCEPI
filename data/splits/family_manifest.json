@@ -1,0 +1,76 @@
+{
+  "stage": "E3_split",
+  "seed": 20261009,
+  "pfam": "37.0",
+  "hmmer": "3.4",
+  "mmseqs_version": "18.8cc5c",
+  "source_commit": "1fc0433acdee9405832a146315406c53fcb8a2ee",
+  "protocol": "Exhaustive pairwise search without a sequence prefilter; family/clan and documented reference scaffold merges.",
+  "scope": "Pfam-annotated families and unannotated sequence homology groups are flagged separately.",
+  "results": {
+    "30": {
+      "identity_threshold": 0.3,
+      "bidirectional_coverage": 0.8,
+      "homology_groups": 112,
+      "family_groups": 74,
+      "pfam_annotated_proteins": 301,
+      "pfam_annotated_groups_with_main_quartets": 41,
+      "outer_group_loads_quartets_proteins": [
+        [
+          46615,
+          239
+        ],
+        [
+          20273,
+          73
+        ],
+        [
+          20353,
+          99
+        ],
+        [
+          20322,
+          48
+        ],
+        [
+          20329,
+          20
+        ]
+      ],
+      "cross_group_qualifying_alignments": 0,
+      "path": "data/splits/families_30.parquet"
+    },
+    "25": {
+      "identity_threshold": 0.25,
+      "bidirectional_coverage": 0.8,
+      "homology_groups": 99,
+      "family_groups": 67,
+      "pfam_annotated_proteins": 301,
+      "pfam_annotated_groups_with_main_quartets": 36,
+      "outer_group_loads_quartets_proteins": [
+        [
+          54611,
+          312
+        ],
+        [
+          18389,
+          22
+        ],
+        [
+          18280,
+          63
+        ],
+        [
+          18331,
+          21
+        ],
+        [
+          18281,
+          61
+        ]
+      ],
+      "cross_group_qualifying_alignments": 0,
+      "path": "data/splits/families_25.parquet"
+    }
+  }
+}

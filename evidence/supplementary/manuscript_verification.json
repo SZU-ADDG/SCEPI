@@ -1,0 +1,12 @@
+{
+  "complete": true,
+  "source_commit": "875d04d6df818110001f3889758cf998321a96f6",
+  "source_run": "runs/original_main",
+  "source_manifest": "/data3/doomx/RECOMB-3-Epistasis/runs/final_main_reporting_20261018/manifest.json",
+  "checked_numeric_cells": 485,
+  "authorized_evaluations": 12622,
+  "esm_msr_checkpoint_epoch": 10,
+  "rfa_evaluated_targets": 350,
+  "rfa_undefined_rank_correlations": 12,
+  "functional_aggregation": "Equal assay means after equal condition and repetition averaging."
+}

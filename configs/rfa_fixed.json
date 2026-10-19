@@ -1,0 +1,13 @@
+{
+  "version": "rfa_fixed_20261018",
+  "max_iterations": 500,
+  "past": 25,
+  "delta": 0.0001,
+  "epsilon": 0.00001,
+  "normalization_max_iterations": 500,
+  "normalization_past": 0,
+  "normalization_delta": 0,
+  "penalty_candidates": 1,
+  "lambda_per_observation": 0,
+  "reuse_completed_trials": true
+}

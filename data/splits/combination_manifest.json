@@ -1,0 +1,130 @@
+{
+  "stage": "E2_split",
+  "seeds": [
+    11,
+    23,
+    47,
+    89,
+    131
+  ],
+  "dataset": "tsuboyama",
+  "source_commit": "1fc0433acdee9405832a146315406c53fcb8a2ee",
+  "data_manifest": "data/processed/tsuboyama/manifest.json",
+  "quartet_components_and_interval_arithmetic": "passed_all_182398_quartets",
+  "C_budget": "First 128/512/2048 training combinations or all training combinations. Validation labels are separately counted in the total supervised-label ledger.",
+  "S_budget": "First 32/128/all point single variants in each fixed sequence-based permutation. WT observations are separately counted.",
+  "two_pair_secondary": "One training pair, one test pair; no target validation labels. Hyperparameters must come from source validation.",
+  "test_pair_overlap_with_training": 0,
+  "counts": [
+    {
+      "seed": 11,
+      "scheme": "random",
+      "proteins": 190,
+      "main_test_proteins": 120,
+      "C128": 182
+    },
+    {
+      "seed": 11,
+      "scheme": "two_pair_secondary",
+      "proteins": 32,
+      "main_test_proteins": 0,
+      "C128": 26
+    },
+    {
+      "seed": 11,
+      "scheme": "unseen_pair",
+      "proteins": 71,
+      "main_test_proteins": 68,
+      "C128": 71
+    },
+    {
+      "seed": 23,
+      "scheme": "random",
+      "proteins": 190,
+      "main_test_proteins": 120,
+      "C128": 182
+    },
+    {
+      "seed": 23,
+      "scheme": "two_pair_secondary",
+      "proteins": 32,
+      "main_test_proteins": 0,
+      "C128": 28
+    },
+    {
+      "seed": 23,
+      "scheme": "unseen_pair",
+      "proteins": 71,
+      "main_test_proteins": 67,
+      "C128": 71
+    },
+    {
+      "seed": 47,
+      "scheme": "random",
+      "proteins": 190,
+      "main_test_proteins": 118,
+      "C128": 182
+    },
+    {
+      "seed": 47,
+      "scheme": "two_pair_secondary",
+      "proteins": 32,
+      "main_test_proteins": 0,
+      "C128": 28
+    },
+    {
+      "seed": 47,
+      "scheme": "unseen_pair",
+      "proteins": 71,
+      "main_test_proteins": 69,
+      "C128": 71
+    },
+    {
+      "seed": 89,
+      "scheme": "random",
+      "proteins": 190,
+      "main_test_proteins": 122,
+      "C128": 182
+    },
+    {
+      "seed": 89,
+      "scheme": "two_pair_secondary",
+      "proteins": 32,
+      "main_test_proteins": 0,
+      "C128": 28
+    },
+    {
+      "seed": 89,
+      "scheme": "unseen_pair",
+      "proteins": 71,
+      "main_test_proteins": 69,
+      "C128": 71
+    },
+    {
+      "seed": 131,
+      "scheme": "random",
+      "proteins": 190,
+      "main_test_proteins": 121,
+      "C128": 182
+    },
+    {
+      "seed": 131,
+      "scheme": "two_pair_secondary",
+      "proteins": 32,
+      "main_test_proteins": 0,
+      "C128": 26
+    },
+    {
+      "seed": 131,
+      "scheme": "unseen_pair",
+      "proteins": 71,
+      "main_test_proteins": 66,
+      "C128": 71
+    }
+  ],
+  "outputs": [
+    "data/splits/single_label_order.parquet",
+    "data/splits/combination_splits.parquet",
+    "data/splits/combination_split_counts.csv"
+  ]
+}

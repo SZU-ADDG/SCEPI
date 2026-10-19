@@ -1,0 +1,24 @@
+{
+  "python": "3.11.17 (main, Oct  7 2026, 00:02:24) [GCC 15.3.0]",
+  "versions": {
+    "torch": "2.3.1",
+    "transformers": "4.48.1",
+    "gpytorch": "1.13",
+    "linear_operator": "0.6.1",
+    "esm": "3.2.1.post1",
+    "esm-msr": "0.3.0",
+    "pymochi": "0+untagged.1.gb71c738",
+    "mavenn": "1.1.4",
+    "tensorflow": "2.16.2",
+    "keras": "3.15.1",
+    "numpy": "1.26.4",
+    "pandas": "2.2.3",
+    "scipy": "1.14.1",
+    "biopython": "1.88",
+    "h5py": "3.16.0",
+    "pyreadr": "0.5.7",
+    "openpyxl": "3.1.5"
+  },
+  "pip_check": "No broken requirements found.",
+  "source_commit": "875d04d6df818110001f3889758cf998321a96f6"
+}

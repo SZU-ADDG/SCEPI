@@ -1,0 +1,44 @@
+\begin{tikzpicture}[x=0.95cm,y=1cm,font=\sffamily\normalsize,
+  modelbox/.style={draw=MethodBlue,fill=MethodBlue!4,rounded corners=2pt,
+    line width=0.6pt,align=center,inner sep=5pt},
+  inputbox/.style={draw=MethodGray,fill=MethodGray!4,rounded corners=2pt,
+    line width=0.6pt,align=center,inner sep=4pt},
+  signal/.style={-{Stealth[length=2mm]},draw=MethodGray,line width=0.65pt}]
+\definecolor{MethodBlue}{HTML}{2878B5}
+\definecolor{MethodGreen}{HTML}{32936F}
+\definecolor{MethodGray}{HTML}{6F7785}
+\draw[gray!35,rounded corners=3pt] (0,1.35) rectangle (4.9,5.95);
+\draw[gray!35,rounded corners=3pt] (5.1,1.35) rectangle (10.8,5.95);
+\draw[gray!35,rounded corners=3pt] (11.05,1.35) rectangle (16.65,5.95);
+\node[anchor=south west,font=\bfseries\normalsize] at (0,5.98) {a.};
+\node[anchor=south west,font=\bfseries\normalsize] at (5.1,5.98) {b.};
+\node[anchor=south west,font=\bfseries\normalsize] at (11.05,5.98) {c.};
+\node[inputbox,minimum width=1.1cm] (wt) at (0.95,5.12) {$s_p$};
+\node[inputbox,minimum width=1.1cm] (singlea) at (2.45,5.12) {$x_p(A)$};
+\node[inputbox,minimum width=1.1cm] (singleb) at (3.95,5.12) {$x_p(B)$};
+\node[modelbox,minimum width=4.1cm,minimum height=0.65cm] (encoder) at (2.45,4.04) {Frozen protein encoder};
+\draw[signal] (wt.south) -- (0.95,4.4);
+\draw[signal] (singlea.south) -- (encoder.north);
+\draw[signal] (singleb.south) -- (3.95,4.4);
+\node[align=center,text width=4.2cm] at (2.45,2.9) {Reference and single-mutant\\sequence representations\\Amino-acid identities};
+\node[align=center,text width=5.1cm] at (7.95,5.47) {SCEPI interaction function};
+\node[modelbox,minimum width=2.25cm,minimum height=0.55cm] at (6.65,4.52) {$+F(a,b)$};
+\node[modelbox,minimum width=2.25cm,minimum height=0.55cm] at (9.25,4.52) {$-F(a,w_j)$};
+\node[modelbox,minimum width=2.25cm,minimum height=0.55cm] at (6.65,3.65) {$-F(w_i,b)$};
+\node[modelbox,minimum width=2.25cm,minimum height=0.55cm] at (9.25,3.65) {$+F(w_i,w_j)$};
+\draw[signal] (4.9,4.04) -- (5.42,4.04);
+\draw[signal] (7.95,3.28) -- (7.95,2.96);
+\node[text=MethodBlue,font=\normalsize] at (7.95,2.69) {$r_{ij}(a,b)$};
+\node[align=center,font=\normalsize] at (7.95,1.94) {$r_{ij}=r_{ji}$\\$r_{ij}(a,w_j)=r_{ij}(w_i,b)=0$};
+\node[modelbox,draw=MethodGreen,fill=MethodGreen!4,text width=4.5cm] (singles) at (13.85,5.03) {Single effects and availability\\$\widetilde a_i,\ \widetilde a_j,\ m_i,\ m_j$};
+\draw[signal,draw=MethodGreen] (singles.north) -- (13.85,5.83) -- (7.95,5.83) -- (7.95,5.63);
+\node[modelbox,text width=4.5cm,minimum height=0.87cm] (map) at (13.85,3.63) {$z=\widetilde a_i+\widetilde a_j+r_{ij}$\\$\widehat\mu(AB)=\tau\,g(z)$};
+\draw[signal,draw=MethodGreen] (singles.south) -- (map.north);
+\draw[signal] (10.8,3.63) -- (map.west);
+\node[modelbox,text width=4.5cm,minimum height=0.7cm] (selection) at (13.85,2.12) {Rank double mutants\\Select the top $K$};
+\draw[signal] (map.south) -- (selection.north);
+\node[inputbox,draw=MethodGreen,fill=MethodGreen!4,text width=4.6cm] (quartets) at (2.55,0.45) {Source quartets: WT, A, B, AB};
+\node[align=center,text=MethodGreen] (loss) at (8.05,0.45) {Train shared parameters};
+\draw[signal,draw=MethodGreen] (quartets.east) -- (loss.west);
+\draw[signal,draw=MethodGreen,dashed] (8.05,0.98) -- (8.05,1.31);
+\end{tikzpicture}
