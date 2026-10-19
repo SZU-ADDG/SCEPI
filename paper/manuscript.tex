@@ -1160,7 +1160,7 @@ The StabilityArc comparison uses frozen ESMC-600M wild-type residue embeddings a
 
 Each source model is trained for 40 epochs with AdamW, learning rate $10^{-4}$, and weight decay $10^{-3}$. Each assay contributes at most 40,000 measured variants per epoch. The objective combines Huber loss with 1,024 measured ranking pairs per assay. The Huber threshold is 1, and the two losses have equal weights. Double-mutant regression targets use the source-assay single-mutant median and median absolute deviation. Ranking uses measured stability order. Checkpoints are selected by source-validation double-mutant Spearman correlation. The public release supplies the architecture and a pooled checkpoint; the matched source-partition models are retrained here. Equal loss weights are an explicit implementation choice because the release does not specify them.
 
-Target calibration uses the full Kermut covariance and Gaussian likelihood \citep{groth2024}. The retrained StabilityArc score replaces the prior mean input. All remaining kernel inputs and permitted target labels match the Kermut comparison. Target fitting uses 150 AdamW steps with learning rate 0.1 and weight decay 0.01. Only the permitted reference and single-mutant point labels are supplied. The posterior scores every eligible target double mutant and its constituent singles. The model's four-prediction contrast defines its residual. All 50 source fits and target-prediction groups complete before this comparator enters the reported tables.
+Target calibration uses the full Kermut covariance and Gaussian likelihood \citep{groth2024}. The retrained StabilityArc score replaces the prior mean input. All remaining kernel inputs and permitted target labels match the Kermut comparison. Target fitting uses 150 AdamW steps with learning rate 0.1 and weight decay 0.01. Only the permitted reference and single-mutant point labels are supplied. The posterior scores every eligible target double mutant and its constituent singles. The model's four-prediction contrast defines its residual.
 
 \section{Component comparison details}
 
@@ -1187,7 +1187,7 @@ Mean ridge & 7.33 & 7.48 \\
 \begin{table}[!htbp]
 \centering
 \setlength{\tabcolsep}{5pt}
-\caption{Full-target S-all results for completed predictors and model variants. RMSE and recovery are in kcal/mol. Hit rates are native top-10 compensation percentages. The phenotype, residual, and selection cohorts contain 159, 155, and 120 proteins. Each row completes five outer partitions and five training repetitions.}
+\caption{Full-target S-all results for predictors and model variants. RMSE and recovery are in kcal/mol. Hit rates are native top-10 compensation percentages. The phenotype, residual, and selection cohorts contain 159, 155, and 120 proteins. Each predictor is evaluated across five outer partitions and five training repetitions.}
 \label{tab:allcomponents}
 \begin{tabular}{lrrrr}
 \toprule
@@ -1229,7 +1229,7 @@ Removing cross-site context yields 0.575 kcal/mol residual RMSE and an 11.47\% n
 
 \section{Sensitivity to the homology threshold}
 
-Grouping at 25\% identity with the same coverage requirement produces 45 groups in the phenotype and residual cohorts. The compensation cohort contains 39 groups, and its 0.5 kcal/mol margin subset contains 38. Protein membership remains unchanged. All completed predictors and components repeat the full five-partition, five-training-seed evaluation under this grouping (Table~\ref{tab:threshold25}). SCEPI's residual RMSE is 0.604 kcal/mol, compared with 0.771 for ThermoMPNN-D, 0.847 for Kermut, 0.874 for StabilityArc + Kermut, and 0.650 for global nonlinearity. Its native compensation hit rate is 11.15\%, compared with 6.97\%, 5.40\%, and 8.23\% for the three external methods. Its mean selected recovery exceeds StabilityArc + Kermut by 0.092 kcal/mol.
+Grouping at 25\% identity with the same coverage requirement produces 45 groups in the phenotype and residual cohorts. The compensation cohort contains 39 groups, and its 0.5 kcal/mol margin subset contains 38. Protein membership remains unchanged. All predictors and components are evaluated across five outer partitions and five training repetitions under this grouping (Table~\ref{tab:threshold25}). SCEPI's residual RMSE is 0.604 kcal/mol, compared with 0.771 for ThermoMPNN-D, 0.847 for Kermut, 0.874 for StabilityArc + Kermut, and 0.650 for global nonlinearity. Its native compensation hit rate is 11.15\%, compared with 6.97\%, 5.40\%, and 8.23\% for the three external methods. Its mean selected recovery exceeds StabilityArc + Kermut by 0.092 kcal/mol.
 
 Under common measured main effects, top-10 hit rates are 11.17\% for SCEPI, 4.42\% for additivity, 4.63\% for global nonlinearity, 5.68\% for ThermoMPNN-D, 5.47\% for Kermut, 8.57\% for mean MLP, and 5.83\% for mean ridge. At margin 0.5 kcal/mol, the corresponding rates are 11.23\%, 4.52\%, 4.75\%, 5.65\%, 5.29\%, 8.77\%, and 5.83\%. The stricter grouping preserves the average compensation advantage and the common-main-effect comparison.
 
@@ -1240,7 +1240,7 @@ The matched direct residual head reaches 0.630 kcal/mol residual RMSE and an 11.
 \begin{table}[!htbp]
 \centering
 \setlength{\tabcolsep}{5pt}
-\caption{Full-target S-all sensitivity comparison at 25\% sequence identity. The columns use the same units and protein cohorts as Table~\ref{tab:allcomponents}. Every row completes five outer partitions and five training repetitions.}
+\caption{Full-target S-all sensitivity comparison at 25\% sequence identity. The columns use the same units and protein cohorts as Table~\ref{tab:allcomponents}. Each predictor is evaluated across five outer partitions and five training repetitions.}
 \label{tab:threshold25}
 \begin{tabular}{lrrrr}
 \toprule
@@ -1278,7 +1278,7 @@ Distance rewiring, retrained & 0.688 & 0.615 & 10.62 & $-0.257$ \\
 
 \section{Evaluation on the designated site-pair subset}
 
-The separate site-pair evaluation uses the original unseen-pair test subset within each target protein. It intersects this subset with the same held-out homology groups. Site-pair split seeds are 11, 23, 47, 89, and 131. Candidate eligibility can change across these splits. The completed residual comparison contains 70 proteins, 34 groups, and 339 paired protein-repetition records. Compensation contains 63 proteins, 32 groups, and 269 records. Table~\ref{tab:pairsubset} reports this subset without combining its values with the full-target results.
+The separate site-pair evaluation uses the designated unseen-site-pair test subset within each target protein. It intersects this subset with the same held-out homology groups. Site-pair split seeds are 11, 23, 47, 89, and 131. Candidate eligibility can change across these splits. The residual comparison contains 70 proteins, 34 groups, and 339 paired protein-repetition records. Compensation contains 63 proteins, 32 groups, and 269 records. Table~\ref{tab:pairsubset} reports this subset without combining its values with the full-target results.
 
 \begin{table}[!htbp]
 \centering
@@ -1303,7 +1303,7 @@ Common-main-effect top-10 hit rates on this subset are 5.78\% for SCEPI, 3.29\% 
 
 The transferred predictor benefits from partial target single-mutant measurements. Across the same 155 residual-evaluation proteins, its RMSE is 0.793 kcal/mol in Z, 0.788 in S32, 0.772 in S128, and 0.595 in S-all. Table~\ref{tab:singlebudgets} reports these four information conditions. Tables~\ref{tab:combinationbudgets}--\ref{tab:combinationsecondary} report the separate target combination-adaptation experiments.
 
-The family-level comparison varies only the target information condition. Source training and validation remain outside each target homology group. All eligible target double mutants enter evaluation. Each condition retains 155 residual-evaluation proteins and 775 protein-repetition records. Kermut requires target measurements, so the Z comparison lists source-trained predictors. Table~\ref{tab:singlebudgets} retains the original four information conditions.
+The family-level comparison varies only the target information condition. Source training and validation remain outside each target homology group. All eligible target double mutants enter evaluation. Each condition retains 155 residual-evaluation proteins and 775 protein-repetition records. Kermut requires target measurements, so the Z comparison lists source-trained predictors.
 
 \begin{table}[!htbp]
 \centering
@@ -1321,7 +1321,7 @@ S-all & 0.595 & 1.091 & 0.635 & 0.805 & 0.847 \\
 \end{tabular}
 \end{table}
 
-The available ESM-MSR comparison uses the epoch-10 source-validation checkpoint from family30, fold 0, and repetition seed 11. We compare every method on its matched held-out proteins in that fold. Residual evaluation retains 61 proteins; phenotype evaluation retains 65. Table~\ref{tab:msrsubset} reports Z and S-all separately. This checkpoint supplies one fold and one repetition of the original matrix. Its results remain separate from the complete five-fold, five-repetition comparison.
+The ESM-MSR comparison uses the epoch-10 source-validation checkpoint from family30, fold 0, and repetition seed 11. We compare every method on its matched held-out proteins in that fold. Residual evaluation retains 61 proteins; phenotype evaluation retains 65. Table~\ref{tab:msrsubset} reports Z and S-all separately. This checkpoint covers one fold and one repetition. Its results remain separate from the complete five-fold, five-repetition comparison.
 
 \begin{table}[!htbp]
 \centering
@@ -1598,7 +1598,7 @@ Complete, point-valued quartets define the retrospective evaluation cohort. Thei
 
 Recovery is $y_{AB}-\max(y_A,y_B)$. A hit requires at least 0.5 kcal/mol recovery, and both singles must individually lose at least 0.5 kcal/mol relative to wild type. Hit rate and mean recovery have different roles: the first measures successful budgeted discoveries, and the second measures continuous candidate quality. A candidate can meet the recovery criterion while remaining less stable than wild type.
 
-An initial analysis also examined a broader continuous stability pool. On its seed11 cohort of 65 proteins, common-main top-10 mean stability changes differed by $-0.0018$ kcal/mol from additive ranking and by $-0.0054$ kcal/mol from global nonlinear ranking. This analysis concerns general stability ranking. The main discovery claim concerns the explicitly defined compensation task.
+General stability ranking is evaluated on a broader continuous pool of 65 proteins in one repetition with seed 11. With common measured main effects, top-10 mean stability changes differ from additive and global nonlinear ranking by $-0.0018$ and $-0.0054$ kcal/mol, respectively.
 
 \section{Random selection and compensatory enrichment}
 \label{app:random}
@@ -1615,7 +1615,7 @@ E(K)=\frac{|P|^{-1}\sum_{p\in P}\overline h_p(K)}{|P|^{-1}\sum_{p\in P}q_p}.
 \end{equation}
 This ratio uses the same equal-protein aggregation as the primary results. It remains defined when individual proteins have no observed hits. The standard cohort contains 79,564 candidates and 1,718 hits across 120 proteins. Its pooled candidate hit fraction is 2.16\%, and its equal-protein mean random hit rate is 2.63\%. The latter is the denominator for every reported enrichment.
 
-This analysis was added after manuscript review. It retains the original model predictions, candidate eligibility, recovery threshold, budgets, and measurement margins. Each predictor's five repetitions are averaged within protein before aggregation. Uncertainty uses 10,000 paired homology-group bootstrap draws with seed 20261019. Each draw resamples model and random results together and recalculates both means and their ratio. These intervals quantify sampling uncertainty in the observed cohort. The exact random expectation has no Monte Carlo ranking error.
+The random comparison uses the same fixed model predictions, candidate eligibility, recovery threshold, budgets, and measurement margins as the other selection comparisons. Each predictor's five repetitions are averaged within protein before aggregation. Uncertainty uses 10,000 paired homology-group bootstrap draws with seed 20261019. Each draw resamples model and random results together and recalculates both means and their ratio. These intervals quantify sampling uncertainty in the observed cohort. The exact random expectation has no Monte Carlo ranking error.
 
 \begin{table}[!htbp]
 \centering
