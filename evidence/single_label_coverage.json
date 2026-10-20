@@ -1,0 +1,46 @@
+[
+  {
+    "threshold": 30,
+    "cohort": "residual",
+    "proteins": 155,
+    "accepted_singles_median": 1078.0,
+    "available_singles_median": 1019.0,
+    "S32_fraction_median": 0.029684601113172542,
+    "S128_fraction_median": 0.11873840445269017,
+    "Sall_fraction_median": 0.9616,
+    "Sall_fraction_minimum": 0.644506001846722
+  },
+  {
+    "threshold": 30,
+    "cohort": "selection",
+    "proteins": 120,
+    "accepted_singles_median": 1090.5,
+    "available_singles_median": 1033.0,
+    "S32_fraction_median": 0.029345725544808236,
+    "S128_fraction_median": 0.11738290217923295,
+    "Sall_fraction_median": 0.963161939642651,
+    "Sall_fraction_minimum": 0.644506001846722
+  },
+  {
+    "threshold": 25,
+    "cohort": "residual",
+    "proteins": 155,
+    "accepted_singles_median": 1078.0,
+    "available_singles_median": 1019.0,
+    "S32_fraction_median": 0.029684601113172542,
+    "S128_fraction_median": 0.11873840445269017,
+    "Sall_fraction_median": 0.9616,
+    "Sall_fraction_minimum": 0.644506001846722
+  },
+  {
+    "threshold": 25,
+    "cohort": "selection",
+    "proteins": 120,
+    "accepted_singles_median": 1090.5,
+    "available_singles_median": 1033.0,
+    "S32_fraction_median": 0.029345725544808236,
+    "S128_fraction_median": 0.11738290217923295,
+    "Sall_fraction_median": 0.963161939642651,
+    "Sall_fraction_minimum": 0.644506001846722
+  }
+]

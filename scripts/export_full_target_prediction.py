@@ -1,3 +1,4 @@
+import argparse
 import json
 from pathlib import Path
 
@@ -21,6 +22,12 @@ KEYS = ["arm", "threshold", "seed", "fold", "protein_id"]
 
 
 def main():
+    global SOURCE, OUTPUT
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--evidence", type=Path, default=SOURCE)
+    parser.add_argument("--output", type=Path, default=OUTPUT)
+    args = parser.parse_args()
+    SOURCE, OUTPUT = args.evidence, args.output
     evidence_manifest = json.loads((SOURCE / "manifest.json").read_text())
     assert evidence_manifest["available_jobs_complete"]
     phenotype = pd.read_parquet(SOURCE / "phenotype_per_protein.parquet")
@@ -72,8 +79,8 @@ def main():
         "source_manifest": evidence_manifest,
         "prediction_grid_complete": True,
         "source_tables": [
-            "runs/sall_full_target/paper_evidence/phenotype_per_protein.parquet",
-            "runs/sall_full_target/paper_evidence/residual_per_protein.parquet",
+            str(SOURCE / "phenotype_per_protein.parquet"),
+            str(SOURCE / "residual_per_protein.parquet"),
         ],
         "scope": "Threshold-30 S-all; merged full-target evidence table; five seeds and five held-out folds",
         "arms": ARMS,

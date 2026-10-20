@@ -25,13 +25,14 @@ def run_stage(stage):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--list", action="store_true")
-    parser.add_argument("--arm", choices=["interaction", "direct_residual", "no_pair_measured"])
+    parser.add_argument("--arm", choices=["interaction", "direct_residual", "no_pair_measured", "values_only", "mask_only"])
     parser.add_argument("--threshold", type=int, choices=[30, 25])
     parser.add_argument("--fold", type=int, choices=range(5))
     parser.add_argument("--seed", type=int, choices=[11, 23, 47, 89, 131])
     args = parser.parse_args()
     jobs = json.loads((ROOT / "reproducibility/source_jobs.json").read_text())
-    assert len(jobs) == 150
+    release = json.loads((ROOT / "reproducibility/release_manifest.json").read_text())
+    assert len(jobs) == release["source_models"] == 50 * len({row["arm"] for row in jobs})
     if args.list:
         print(json.dumps([{key: row[key] for key in ["arm", "threshold", "fold", "seed", "run"]} for row in jobs], indent=2))
         return

@@ -45,7 +45,8 @@ def training_stages(run):
     for field in ["threshold", "fold", "seed", "projection", "learning_rate", "lambda_y", "representation", "objective", "batch_size"]:
         pair_args += ["--" + field.replace("_", "-"), str(config[field])]
     pair_config = ModelConfig(**source["pair_config"])
-    pair_args += ["--pair-form", pair_config.pair_form, "--pair-single-input", pair_config.pair_single_input]
+    pair_args += ["--pair-form", pair_config.pair_form, "--pair-single-input", pair_config.pair_single_input,
+                  "--pair-mask-input", pair_config.pair_mask_input]
     for field in ["geometry", "flexible", "joint", "no_interaction"]:
         if config[field]:
             pair_args.append("--" + field.replace("_", "-"))
@@ -58,18 +59,18 @@ def training_stages(run):
     return stages, source
 
 
-def source_models(destination):
-    protocol = json.loads((ROOT / "runs/key_ablations_20261015/protocol.json").read_text())
+def source_models(destination, study):
+    protocol = json.loads((study / "protocol.json").read_text())
+    source_selection = json.loads((study / "source_selection.json").read_text())
     selected = []
-    for threshold in [30, 25]:
-        selection = json.loads((ROOT / f"runs/e3/pair_repeats_full_g0_f1_j1_family{threshold}/selected_hyperparameters.json").read_text())
-        for fold in range(5):
-            run = Path(selection[f"family{threshold}/fold{fold}"]["run"])
-            for seed in [11, 23, 47, 89, 131]:
-                selected.append({"arm": "interaction", "threshold": threshold, "fold": fold, "seed": seed,
-                                 "run": str(run.with_name(run.name.rsplit("_seed", 1)[0] + f"_seed{seed}"))})
-    selected += [{key: row[key] for key in ["arm", "threshold", "fold", "seed", "run"]} for row in protocol["matched_runs"]]
-    assert len(selected) == 150
+    for row in source_selection["selected"].values():
+        selected += [{"arm": "interaction", "threshold": row["threshold"], "fold": row["fold"], **repeat}
+                     for repeat in row["repeats"]]
+    mapping = {"final_direct_residual": "direct_residual", "final_no_pair_measured": "no_pair_measured",
+               "final_values_only": "values_only", "final_mask_only": "mask_only"}
+    selected += [{**{key: row[key] for key in ["threshold", "fold", "seed", "run"]}, "arm": mapping[row["arm"]]}
+                 for row in protocol["matched_runs"]]
+    assert len(selected) == 250
     jobs, records = [], []
     for row in selected:
         stages, source = training_stages(row["run"])
@@ -82,6 +83,9 @@ def source_models(destination):
                         "validation_score": source["validation_score"], "permissions": permissions})
     dump(destination / "reproducibility/source_jobs.json", jobs)
     dump(destination / "reproducibility/source_models.json", records)
+    for name in ["source_selection.json", "source_validation_candidates.csv", "protocol.json", "implementation_verification.json",
+                 "matched_conditions_verification.json", "protocol_disclosure.json", "analysis_manifest.json"]:
+        copy(study / name, destination / "reproducibility" / name)
     for path in (ROOT / "runs/e3").glob("*/selected_hyperparameters.json"):
         copy(path, destination / path.relative_to(ROOT))
     return selected
@@ -142,9 +146,13 @@ def environment(destination):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output", type=Path, default=ROOT / "releases/scepi_submission_20261019")
+    parser.add_argument("--output", type=Path, default=ROOT / "releases/scepi_submission_20261021")
+    parser.add_argument("--study", type=Path, default=ROOT / "runs/conditioning_factorial_20261021")
     args = parser.parse_args()
     destination = args.output.resolve()
+    study = args.study.resolve()
+    assert study.is_relative_to(ROOT / "runs")
+    assert json.loads((study / "final_manifest.json").read_text())["complete"]
     assert destination.is_relative_to(ROOT / "releases")
     destination.mkdir(parents=True, exist_ok=True)
     for name in ["epistasis", "scripts"]:
@@ -158,46 +166,66 @@ def main():
     copy(ROOT / "reproducibility/LICENSE", destination / "LICENSE")
     copy(ROOT / "reproducibility/runtime.sh", destination / "scripts/runtime.sh")
     copy(ROOT / "reproducibility/reproduce.py", destination / "reproduce.py")
+    for name in ["METHOD.md", "EXPERIMENTS.md", "PAPER_BRIEF.md"]:
+        copy(ROOT / name, destination / name)
     for path in (ROOT / "paper").rglob("*"):
-        if path.is_file() and path.suffix in {".tex", ".cls", ".tikz", ".svg", ".pdf"}:
+        if path.is_file() and path.suffix in {".tex", ".cls", ".tikz", ".svg", ".pdf", ".png", ".csv", ".md"}:
             copy(path, destination / path.relative_to(ROOT))
     for path in (ROOT / "configs").glob("*.json"):
         copy(path, destination / path.relative_to(ROOT))
-    for name in ["families_30.parquet", "families_25.parquet", "family_manifest.json", "combination_manifest.json"]:
+    for name in ["families_30.parquet", "families_25.parquet", "family_edges_30.parquet", "family_edges_25.parquet",
+                 "family_manifest.json", "combination_manifest.json", "combination_splits.parquet", "single_label_order.parquet"]:
         copy(ROOT / "data/splits" / name, destination / "data/splits" / name)
     for name in ["tsuboyama", "thermompnn", "esm_msr", "flip2", "proteingym"]:
         copy(ROOT / "work/sources" / (name + "_zenodo.json"), destination / "work/sources" / (name + "_zenodo.json"))
-    primary = ROOT / "runs/key_ablations_20261015/paper_evidence"
+    primary = study / "paper_evidence"
     for name in ["phenotype", "residual", "selection"]:
         copy(primary / (name + "_per_protein.parquet"), destination / "evidence" / (name + "_per_protein.parquet"))
+    for name in ["manifest.json", "paired_summary.json", "integration_verification.json", "win_tie_verification.json"]:
+        copy(primary / name, destination / "evidence" / name)
     for threshold in [30, 25]:
         copy(primary / f"verified_family{threshold}/paper_table.csv", destination / f"evidence/paper_table_family{threshold}.csv")
-    random = ROOT / "runs/reviewer_revision_20261019/random_enrichment"
+    random = study / "random_enrichment"
     copy(random / "random_per_protein.parquet", destination / "evidence/random_per_protein.parquet")
     copy(random / "summary.json", destination / "evidence/random_summary.json")
     copy(random / "manifest.json", destination / "evidence/random_manifest.json")
     copy(random / "manuscript_verification.json", destination / "evidence/random_manuscript_verification.json")
     copy(random / "figure_selection.parquet", destination / "evidence/figure_selection.parquet")
-    revision = ROOT / "runs/reviewer_revision_20261019"
-    for name in ["primary_verification.json", "completed_main_verification.json", "final_manifest.json"]:
+    revision = study
+    for name in ["primary_verification.json", "final_manifest.json"]:
         copy(revision / name, destination / "evidence" / name)
-    copy(revision / "release_validation/verification.json", destination / "evidence/release_verification.json")
+    copy(ROOT / "runs/reviewer_revision_20261019/completed_main_verification.json",
+         destination / "evidence/supplementary/original_main_verification.json")
+    copy(ROOT / "runs/final_main_reporting_20261018/runtime_completion.json",
+         destination / "evidence/supplementary/runtime_completion.json")
+    for name in ["factorial_summary.json", "factorial_per_protein.parquet", "group_sensitivity.json", "homology_group_sizes.json",
+                 "single_label_coverage.json", "single_label_coverage.parquet", "single_label_budgets.json", "single_label_budget_per_protein.parquet",
+                 "source_partition_counts.csv", "combination_permission_counts.parquet", "kermut_terminal_traces.csv",
+                 "thermompnn_source_protocols.json", "pair_inference_profile.json"]:
+        copy(study / name, destination / "evidence" / name)
+    for path in (study / "site_pair_subset").iterdir():
+        if path.is_file():
+            copy(path, destination / "evidence/site_pair_subset" / path.name)
     for path in (ROOT / "runs/final_main_reporting_20261018").glob("*.csv"):
         copy(path, destination / "evidence/supplementary" / path.name)
     for name in ["rfa_constant_predictions.json", "manuscript_verification.json"]:
         copy(ROOT / "runs/final_main_reporting_20261018" / name, destination / "evidence/supplementary" / name)
-    selected = source_models(destination)
+    selected = source_models(destination, study)
     example = next(row for row in selected if row["arm"] == "interaction" and row["threshold"] == 30 and row["fold"] == 0 and row["seed"] == 11)
     real_example(destination, example["run"])
     environment(destination)
     snapshot = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, check=True, capture_output=True, text=True).stdout.strip()
-    files = [str(path.relative_to(destination)) for path in sorted(destination.rglob("*")) if path.is_file()]
-    size = sum(path.stat().st_size for path in destination.rglob("*") if path.is_file())
+    files = [str(path.relative_to(destination)) for path in sorted(destination.rglob("*")) if path.is_file()
+             and path.relative_to(destination).parts[0] != "cache"
+             and "__pycache__" not in path.relative_to(destination).parts
+             and (path.relative_to(destination).parts[0] != "work" or path.is_relative_to(destination / "work/sources"))]
+    files = [name for name in files if name != "reproducibility/release_manifest.json"]
+    size = sum((destination / name).stat().st_size for name in files)
     assert not any(part in {".git", ".venv", ".conda-env", "__pycache__"} for name in files for part in Path(name).parts)
     result = {"complete": True, "source_experiment_base_commit": snapshot, "source_snapshot": "Current saved project source files, including post-base method and reporting revisions.",
-              "public_repository": "https://github.com/SZU-ADDG/SCEPI",
+              "public_repository": "https://github.com/SZU-ADDG/SCEPI", "publication_version": "recomb2027-20261021",
               "run_path": str(destination.relative_to(ROOT)), "source_models": len(selected),
-              "primary_complete_arms": 26, "primary_evaluations": 1300,
+              "primary_complete_arms": 32, "primary_evaluations": 1600,
               "esm_msr_scope": "One epoch-10 checkpoint, family30/fold0/seed11; remaining repeated training discontinued.",
               "files": files, "total_bytes": size, "environment_storage": "System Conda envs only; no environment is included."}
     dump(destination / "reproducibility/release_manifest.json", result)

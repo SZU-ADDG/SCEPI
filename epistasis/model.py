@@ -15,6 +15,7 @@ class ModelConfig:
     embedding_dim: int = 1280
     pair_form: str = "contrast"
     pair_single_input: str = "calibrated"
+    pair_mask_input: str = "auto"
 
 
 def mlp(width, hidden):
@@ -78,6 +79,7 @@ class PairEffect(nn.Module):
         super().__init__()
         assert config.pair_form in {"contrast", "direct"}
         assert config.pair_single_input in {"calibrated", "predicted"}
+        assert config.pair_mask_input in {"auto", "observed", "zero"}
         self.config = config
         self.encoder = EndpointEncoder(config, cross=True)
         endpoint_width = self.encoder.width + 2 + int(config.geometry)
@@ -172,11 +174,15 @@ class EpistasisModel(nn.Module):
         effects = self.calibrated_effects(data, observed_values, observed_mask, omega)
         if remove_interaction or self.omit_pair:
             interaction = torch.zeros_like(effects[:, 0])
-        elif self.pair.config.pair_single_input == "predicted":
-            # 保留外部校准，相互作用网络仅接收预测单效应和恒零观察标记。
-            interaction = self.pair(data, self.single(data), torch.zeros_like(observed_mask))
         else:
-            interaction = self.pair(data, effects, observed_mask)
+            pair_config = self.pair.config
+            pair_effects = self.single(data) if pair_config.pair_single_input == "predicted" else effects
+            # auto 保留既有完整模型和联合输入移除对照的行为。
+            zero_mask = pair_config.pair_mask_input == "zero" or (
+                pair_config.pair_mask_input == "auto" and pair_config.pair_single_input == "predicted"
+            )
+            pair_mask = torch.zeros_like(observed_mask) if zero_mask else observed_mask
+            interaction = self.pair(data, pair_effects, pair_mask)
         additive = effects.sum(dim=-1)
         predicted = self.mapping(additive + interaction)
         single_predictions = self.mapping(effects)

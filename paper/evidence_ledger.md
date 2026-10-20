@@ -1,10 +1,24 @@
 # SCEPI evidence ledger
 
-Snapshot date: 2026-10-20. The manuscript's primary results use full-target S-all evaluation. Fixed unseen-site-pair intersections and the initial comparison-design results are recorded separately.
+Snapshot date: 2026-10-21. The manuscript's primary results use source-selected full-target S-all evaluation. Fixed unseen-site-pair intersections and the initial comparison-design results are recorded separately. Dated entries below retain their original experimental scope.
 
 The formal method name is SCEPI, Single-mutant-Conditioned Epistasis Prediction. The existing `interaction` experiment identifier denotes the primary model. Target-combination fitting variants are labeled SCEPI adaptation and retain their separately documented input and training conditions. Author and affiliation details follow the supplied author list, with Jiayu Zhang affiliated with EasternDawn, Shenzhen, China.
 
-## Reviewer-requested information use and random enrichment
+## Final numerical-input and availability-indicator evidence
+
+The final source-selection program reads 240 source-fit records and their source-validation histories. Its score is 0.5 Z + 0.25 S128 + 0.25 S-all residual RMSE; omega is selected with source-validation S128. Nine outer partitions select the combined objective and family30/fold3 selects phenotype-only. Those decisions are fixed across five fitting repetitions. No target prediction or metric is read by this selection program. The fifty full-model fits are reused. Two hundred matched controls contain ninety reusable fits and 110 newly completed fits; all 300 associated evaluations are complete.
+
+The four input cells independently vary calibrated numerical values and observed indicators inside the pair function. They retain the external calibration rule, WT gating, parameter count, source initialization, training/validation rows, objective, and stopping criterion. Under family30, full/values-only/indicators-only/predicted-single residual RMSE is 0.590416/0.594816/0.771990/0.767195 kcal/mol; native hit rate is 11.2167/11.4333/8.1000/8.2333 percent. Under family25, residual RMSE is 0.604329/0.620695/0.817131/0.813878 and native hit rate is 11.1500/11.1167/7.9500/8.1500 percent. Numerical values retain most of the residual gain without indicators. The indicator increment is smaller and its native selection effect varies. Direct-head residual RMSE is 0.632127/0.630207, with native hit-rate differences of +0.6833/−0.2333 percentage points for cycle subtraction.
+
+Final evidence is `runs/conditioning_factorial_20261021/`. Its 32-arm matrix contains 1,600 evaluations, with 14,446 paired comparisons independently reconstructed under both thresholds. Maximum mean difference is 2.22e-16. All 200 fitting conditions and 1,460 real implementation-check cycles are verified. The analysis contains 120 factorial contrasts, 220 group-sensitivity comparisons, all four source-selected single-label budgets, and 150 designated site-pair-subset evaluations. The latter gives 0.545048 residual RMSE on 70 proteins and 5.87566 percent native compensation hits on 63 proteins.
+
+Random enrichment includes 1,536 comparisons. On the unchanged 79,564-candidate pool, budget 1/3/10/30 enrichments are 5.261664/4.796778/4.266385/3.277446. Top-10 recovery gain over random is 0.637196 kcal/mol. Equal-group, maximum-group removal, and all leave-one-group-out analyses retain positive mean input-removal gains in residual and native hit rate. Recovery comparisons with external methods and mean ridge include paired intervals and group-weight sensitivity.
+
+Protocol verification reads all family edges, combination splits, raw-data field definitions, Kermut optimization traces, and ThermoMPNN-D source manifests. Numerical source inputs use the stated WT-relative scale. The four-state/direct-head CPU profile records equal parameter count and different call counts; measured head-only median times are 6.880/3.388 ms on 32 real samples. The new generic prediction CLI reads no target double-mutant outcome.
+
+The final source passes the built-in LaTeX compiler. The submission has ten main pages and one reference page; the supplement has eighteen pages. All 29 source pages were visually inspected, all fonts are embedded, internal links have valid destinations, and exported pages match their source rasterization at 110 dpi. Manuscript checks cover 64 full-table rows, five main conditioning rows, 29 paired-interval rows, source-selected budgets, the site-pair subset, 485 original-main cells, and all 1,536 random comparisons. The compact release reconstructs 384 primary values, 10,752 random values, and 2,400 conditioning/sensitivity values. Candidate-pool matching covers 908,800 records. Thirty-two real held-out examples pass both CPU model inference and the public prediction CLI at tolerance 1e-5. The release records 250 portable source jobs and passes Python compilation. Publication and downloaded-archive verification retain their own release manifests.
+
+## 2026-10-19 information-use and random-enrichment analysis
 
 Table 1 distinguishes source single-label supervision, target calibration or posterior fitting, and measured inputs inside the pair function. The three comparison sources are ThermoMPNN-D, Mutate Everything, and StabilityArc + Kermut. Mutate Everything remains a methodological comparison; no published score is substituted for a matched experiment.
 
@@ -14,7 +28,7 @@ Source: `runs/reviewer_revision_20261019/random_enrichment/manifest.json`, `summ
 
 The initial compact release independently reconstructs 312 primary values and 8,736 random-analysis values at tolerance 1e-12. Its CPU example reproduces 32 actual held-out cycles at tolerance 1e-5. Source code, 150 selected source-job configurations, frozen assignments, recorded environment and upstream versions, compact evidence, and the example were published at `https://github.com/SZU-ADDG/SCEPI`, commit `f88a24ba69c977cdc3b73bff03e8d02ff32693f1`. The downloaded public archive passed these checks and Python compilation with its portable runtime and the existing system Conda environment. At that release, its manuscript and PDFs matched the formal files byte for byte, with ten main pages, one reference page, and fourteen supplement pages. The source experiment base commit remains `875d04d6df818110001f3889758cf998321a96f6`. That publication record is preserved in `runs/reviewer_revision_20261019/`; the current manuscript and delivery record are described below.
 
-## Completed external-baseline evaluation
+## 2026-10-18 to 2026-10-20 external-baseline evaluation and layout
 
 The final 50 RFA evaluations and their statistical aggregation are complete. The current authorized scopes contain 12,622 original-main evaluations, 2,251 compensation-intersection evaluations, and 1,151 full-target S-all evaluations. All three scopes have complete saved results. Additional ESM-MSR training was discontinued on user instruction. Its available epoch-10 checkpoint is reported on the matched single-fold, single-repetition subset. The original task lists retain the discontinued scope.
 
@@ -26,7 +40,7 @@ The final analysis independently reconstructs 3,506 original-main paired compari
 
 The current layout follows the user-specified RECOMB-ProtDLM conversation and its LLNCS v2.25 source. The title, authors, affiliations, abstract, and Introduction use a continuous layout without keywords. The main document contains ten pages including the title and abstract, followed by one reference page. The supplement contains fifteen pages. Supplementary tables retain their section order and use short method names. Current delivery records are in `runs/writing_revision_20261020/`. Terminology evidence covers sixty concepts, with five independent-paper uses per concept and 300 records from 120 distinct works in `paper/term_evidence.csv`. The scientific evaluation scopes and saved predictions remain those described above.
 
-## Publication thesis and manuscript revision
+## 2026-10-20 publication thesis and manuscript revision
 
 The manuscript centers on conditioning the cross-protein interaction function on permitted target single-mutant measurements. Those measurements retain their external single-effect calibration role. Matched removal of the values and availability indicators from the pair network identifies the additional prediction and selection benefit. The four-state construction supplies exact reference constraints and average residual gains; its native hit-rate differences remain +0.52 and −0.23 percentage points across the two groupings. Representation branches, the phenotype map, and fitting objectives are model choices with their complete results preserved.
 

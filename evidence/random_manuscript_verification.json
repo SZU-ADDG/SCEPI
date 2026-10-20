@@ -1,11 +1,11 @@
 {
   "complete": true,
-  "random_comparisons": 1248,
+  "random_comparisons": 1536,
   "manuscript_random_numeric_cells": 60,
   "candidate_count": 79564,
   "pool_hits": 1718,
   "native_top10_enrichment": 4.2663850371228484,
   "figure_fragment_matches": true,
   "information_table_citations": 3,
-  "source": "runs/reviewer_revision_20261019/random_enrichment"
+  "source": "runs/conditioning_factorial_20261021/random_enrichment"
 }

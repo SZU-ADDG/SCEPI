@@ -1,0 +1,352 @@
+{
+  "complete": true,
+  "available_jobs_complete": true,
+  "expected_evaluations": 1600,
+  "completed_evaluations": 1600,
+  "waiting_evaluations": 0,
+  "scope": "32 complete S-all arms; discontinued ESM-MSR extensions remain outside this scope.",
+  "source_commit": "875d04d6df818110001f3889758cf998321a96f6",
+  "source_working_tree_modified": true,
+  "run_path": "/data3/doomx/RECOMB-3-Epistasis/runs/conditioning_factorial_20261021/paper_evidence",
+  "base_evidence": "/data3/doomx/RECOMB-3-Epistasis/runs/key_ablations_20261015/paper_evidence",
+  "extension_evidence": "/data3/doomx/RECOMB-3-Epistasis/runs/conditioning_factorial_20261021/evidence",
+  "source_selection": "/data3/doomx/RECOMB-3-Epistasis/runs/conditioning_factorial_20261021/source_selection.json",
+  "canonical_arms": {
+    "final_interaction": "interaction",
+    "final_remove_interaction": "remove_interaction",
+    "final_direct_residual": "direct_residual",
+    "final_no_pair_measured": "no_pair_measured",
+    "final_values_only": "values_only",
+    "final_mask_only": "mask_only"
+  },
+  "preserved_joint_recipe_arms": {
+    "interaction": "joint_objective",
+    "remove_interaction": "joint_remove_interaction",
+    "direct_residual": "joint_direct_residual",
+    "no_pair_measured": "joint_no_pair_measured"
+  },
+  "completed_grids": [
+    {
+      "threshold": 25,
+      "arm": "additive",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "direct_residual",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "esm2_additive",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "esm2_context",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "frozen_main",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "geometry",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "geometry_permuted_inference",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "geometry_permuted_retrained",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "geometry_rewired_inference",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "geometry_rewired_retrained",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "global_nonlinear",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "identity_features",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "identity_mapping",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "interaction",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "joint_direct_residual",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "joint_no_pair_measured",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "joint_objective",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "joint_remove_interaction",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "kermut",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "mask_only",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "mean_mlp",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "mean_ridge",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "no_cross",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "no_pair_measured",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "phenotype_only",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "reference_context",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "remove_interaction",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "residual_only",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "stabilityarc_kermut",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "thermo_additive",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "thermo_epistatic",
+      "evaluations": 25
+    },
+    {
+      "threshold": 25,
+      "arm": "values_only",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "additive",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "direct_residual",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "esm2_additive",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "esm2_context",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "frozen_main",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "geometry",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "geometry_permuted_inference",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "geometry_permuted_retrained",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "geometry_rewired_inference",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "geometry_rewired_retrained",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "global_nonlinear",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "identity_features",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "identity_mapping",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "interaction",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "joint_direct_residual",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "joint_no_pair_measured",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "joint_objective",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "joint_remove_interaction",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "kermut",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "mask_only",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "mean_mlp",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "mean_ridge",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "no_cross",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "no_pair_measured",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "phenotype_only",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "reference_context",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "remove_interaction",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "residual_only",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "stabilityarc_kermut",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "thermo_additive",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "thermo_epistatic",
+      "evaluations": 25
+    },
+    {
+      "threshold": 30,
+      "arm": "values_only",
+      "evaluations": 25
+    }
+  ],
+  "paired_comparisons": 14446,
+  "win_tie_tolerance": 1e-12
+}

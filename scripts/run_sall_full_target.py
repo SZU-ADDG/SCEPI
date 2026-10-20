@@ -111,7 +111,7 @@ def evaluate(job, truth, entries):
     return job
 
 
-def paired_summary(table, keys, metric, higher, coverage):
+def paired_summary(table, keys, metric, higher, coverage, tie_tolerance=0.0):
     rows = []
     if not len(table):
         return rows
@@ -140,9 +140,9 @@ def paired_summary(table, keys, metric, higher, coverage):
                          "proteins": len(means), "family_groups": means.index.get_level_values("family_group").nunique(),
                          "paired_protein_repeats": len(paired), "complete_grid": complete,
                          "reference_mean": float(means.interaction.mean()), "control_mean": float(means[control].mean()),
-                         "mean_gain": float(gains.mean()), "wins": int(gains.gt(0).sum()), "losses": int(gains.lt(0).sum()),
-                         "ties": int(gains.eq(0).sum()), "repeat_gains": {str(int(seed)): float(value) for seed, value in repeats.items()},
-                         "positive_repeats": int(repeats.gt(0).sum()), "repeats": len(repeats)})
+                         "mean_gain": float(gains.mean()), "wins": int(gains.gt(tie_tolerance).sum()), "losses": int(gains.lt(-tie_tolerance).sum()),
+                         "ties": int(gains.abs().le(tie_tolerance).sum()), "repeat_gains": {str(int(seed)): float(value) for seed, value in repeats.items()},
+                         "positive_repeats": int(repeats.gt(tie_tolerance).sum()), "repeats": len(repeats)})
     return rows
 
 

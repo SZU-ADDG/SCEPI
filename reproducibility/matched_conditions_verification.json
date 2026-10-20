@@ -1,0 +1,7 @@
+{
+  "complete": true,
+  "matched_control_fits": 200,
+  "all_four_factorial_cells_complete": true,
+  "identical_training_and_validation_rows": true,
+  "identical_parameter_counts": true
+}

@@ -13,7 +13,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 INPUT = ROOT / "runs/key_ablations_20261015/paper_evidence"
 OUTPUT = ROOT / "paper/figures"
-NOTE = ROOT / "runs/key_ablations_20261015/components_figure_note.md"
+NOTE = ROOT / "work/conditioning_factorial_20261021/figure4/component_analysis_note.md"
 
 SEEDS = [11, 23, 47, 89, 131]
 PRIMARY = [
@@ -84,6 +84,55 @@ ABLATION_DISPLAY_COLORS = {
     for arm in ABLATIONS
 }
 
+# factorial 实验在各项指标中使用同一组四状态，固定顺序以便并列读取残差和选择面板。
+FACTORIAL_CELLS = ["interaction", "values_only", "mask_only", "no_pair_measured"]
+FACTORIAL_LABELS = {
+    "interaction": "SCEPI",
+    "values_only": "Values only",
+    "mask_only": "Indicators only",
+    "no_pair_measured": "Predicted singles",
+}
+FACTORIAL_COLORS = {
+    "interaction": "#2878B5",
+    "values_only": "#9368A6",
+    "mask_only": "#3F9BA8",
+    "no_pair_measured": "#7B858E",
+}
+CONTRAST_ORDER = [
+    "joint_input",
+    "values_with_mask",
+    "values_without_mask",
+    "mask_with_values",
+    "mask_without_values",
+]
+CONTRAST_LABELS = {
+    "joint_input": "Joint input",
+    "values_with_mask": "Values given indicators",
+    "values_without_mask": "Values without indicators",
+    "mask_with_values": "Indicators given values",
+    "mask_without_values": "Indicators without values",
+}
+CONTRAST_COLORS = {
+    "joint_input": "#2878B5",
+    "values_with_mask": "#9368A6",
+    "values_without_mask": "#B89B3C",
+    "mask_with_values": "#3F9BA8",
+    "mask_without_values": "#6F7785",
+}
+CONTRAST_ARMS = {
+    "joint_input": ("interaction", "no_pair_measured"),
+    "values_with_mask": ("interaction", "mask_only"),
+    "values_without_mask": ("values_only", "no_pair_measured"),
+    "mask_with_values": ("interaction", "values_only"),
+    "mask_without_values": ("mask_only", "no_pair_measured"),
+}
+AUXILIARY_ARMS = ["interaction", "direct_residual", "remove_interaction"]
+AUXILIARY_LABELS = {
+    "interaction": "SCEPI",
+    "direct_residual": "Direct head",
+    "remove_interaction": "Pair removed",
+}
+
 
 def style_axis(ax):
     ax.set_facecolor("white")
@@ -93,6 +142,297 @@ def style_axis(ax):
         spine.set_color("#8D969E")
         spine.set_linewidth(0.65)
     ax.tick_params(axis="both", colors="#27323A", labelsize=10, length=3.0, width=0.65, pad=2)
+
+
+def factorial_run_from_input(path):
+    """检测已完成 factorial 分析并返回运行根目录。"""
+    path = Path(path)
+    if path.name == "paper_evidence":
+        candidate = path.parent
+    else:
+        candidate = path
+    if (candidate / "factorial_summary.json").is_file() and (candidate / "paper_evidence").is_dir():
+        return candidate
+    return None
+
+
+def load_factorial_data(run_root):
+    """读取完成的 factorial 证据，拒绝部分完成的运行。"""
+    evidence = run_root / "paper_evidence"
+    manifest = json.loads((evidence / "manifest.json").read_text())
+    assert manifest["complete"]
+    assert int(manifest["completed_evaluations"]) == int(manifest["expected_evaluations"])
+    assert int(manifest["waiting_evaluations"]) == 0
+    verification = json.loads((evidence / "integration_verification.json").read_text())
+    assert verification["complete"]
+    analysis = json.loads((run_root / "analysis_manifest.json").read_text())
+    assert analysis["complete"]
+    selection = pd.read_parquet(evidence / "selection_per_protein.parquet")
+    residual = pd.read_parquet(evidence / "residual_per_protein.parquet")
+    summary = json.loads((run_root / "factorial_summary.json").read_text())
+    assert isinstance(summary, list) and summary
+    assert set(FACTORIAL_CELLS).issubset(set(selection.arm.unique()))
+    assert set(FACTORIAL_CELLS).issubset(set(residual.arm.unique()))
+    required = {
+        "threshold", "margin", "metric", "contrast", "mean_gain",
+        "gain_interval_95", "proteins", "family_groups",
+    }
+    contrast_required = {"reference", "control", "reference_mean", "control_mean"}
+    for row in summary:
+        assert required.issubset(row)
+        assert row["contrast"] in {"difference_of_conditional_gains", *CONTRAST_ORDER}
+        assert len(row["gain_interval_95"]) == 2
+        plotted_residual = row["contrast"] in CONTRAST_ARMS and row["metric"] == "epsilon_rmse"
+        plotted_selection = (
+            row["contrast"] in CONTRAST_ARMS
+            and row["metric"] == "compensation_hit_rate"
+            and row.get("scoring") == "native"
+        )
+        if plotted_residual or plotted_selection:
+            assert contrast_required.issubset(row)
+            assert (row["reference"], row["control"]) == CONTRAST_ARMS[row["contrast"]]
+            assert len(row["repeat_gains"]) == 5
+    return {
+        "run_root": run_root,
+        "evidence": evidence,
+        "selection": selection,
+        "residual": residual,
+        "summary": summary,
+        "manifest": manifest,
+    }
+
+
+def factorial_repeat_summary(frame, metric, threshold, margin, arms):
+    """先在 protein 内平均，再返回五个匹配重复值。"""
+    folded = fold_seed_protein_values(frame, metric, ["threshold", "margin", "arm"])
+    selected = folded.loc[
+        folded.threshold.eq(threshold)
+        & folded.margin.eq(margin)
+        & folded.arm.isin(arms)
+    ].copy()
+    assert selected.groupby(["arm", "protein_id"]).seed.nunique().eq(5).all()
+    protein_sets = [set(selected.loc[selected.arm.eq(arm), "protein_id"]) for arm in arms]
+    assert protein_sets and all(current == protein_sets[0] for current in protein_sets[1:])
+    result = selected.groupby(["arm", "seed"], as_index=False)[metric].mean()
+    assert result.groupby("arm").size().eq(5).all()
+    return result
+
+
+def factorial_metric_frame(data, threshold, margin, metric, scoring=None):
+    if metric == "epsilon_rmse":
+        frame = data["residual"].loc[
+            data["residual"].threshold.eq(threshold)
+            & data["residual"].margin.eq(margin)
+            & data["residual"].arm.isin(FACTORIAL_CELLS)
+        ].copy()
+    elif metric == "compensation_hit_rate":
+        frame = data["selection"].loc[
+            data["selection"].threshold.eq(threshold)
+            & data["selection"].margin.eq(margin)
+            & data["selection"].task.eq("compensation")
+            & data["selection"].unit.eq("protein")
+            & data["selection"].budget.eq(10)
+            & data["selection"].scoring.eq(scoring)
+            & data["selection"].arm.isin(FACTORIAL_CELLS)
+        ].copy()
+    else:
+        raise ValueError(metric)
+    assert not frame.empty
+    return frame
+
+
+def factorial_summary_rows(data, threshold, margin, metric, scoring=None):
+    rows = []
+    for row in data["summary"]:
+        if int(row["threshold"]) != int(threshold) or float(row["margin"]) != float(margin):
+            continue
+        if row["metric"] != metric:
+            continue
+        if scoring is None:
+            assert "scoring" not in row or row["scoring"] is None
+        elif row.get("scoring") != scoring:
+            continue
+        if row["contrast"] in CONTRAST_ORDER:
+            rows.append(row)
+    rows.sort(key=lambda row: CONTRAST_ORDER.index(row["contrast"]))
+    assert [row["contrast"] for row in rows] == CONTRAST_ORDER
+    return rows
+
+
+def draw_factorial_metric(ax, values, metric, order, labels, colors, panel_label, unit_label, xlabel, xticks=None, xticklabels=None):
+    """绘制四状态指标面板，每个状态显示五个重复点。"""
+    positions = np.arange(len(order))
+    extents = []
+    for position, arm in enumerate(order):
+        current = values.loc[values.arm.eq(arm), metric].sort_index().to_numpy(dtype=float)
+        assert len(current) == 5 and np.isfinite(current).all()
+        jitter = np.linspace(-0.13, 0.13, len(current))
+        color = colors[arm]
+        ax.scatter(
+            current,
+            np.full(len(current), positions[position]) + jitter,
+            s=22.0,
+            facecolors="white",
+            edgecolors=color,
+            linewidths=0.85,
+            zorder=3,
+        )
+        mean = float(current.mean())
+        sd = float(current.std(ddof=1))
+        ax.errorbar(
+            mean,
+            positions[position],
+            xerr=sd,
+            fmt="none",
+            ecolor=color,
+            elinewidth=1.3,
+            capsize=2.1,
+            capthick=0.7,
+            zorder=4,
+        )
+        ax.scatter(
+            [mean],
+            [positions[position]],
+            marker="D",
+            s=25,
+            facecolor="white",
+            edgecolor=color,
+            linewidth=1.0,
+            zorder=5,
+        )
+        extents.extend([float(current.min()), float(current.max()), mean - sd, mean + sd])
+    minimum, maximum = min(extents), max(extents)
+    span = max(maximum - minimum, 0.05 if metric == "epsilon_rmse" else 0.005)
+    padding = max(0.10 * span, 0.004 if metric == "epsilon_rmse" else 0.0006)
+    ax.set_xlim(minimum - padding, maximum + padding)
+    ax.set_yticks(positions)
+    ax.set_yticklabels([labels[arm] for arm in order])
+    ax.set_ylim(-0.55, len(order) - 0.45)
+    if xticks is not None:
+        ax.set_xticks(xticks)
+        if xticklabels is not None:
+            ax.set_xticklabels(xticklabels)
+    ax.set_xlabel(xlabel, fontsize=9.5, labelpad=4)
+    style_axis(ax)
+    ax.tick_params(axis="y", labelsize=9.0)
+    ax.text(-0.18, 1.08, panel_label, transform=ax.transAxes, fontsize=12, fontweight="bold", va="top")
+    ax.text(0.99, 1.08, unit_label, transform=ax.transAxes, fontsize=9.5, ha="right", va="top", color="#4A555D")
+
+
+def draw_contrast_panel(ax, rows, panel_label, xlabel, unit_label, scale=1.0, show_y_labels=True, xticks=None, xticklabels=None):
+    """绘制五个匹配重复增益及其 mean ± SD。"""
+    positions = np.arange(len(rows))
+    ax.axvline(0.0, color="#46515A", linewidth=0.85, linestyle=(0, (3, 2)), zorder=1)
+    extents = [0.0]
+    for position, row in enumerate(rows):
+        contrast = row["contrast"]
+        color = CONTRAST_COLORS[contrast]
+        repeats = np.asarray(list(row["repeat_gains"].values()), dtype=float) * scale
+        mean = float(repeats.mean())
+        sd = float(repeats.std(ddof=1))
+        assert len(repeats) == 5 and np.isfinite(repeats).all()
+        assert np.isfinite(mean) and np.isfinite(sd)
+        y_jitter = np.linspace(-0.12, 0.12, len(repeats))
+        ax.scatter(
+            repeats,
+            np.full(len(repeats), position) + y_jitter,
+            s=20.0,
+            facecolors="white",
+            edgecolors=color,
+            linewidths=0.8,
+            zorder=3,
+        )
+        ax.errorbar(
+            mean,
+            position,
+            xerr=sd,
+            fmt="none",
+            ecolor=color,
+            elinewidth=1.4,
+            capsize=2.1,
+            capthick=0.7,
+            zorder=4,
+        )
+        ax.scatter(
+            [mean],
+            [position],
+            marker="D",
+            s=25,
+            facecolor="white",
+            edgecolor=color,
+            linewidth=1.0,
+            zorder=5,
+        )
+        extents.extend([float(repeats.min()), float(repeats.max()), mean - sd, mean + sd])
+    minimum, maximum = min(extents), max(extents)
+    span = max(maximum - minimum, 0.05 * scale)
+    padding = max(0.12 * span, 0.006 * scale)
+    ax.set_xlim(minimum - padding, maximum + padding)
+    ax.set_yticks(positions)
+    if show_y_labels:
+        ax.set_yticklabels([CONTRAST_LABELS[row["contrast"]] for row in rows])
+    else:
+        ax.set_yticklabels([])
+        ax.tick_params(axis="y", labelleft=False)
+    ax.set_ylim(-0.55, len(rows) - 0.45)
+    if xticks is not None:
+        ax.set_xticks(xticks)
+        if xticklabels is not None:
+            ax.set_xticklabels(xticklabels)
+    ax.set_xlabel(xlabel, fontsize=9.5, labelpad=4)
+    style_axis(ax)
+    ax.tick_params(axis="y", labelsize=8.4)
+    ax.text(-0.18, 1.08, panel_label, transform=ax.transAxes, fontsize=12, fontweight="bold", va="top")
+    ax.text(0.99, 1.08, unit_label, transform=ax.transAxes, fontsize=9.5, ha="right", va="top", color="#4A555D")
+
+
+def write_factorial_note(data, threshold, margin, output_note):
+    evidence = data["evidence"]
+    residual = factorial_metric_frame(data, threshold, margin, "epsilon_rmse")
+    selection = factorial_metric_frame(data, threshold, margin, "compensation_hit_rate", "native")
+    residual_values = factorial_repeat_summary(residual, "epsilon_rmse", threshold, margin, FACTORIAL_CELLS)
+    selection_values = factorial_repeat_summary(selection, "compensation_hit_rate", threshold, margin, FACTORIAL_CELLS)
+    residual_rows = []
+    for arm in FACTORIAL_CELLS:
+        current = residual_values.loc[residual_values.arm.eq(arm), "epsilon_rmse"]
+        proteins = int(residual.loc[residual.arm.eq(arm), "protein_id"].nunique())
+        residual_rows.append(f"| {FACTORIAL_LABELS[arm]} (`{arm}`) | {current.mean():.6f} | {current.std(ddof=1):.6f} | 5 | {proteins} |")
+    selection_rows = []
+    for arm in FACTORIAL_CELLS:
+        current = selection_values.loc[selection_values.arm.eq(arm), "compensation_hit_rate"]
+        proteins = int(selection.loc[selection.arm.eq(arm), "protein_id"].nunique())
+        selection_rows.append(f"| {FACTORIAL_LABELS[arm]} (`{arm}`) | {100 * current.mean():.4f} | {100 * current.std(ddof=1):.4f} | 5 | {proteins} |")
+    lines = [
+        "# Figure 4 factorial evidence",
+        "",
+        f"- Source run: `{data['run_root']}`.",
+        f"- Evidence tables: `{evidence}/residual_per_protein.parquet` and `{evidence}/selection_per_protein.parquet`.",
+        f"- Filter: family{threshold}, margin={margin:g}; residual metric `epsilon_rmse`; native compensation selection with `budget=10`.",
+        "- Each repeat value averages the assigned held-out fold within protein and then averages proteins equally. Points show the five matched training repeats; diamonds and whiskers show the repeat mean and standard deviation.",
+        "- Panels (c) and (d) show the five repeat gains as open points, with the repeat mean and standard deviation as the diamond and whisker. The declared homology-group bootstrap intervals remain in `factorial_summary.json` and are retained as evidence without being drawn in the main figure.",
+        "- A positive residual gain is `control RMSE - state RMSE`. A positive selection gain is `state hit rate - control hit rate`.",
+        "",
+        "## Panel a: four input states, residual RMSE",
+        "",
+        "| State | Mean RMSE | Repeat SD | Repeats | Proteins |",
+        "|---|---:|---:|---:|---:|",
+        *residual_rows,
+        "",
+        "## Panel b: four input states, native top-10 hit rate",
+        "",
+        "| State | Mean hit rate (%) | Repeat SD (percentage points) | Repeats | Proteins |",
+        "|---|---:|---:|---:|---:|",
+        *selection_rows,
+        "",
+        "## Conditional contrast fields",
+        "",
+        "- Required rows: `threshold`, `margin`, `metric`, `scoring`, `contrast`, `reference`, `control`, `reference_mean`, `control_mean`, `mean_gain`, `gain_interval_95`, `repeat_gains`, `proteins`, and `family_groups`.",
+        "- Plotted contrasts: `joint_input`, `values_with_mask`, `values_without_mask`, `mask_with_values`, and `mask_without_values`.",
+        "",
+        f"Generated artifacts: `{output_note.parent}/component_analysis.pdf`, `.svg`, `.png`, and `.tikz`.",
+    ]
+    output_note.parent.mkdir(parents=True, exist_ok=True)
+    output_note.write_text("\n".join(lines) + "\n")
 
 
 def load_data():
@@ -606,11 +946,276 @@ def write_tikz(primary_protein, primary_repeat, residual_protein, residual_repea
     (OUTPUT / "component_analysis.tikz").write_text("\n".join(lines) + "\n")
 
 
+def factorial_tikz_repeat_panel(lines, values, metric, order, labels, colors, axis, panel_label, title, xlabel, show_y_labels=True, xticks=None, xticklabels=None):
+    current_values = values.loc[values.arm.isin(order), metric].to_numpy(dtype=float)
+    assert len(current_values) == len(order) * 5
+    minimum, maximum = float(current_values.min()), float(current_values.max())
+    span = max(maximum - minimum, 0.05 if metric == "epsilon_rmse" else 0.5)
+    padding = max(0.10 * span, 0.004 if metric == "epsilon_rmse" else 0.06)
+    xmin, xmax = minimum - padding, maximum + padding
+    ticks = np.linspace(xmin, xmax, 4) if xticks is None else np.asarray(xticks, dtype=float)
+    yticklabels = [labels[arm] for arm in order] if show_y_labels else [""] * len(order)
+    lines.extend(tikz_axis_start(
+        *axis,
+        xmin,
+        xmax,
+        -0.55,
+        len(order) - 0.45,
+        ticks,
+        yticklabels,
+        xlabel,
+        xticklabels=xticklabels,
+    ))
+    lines.append(f"\\node[anchor=south west, font=\\bfseries\\fontsize{{10}}{{12}}\\selectfont] at (rel axis cs:-0.18,1.04) {{{panel_label}}};")
+    lines.append(f"\\node[anchor=south east, font=\\fontsize{{10}}{{12}}\\selectfont, text=black!60] at (rel axis cs:1,1.04) {{{title}}};")
+    for position, arm in enumerate(order):
+        values_for_arm = values.loc[values.arm.eq(arm)].sort_values("seed")[metric].to_numpy(dtype=float)
+        assert len(values_for_arm) == 5
+        mean = float(values_for_arm.mean())
+        sd = float(values_for_arm.std(ddof=1))
+        color = colors[arm]
+        lo, hi = tex_number(mean - sd), tex_number(mean + sd)
+        points = " ".join(f"({tex_number(value)},{position})" for value in values_for_arm)
+        lines.append(f"\\draw[{color}, line width=0.65pt] (axis cs:{lo},{position}) -- (axis cs:{hi},{position});")
+        lines.append(f"\\draw[{color}, line width=0.65pt] (axis cs:{lo},{position - 0.10}) -- (axis cs:{lo},{position + 0.10});")
+        lines.append(f"\\draw[{color}, line width=0.65pt] (axis cs:{hi},{position - 0.10}) -- (axis cs:{hi},{position + 0.10});")
+        lines.append(f"\\addplot[only marks, mark=o, mark size=2.0pt, color={color}, mark options={{draw={color}, fill=white}}] coordinates {{{points}}};")
+        lines.append(f"\\addplot[only marks, mark=diamond*, mark size=2.6pt, color={color}, mark options={{draw={color}, fill=white}}] coordinates {{({tex_number(mean)},{position})}};")
+    lines.append("\\end{axis}")
+
+
+def factorial_tikz_contrast_panel(lines, rows, axis, panel_label, title, xlabel, scale=1.0, show_y_labels=True, xticks=None, xticklabels=None):
+    tikz_colors = {
+        "joint_input": "FactorBlue",
+        "values_with_mask": "ValuesPurple",
+        "values_without_mask": "ContrastGold",
+        "mask_with_values": "MaskTeal",
+        "mask_without_values": "ContrastGray",
+    }
+    repeats = np.asarray([value for row in rows for value in list(row["repeat_gains"].values())], dtype=float) * scale
+    repeat_means = np.asarray([np.mean(list(row["repeat_gains"].values())) for row in rows], dtype=float) * scale
+    repeat_sds = np.asarray([np.std(list(row["repeat_gains"].values()), ddof=1) for row in rows], dtype=float) * scale
+    extents = np.concatenate([repeats, repeat_means - repeat_sds, repeat_means + repeat_sds, np.asarray([0.0])])
+    minimum, maximum = float(np.min(extents)), float(np.max(extents))
+    span = max(maximum - minimum, 0.05 * scale)
+    padding = max(0.12 * span, 0.006 * scale)
+    xmin, xmax = minimum - padding, maximum + padding
+    ticks = np.linspace(xmin, xmax, 4) if xticks is None else np.asarray(xticks, dtype=float)
+    yticklabels = [CONTRAST_LABELS[row["contrast"]] if show_y_labels else "" for row in rows]
+    lines.extend(tikz_axis_start(
+        *axis,
+        xmin,
+        xmax,
+        -0.55,
+        len(rows) - 0.45,
+        ticks,
+        yticklabels,
+        xlabel,
+        xticklabels=xticklabels,
+    ))
+    lines.append(f"\\node[anchor=south west, font=\\bfseries\\fontsize{{10}}{{12}}\\selectfont] at (rel axis cs:-0.18,1.04) {{{panel_label}}};")
+    lines.append(f"\\node[anchor=south east, font=\\fontsize{{10}}{{12}}\\selectfont, text=black!60] at (rel axis cs:1,1.04) {{{title}}};")
+    lines.append("\\draw[dashed, gray!75, line width=0.6pt] (axis cs:0,-0.45) -- (axis cs:0,4.45);")
+    for position, row in enumerate(rows):
+        contrast = row["contrast"]
+        color = tikz_colors[contrast]
+        values_for_arm = np.asarray(list(row["repeat_gains"].values()), dtype=float) * scale
+        mean = float(values_for_arm.mean())
+        sd = float(values_for_arm.std(ddof=1))
+        lo, hi = tex_number(mean - sd), tex_number(mean + sd)
+        points = " ".join(f"({tex_number(value)},{position})" for value in values_for_arm)
+        lines.append(f"\\draw[{color}, line width=0.65pt] (axis cs:{lo},{position}) -- (axis cs:{hi},{position});")
+        lines.append(f"\\draw[{color}, line width=0.65pt] (axis cs:{lo},{position - 0.10}) -- (axis cs:{lo},{position + 0.10});")
+        lines.append(f"\\draw[{color}, line width=0.65pt] (axis cs:{hi},{position - 0.10}) -- (axis cs:{hi},{position + 0.10});")
+        lines.append(f"\\addplot[only marks, mark=o, mark size=2.0pt, color={color}, mark options={{draw={color}, fill=white}}] coordinates {{{points}}};")
+        lines.append(f"\\addplot[only marks, mark=diamond*, mark size=2.6pt, color={color}, mark options={{draw={color}, fill=white}}] coordinates {{({tex_number(mean)},{position})}};")
+    lines.append("\\end{axis}")
+
+
+def write_factorial_tikz(data, threshold, margin, output):
+    residual = factorial_metric_frame(data, threshold, margin, "epsilon_rmse")
+    selection = factorial_metric_frame(data, threshold, margin, "compensation_hit_rate", "native")
+    residual_n = int(residual.loc[residual.arm.eq("interaction"), "protein_id"].nunique())
+    selection_n = int(selection.loc[selection.arm.eq("interaction"), "protein_id"].nunique())
+    residual_values = factorial_repeat_summary(residual, "epsilon_rmse", threshold, margin, FACTORIAL_CELLS)
+    selection_values = factorial_repeat_summary(selection, "compensation_hit_rate", threshold, margin, FACTORIAL_CELLS).copy()
+    selection_values["compensation_hit_rate"] *= 100.0
+    residual_rows = factorial_summary_rows(data, threshold, margin, "epsilon_rmse")
+    selection_rows = factorial_summary_rows(data, threshold, margin, "compensation_hit_rate", "native")
+    colors = {
+        "interaction": "FactorBlue",
+        "values_only": "ValuesPurple",
+        "mask_only": "MaskTeal",
+        "no_pair_measured": "NeutralGray",
+    }
+    lines = [
+        "\\begin{tikzpicture}[font=\\sffamily\\fontsize{10}{12}\\selectfont]",
+        "\\definecolor{FactorBlue}{HTML}{2878B5}",
+        "\\definecolor{ValuesPurple}{HTML}{9368A6}",
+        "\\definecolor{MaskTeal}{HTML}{3F9BA8}",
+        "\\definecolor{NeutralGray}{HTML}{7B858E}",
+        "\\definecolor{ContrastGold}{HTML}{B89B3C}",
+        "\\definecolor{ContrastGray}{HTML}{6F7785}",
+    ]
+    factorial_tikz_repeat_panel(
+        lines,
+        residual_values,
+        "epsilon_rmse",
+        FACTORIAL_CELLS,
+        FACTORIAL_LABELS,
+        colors,
+        (47, 58),
+        "a.",
+        f"family{threshold}, $n={residual_n}$",
+        "Residual RMSE (kcal/mol)",
+        xticks=[0.60, 0.65, 0.70, 0.75, 0.80],
+        xticklabels=["0.60", "0.65", "0.70", "0.75", "0.80"],
+    )
+    factorial_tikz_repeat_panel(
+        lines,
+        selection_values,
+        "compensation_hit_rate",
+        FACTORIAL_CELLS,
+        FACTORIAL_LABELS,
+        colors,
+        (108, 58),
+        "b.",
+        f"native, $K=10$, $n={selection_n}$",
+        "Native top-10 hit rate (\\%)",
+        show_y_labels=False,
+        xticks=[7, 9, 11, 13],
+        xticklabels=["7", "9", "11", "13"],
+    )
+    factorial_tikz_contrast_panel(
+        lines,
+        residual_rows,
+        (47, -5),
+        "c.",
+        "repeat mean $\\pm$ SD",
+        "Residual gain (kcal/mol)",
+        xticks=[0.0, 0.05, 0.10, 0.15, 0.20],
+        xticklabels=["0", "0.05", "0.10", "0.15", "0.20"],
+    )
+    factorial_tikz_contrast_panel(
+        lines,
+        selection_rows,
+        (108, -5),
+        "d.",
+        "repeat mean $\\pm$ SD",
+        "Hit-rate gain (p.p.)",
+        scale=100.0,
+        show_y_labels=False,
+        xticks=[-2, 0, 2, 4],
+        xticklabels=["$-2$", "0", "2", "4"],
+    )
+    lines.append("\\end{tikzpicture}")
+    output.write_text("\n".join(lines) + "\n")
+
+
+def render_factorial(data, output, note, threshold, margin):
+    residual = factorial_metric_frame(data, threshold, margin, "epsilon_rmse")
+    selection = factorial_metric_frame(data, threshold, margin, "compensation_hit_rate", "native")
+    residual_n = int(residual.loc[residual.arm.eq("interaction"), "protein_id"].nunique())
+    selection_n = int(selection.loc[selection.arm.eq("interaction"), "protein_id"].nunique())
+    residual_values = factorial_repeat_summary(residual, "epsilon_rmse", threshold, margin, FACTORIAL_CELLS)
+    selection_values = factorial_repeat_summary(selection, "compensation_hit_rate", threshold, margin, FACTORIAL_CELLS)
+    selection_values["compensation_hit_rate"] *= 100.0
+    residual_rows = factorial_summary_rows(data, threshold, margin, "epsilon_rmse")
+    selection_rows = factorial_summary_rows(data, threshold, margin, "compensation_hit_rate", "native")
+
+    plt.rcParams.update({
+        "font.family": "DejaVu Sans",
+        "font.size": 9.5,
+        "axes.labelsize": 9.5,
+        "xtick.labelsize": 9.5,
+        "ytick.labelsize": 9.5,
+        "axes.linewidth": 0.65,
+        "pdf.fonttype": 42,
+        "svg.fonttype": "none",
+    })
+    fig = plt.figure(figsize=(6.45, 4.65), facecolor="white")
+    layout = fig.add_gridspec(
+        2,
+        2,
+        width_ratios=[1.0, 1.0],
+        height_ratios=[1.0, 1.0],
+        wspace=0.78,
+        hspace=0.88,
+        left=0.31,
+        right=0.99,
+        top=0.92,
+        bottom=0.19,
+    )
+    ax_a = fig.add_subplot(layout[0, 0])
+    ax_b = fig.add_subplot(layout[0, 1])
+    ax_c = fig.add_subplot(layout[1, 0])
+    ax_d = fig.add_subplot(layout[1, 1])
+    draw_factorial_metric(
+        ax_a,
+        residual_values,
+        "epsilon_rmse",
+        FACTORIAL_CELLS,
+        FACTORIAL_LABELS,
+        FACTORIAL_COLORS,
+        "a.",
+        f"family{threshold}, n={residual_n}",
+        "Residual RMSE (kcal/mol)",
+        xticks=[0.60, 0.65, 0.70, 0.75, 0.80],
+        xticklabels=["0.60", "0.65", "0.70", "0.75", "0.80"],
+    )
+    draw_factorial_metric(
+        ax_b,
+        selection_values,
+        "compensation_hit_rate",
+        FACTORIAL_CELLS,
+        FACTORIAL_LABELS,
+        FACTORIAL_COLORS,
+        "b.",
+        f"native, $K=10$, n={selection_n}",
+        "Native top-10 hit rate (%)",
+        xticks=[7, 9, 11, 13],
+        xticklabels=["7", "9", "11", "13"],
+    )
+    draw_contrast_panel(
+        ax_c,
+        residual_rows,
+        "c.",
+        "Residual gain (kcal/mol)",
+        "repeat mean ± SD",
+        xticks=[0.0, 0.05, 0.10, 0.15, 0.20],
+        xticklabels=["0", "0.05", "0.10", "0.15", "0.20"],
+    )
+    draw_contrast_panel(
+        ax_d,
+        selection_rows,
+        "d.",
+        "Hit-rate gain (p.p.)",
+        "repeat mean ± SD",
+        scale=100.0,
+        show_y_labels=False,
+        xticks=[-2, 0, 2, 4],
+        xticklabels=["−2", "0", "2", "4"],
+    )
+    output.mkdir(parents=True, exist_ok=True)
+    fig.savefig(output / "component_analysis.pdf", facecolor="white")
+    fig.savefig(output / "component_analysis.svg", facecolor="white")
+    fig.savefig(output / "component_analysis.png", dpi=320, facecolor="white")
+    plt.close(fig)
+    write_factorial_note(data, threshold, margin, note)
+    write_factorial_tikz(data, threshold, margin, output / "component_analysis.tikz")
+    print("factorial residual repeat means")
+    print(residual_values.groupby("arm")["epsilon_rmse"].mean().to_string())
+    print("factorial native hit-rate repeat means")
+    print(selection_values.groupby("arm")["compensation_hit_rate"].mean().to_string())
+
+
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input", type=Path, help="evidence directory containing the three per-protein tables")
+    parser.add_argument("--input", type=Path, help="evidence directory or completed factorial run root")
     parser.add_argument("--output", type=Path, help="directory for component figure artifacts")
     parser.add_argument("--note", type=Path, help="path for the evidence note")
+    parser.add_argument("--threshold", type=int, default=30, choices=[25, 30])
+    parser.add_argument("--margin", type=float, default=0.0, choices=[0.0, 0.5])
     args = parser.parse_args()
     global INPUT, OUTPUT, NOTE
     if args.input is not None:
@@ -619,6 +1224,11 @@ def main():
         OUTPUT = args.output if args.output.is_absolute() else ROOT / args.output
     if args.note is not None:
         NOTE = args.note if args.note.is_absolute() else ROOT / args.note
+    factorial_root = factorial_run_from_input(INPUT)
+    if factorial_root is not None:
+        data = load_factorial_data(factorial_root)
+        render_factorial(data, OUTPUT, NOTE, args.threshold, args.margin)
+        return
     OUTPUT.mkdir(parents=True, exist_ok=True)
     NOTE.parent.mkdir(parents=True, exist_ok=True)
     selection, residual = load_data()

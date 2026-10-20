@@ -10,8 +10,8 @@ SCEPI is Single-mutant-Conditioned Epistasis Prediction. It predicts combination
 - `reproducibility/environment.json`: recorded interpreter and package versions.
 - `reproducibility/source_repositories.json`: exact upstream repositories and commits.
 - `reproducibility/source_models.json`: selected source configurations, fitting permissions, and checkpoint epochs.
-- `reproducibility/source_jobs.json`: portable commands for the 50 primary source fits and the 100 matched-control fits, including their single-effect initialization dependencies.
-- `evidence/`: saved per-protein results, independently reconstructed table values, random expectations, and supplementary summaries.
+- `reproducibility/source_jobs.json`: portable commands for the 50 primary source fits and 200 matched-control fits, including their single-effect initialization dependencies.
+- `evidence/`: saved per-protein results, all 14,446 paired comparisons and their recorded intervals, independently reconstructed table values, random expectations, and supplementary summaries.
 - `paper/`: current manuscript, supplementary material, editable figure sources, and references.
 
 ## Environment
@@ -39,7 +39,7 @@ The release runtime configures `work/tmp/`, `cache/`, and the existing environme
 
 ## Reconstruct the reported tables without training
 
-The compact evidence files contain real saved predictions aggregated within protein and repetition. The following command independently reconstructs the two 26-row primary tables and all 1,248 random-enrichment comparisons.
+The compact evidence files contain real saved predictions aggregated within protein and repetition. The following command independently reconstructs the two 32-row tables, all 1,536 random-enrichment comparisons, and the numerical-versus-availability contrasts.
 
 ```bash
 python reproduce.py --output work/reproduced
@@ -55,6 +55,24 @@ python reproduce.py --model-check --output work/reproduced
 
 This check requires PyTorch. It compares CPU predictions with the previously saved evaluation predictions at a tolerance of 1e-5. The example contains no target combination training labels. The verification record is described in `reproducibility/VERIFICATION.md`.
 
+The same checkpoint can score a feature pack directly:
+
+```bash
+python scripts/predict.py --checkpoint examples/family30_fold0_seed11.pt --input examples/held_out_quartets.npz --output work/predictions.csv --top-k 10
+```
+
+The input contains frozen sequence features, constituent single-mutant measurements, availability indicators, and candidate identifiers. Scoring does not read double-mutant outcomes. The output contains predicted phenotype, four-term residual, within-protein rank, and the selected top-K flag. For new candidates, construct these arrays with the released feature-building functions and the same frozen encoder revision.
+
+The NPZ schema for N candidates is:
+
+- `feature_wt`, `feature_delta`, `feature_cross`: float32 arrays of shape `(N, 2, 1280)`.
+- `feature_wt_aa`, `feature_mut_aa`: int64 arrays of shape `(N, 2)`, indexed in `ACDEFGHIKLMNPQRSTVWY` order.
+- `feature_score`: float32 of shape `(N, 2)`; `feature_sequence_gap` and `feature_sequence_length`: float32 of shape `(N,)`.
+- `observed_singles`: float32 WT-relative effects of shape `(N, 2)`; `available`: Boolean array of the same shape.
+- `variant_id` and `protein_id`: Unicode arrays of shape `(N,)`; candidate identifiers must be unique.
+
+`epistasis.features.pair_features` constructs the feature arrays from reference and single-mutant caches. Geometry variants additionally require `feature_ca_distance` of shape `(N,)` and `feature_confidence` of shape `(N, 2)`. For compensatory selection, supply a candidate pool whose measured constituent single effects meet the stated damaging-effect threshold. The CLI ranks that supplied pool.
+
 The original experiment base commit is `875d04d6df818110001f3889758cf998321a96f6`. The release contains the source snapshot used for the current method, matched controls, reporting, and manuscript revisions. Its release manifest distinguishes the base commit from that snapshot.
 
 ## Data and frozen representations
@@ -69,7 +87,7 @@ python scripts/prepare_structures.py
 python scripts/download_esm2.py
 ```
 
-Frozen family partitions are supplied in `data/splits/families_30.parquet` and `families_25.parquet`. The source split seed is 20261009. The original scripts regenerate combination splits and single-label order:
+Frozen family partitions, edge records, combination assignments, and single-label orders are supplied in `data/splits/`. The source split seed is 20261009. The original scripts regenerate combination splits and single-label order:
 
 ```bash
 python scripts/prepare_combination_splits.py
@@ -105,22 +123,32 @@ Refit one selected primary configuration with its exact prerequisite single mode
 CUDA_VISIBLE_DEVICES=0 python reproducibility/run_source_jobs.py --arm interaction --threshold 30 --fold 0 --seed 11
 ```
 
-The supported arms are `interaction`, `direct_residual`, and `no_pair_measured`. Thresholds are 30 and 25; folds are 0–4; seeds are 11, 23, 47, 89, and 131. Repeating the command across the recorded grid reproduces 50 primary and 100 control fits. Existing completed fits are retained and their manifests checked before reuse. Source validation determines the checkpoint and calibration weight. All target homology groups are excluded from source fitting and selection.
+The supported arms are `interaction`, `direct_residual`, `no_pair_measured`, `values_only`, and `mask_only`. Thresholds are 30 and 25; folds are 0–4; seeds are 11, 23, 47, 89, and 131. Repeating the command across the recorded grid reproduces 50 primary and 200 control fits. Existing completed fits are retained and their manifests checked before reuse. Source validation determines the checkpoint and calibration weight. All target homology groups are excluded from source fitting and selection.
 
-Source-model selection can also be regenerated with the original single and pair grid scripts. The main model compares projection dimensions 64/128, learning rates 1e-4/3e-4/1e-3, and auxiliary phenotype weights 0.1/1. Each fit uses at most 100 epochs and patience 10. The two matched controls reuse the primary model's selected configuration. They retain initialization, source rows, optimizer, objectives, stopping rules, and target permissions.
+Source-model selection can also be regenerated with the original single and pair grid scripts and `select_final_configuration.py`. For each outer partition, source validation compares phenotype-only and joint objectives, projection dimensions 64/128, learning rates 1e-4/3e-4/1e-3, and joint-objective phenotype weights 0.1/1. Calibration weight is selected from 0/0.5/1 by S128 source-validation residual RMSE. Configuration selection minimizes the weighted source-validation residual RMSE, with weights 0.5 for Z and 0.25 each for S128 and S-all. Seed 11 fixes each partition's configuration for all five refits. Nine partitions select the joint objective; family30/fold3 selects the phenotype-only objective. Each fit uses at most 100 epochs and patience 10. The four matched controls reuse the primary configuration in the same partition. They retain initialization, source rows, optimizer, objectives, stopping rules, and target permissions.
 
 `direct_residual` keeps measured pair inputs and predicts the symmetric head output directly. `no_pair_measured` supplies predicted single effects and zero availability indicators inside the pair network while retaining external measured-single calibration.
 
+`values_only` retains calibrated numerical single effects and removes the pair-network availability indicators. `mask_only` supplies predicted numerical single effects and retains the original indicators. All four input combinations keep the same wild-type gating and external calibration rule. They have the same parameter count within each selected configuration and are fitted independently.
+
+After refitting the recorded family30/fold0/seed11 primary and direct-head configurations, reproduce the cached-feature CPU timing comparison with:
+
+```bash
+python scripts/profile_pair_inference.py --study reproducibility --input examples/held_out_quartets.npz --output work/pair_inference_profile.json
+```
+
+The saved profile reports the parameter counts, actual pair-network call counts, and latency for 32 real candidates. It excludes encoder inference and cache construction.
+
 ## Full evaluation and supplementary methods
 
-`run_sall_full_target.py` reconstructs the full-target truth and evaluates saved source/target predictions. `paper_full_target_evidence.py`, `integrate_key_ablations.py`, and `summarize_full_target_evidence.py` aggregate completed arms. `analyze_random_enrichment.py` computes exact random expectations from the frozen candidate pools. The compact evidence route above reproduces their reported primary summaries without rebuilding embeddings.
+`run_sall_full_target.py` reconstructs the full-target truth and evaluates saved source/target predictions. `paper_full_target_evidence.py`, `report_conditioning_factorial.py`, and `summarize_full_target_evidence.py` aggregate completed arms. `analyze_conditioning_factorial.py` computes the input contrasts, homology-group sensitivity, single-label coverage, label-budget results, and designated site-pair subset. `analyze_random_enrichment.py` computes exact random expectations from the frozen candidate pools. The compact evidence route above reproduces the reported primary summaries and input contrasts without rebuilding embeddings.
 
 | Comparison | Entry points and retained settings |
 | --- | --- |
 | ThermoMPNN-D | `prepare_thermo_training.py`, `train_thermo.py`, `run_thermo_targets.py`; source-held-out refitting, native loss and symmetry penalty, permitted target singles only in S-all |
 | Kermut | `run_kermut_targets.py`; full composite kernel and permitted target labels |
 | StabilityArc + Kermut | `cache_stabilityarc.py`, `train_stabilityarc.py`, `run_stabilityarc_targets.py`; 50 held-out source models, four decoder layers, 256 hidden dimensions, 40-epoch budget, target GP calibration |
-| Matched controls | `run_key_ablations.py`, `verify_key_ablations.py`; 100 source fits and identical primary evaluation permissions |
+| Matched controls | `run_conditioning_factorial.py`, `report_conditioning_factorial.py`; 200 source fits and identical primary evaluation permissions |
 | Functional/FLIP2 | `run_functional_adaptation.py`, `run_supplementary_baselines.py`, `run_mean_flip.py`; predicted-single two-stage adaptation, evaluated separately from S-all |
 | RFA | `fit_rfa.R`, `configs/rfa_fixed.json`; lambda=0, 500-iteration caps and recorded stopping criteria; 284 fixed-default and 66 previously validation-selected fits retained |
 | ESM-MSR | Available epoch-10 checkpoint, family30/fold0/seed11 only; its additional training was discontinued and is outside the complete repeated main comparison |
@@ -135,7 +163,7 @@ The main phenotype/residual/selection cohorts contain 159/155/120 proteins. Sele
 
 Each protein contributes one value after averaging its five fitting repetitions. Homology groups are resampled together. The primary paired analysis uses 10,000 group bootstrap draws with seed 20261013; the added random analysis uses seed 20261019. Enrichment divides the equal-protein model hit rate by the equal-protein random expectation. It does not divide pooled hit counts or average undefined per-protein ratios.
 
-The standard random expectation is 2.6290798%, based on 79,564 candidates and 1,718 measured hits. SCEPI native top-10 hit rate is 11.2166667%, giving 4.266385-fold enrichment. Saved predictions and candidate pools are unchanged by the added analysis.
+The standard random expectation is 2.6290798%, based on 79,564 candidates and 1,718 measured hits. SCEPI native top-10 hit rate is 11.2166667%, giving 4.266385-fold enrichment. The candidate pools are fixed across all input controls. The `joint_objective` rows retain the earlier joint-objective configuration for comparison with the final source-selected predictor.
 
 ## License and upstream materials
 

@@ -1,6 +1,8 @@
 import argparse
 import json
 from pathlib import Path
+import subprocess
+import sys
 
 import numpy as np
 import pandas as pd
@@ -36,12 +38,13 @@ def reconstruct_primary():
             result = result.rename(columns={"compensation_hit_rate": "common_main_hit_rate"})
         values.append(result)
     result = pd.concat(values, axis=1).sort_index()
-    assert len(result) == 52
+    release = json.loads((ROOT / "reproducibility/release_manifest.json").read_text())
+    assert len(result) == 2 * release["primary_complete_arms"]
     for threshold in [30, 25]:
         expected = pd.read_csv(ROOT / "evidence" / f"paper_table_family{threshold}.csv", index_col="arm")
         actual = result.loc[threshold].reindex(expected.index)
         np.testing.assert_allclose(actual[expected.columns], expected, rtol=0, atol=1e-12)
-    return result, tables["selection"]
+    return result, tables
 
 
 def reconstruct_random(selection):
@@ -66,9 +69,71 @@ def reconstruct_random(selection):
     fields = ["model_hit_rate", "random_hit_rate", "hit_rate_gain", "enrichment",
               "model_mean_recovery", "random_mean_recovery", "recovery_gain"]
     actual = result.reindex(expected.index)
-    assert len(actual) == len(expected) == 1248
+    assert len(actual) == len(expected) == selection.arm.nunique() * 48
     np.testing.assert_allclose(actual[fields], expected[fields], rtol=0, atol=1e-12)
     return actual[fields], len(merged)
+
+
+def analysis_panel(tables, row):
+    metric = row["metric"]
+    frame = tables["residual" if metric == "epsilon_rmse" else "selection"]
+    mask = frame.threshold.eq(row["threshold"]) & frame.margin.eq(row["margin"])
+    if metric != "epsilon_rmse":
+        mask &= frame.task.eq("compensation") & frame.unit.eq("protein")
+        mask &= frame.scoring.eq(row["scoring"]) & frame.budget.eq(row["budget"])
+    return frame.loc[mask].pivot(index=["protein_id", "family_group", "seed"], columns="arm", values=metric)
+
+
+def check_gain_summary(gain, row):
+    grouped = gain.groupby("family_group")
+    sums, counts = grouped.sum(), grouped.size()
+    largest = counts.sort_values(ascending=False, kind="stable").index[0]
+    leave_one = (gain.sum() - sums) / (len(gain) - counts)
+    values = {"mean_gain": gain.mean(), "equal_group_mean_gain": grouped.mean().mean(),
+              "without_largest_group_gain": leave_one.loc[largest],
+              "leave_one_group_out_minimum": leave_one.min(), "leave_one_group_out_maximum": leave_one.max()}
+    for key, value in values.items():
+        np.testing.assert_allclose(value, row[key], rtol=0, atol=1e-12)
+    assert len(gain) == row["proteins"] and len(counts) == row["family_groups"]
+    assert int(counts.loc[largest]) == row["largest_group_proteins"]
+    assert int(gain.gt(1e-12).sum()) == row["wins"]
+    assert int(gain.lt(-1e-12).sum()) == row["losses"]
+    assert int(gain.abs().le(1e-12).sum()) == row["ties"]
+    return len(values)
+
+
+def reconstruct_conditioning(tables):
+    factorial = json.loads((ROOT / "evidence/factorial_summary.json").read_text())
+    sensitivity = json.loads((ROOT / "evidence/group_sensitivity.json").read_text())
+    assert len(factorial) == 120 and len(sensitivity) == 220
+    checked = 0
+    for row in factorial:
+        cells = ["interaction", "values_only", "mask_only", "no_pair_measured"]
+        repeated = analysis_panel(tables, row)[cells].dropna()
+        assert repeated.groupby(["protein_id", "family_group"]).size().eq(5).all()
+        means = repeated.groupby(["protein_id", "family_group"]).mean()
+        direction = -1 if row["metric"] == "epsilon_rmse" else 1
+        if row["contrast"] == "difference_of_conditional_gains":
+            gain = direction * (means.interaction - means.mask_only - means.values_only + means.no_pair_measured)
+        else:
+            reference, control = row["reference"], row["control"]
+            gain = direction * (means[reference] - means[control])
+            np.testing.assert_allclose([means[reference].mean(), means[control].mean()],
+                                       [row["reference_mean"], row["control_mean"]], rtol=0, atol=1e-12)
+            repeats = (direction * (repeated[reference] - repeated[control])).groupby("seed").mean()
+            assert set(map(str, repeats.index)) == set(row["repeat_gains"])
+            for seed, value in repeats.items():
+                np.testing.assert_allclose(value, row["repeat_gains"][str(seed)], rtol=0, atol=1e-12)
+            checked += 7
+        checked += check_gain_summary(gain, row)
+    for row in sensitivity:
+        repeated = analysis_panel(tables, row)[[row["reference"], row["control"]]].dropna()
+        assert repeated.groupby(["protein_id", "family_group"]).size().eq(5).all()
+        means = repeated.groupby(["protein_id", "family_group"]).mean()
+        direction = -1 if row["metric"] == "epsilon_rmse" else 1
+        checked += check_gain_summary(direction * (means[row["reference"]] - means[row["control"]]), row)
+    return {"factorial_contrasts": len(factorial), "group_sensitivity_comparisons": len(sensitivity),
+            "descriptive_values_checked": checked}
 
 
 def check_model():
@@ -89,7 +154,15 @@ def check_model():
                            torch.from_numpy(example["available"]), omega=float(example["omega"]))
     for field, expected in [("phenotype", "prediction_mu"), ("epsilon", "prediction_epsilon")]:
         np.testing.assert_allclose(prediction[field].numpy(), example[expected], rtol=1e-5, atol=1e-5)
-    return {"real_held_out_quartets": len(example["variant_id"]), "device": "cpu", "saved_prediction_tolerance": 1e-5}
+    output = ROOT / "work/prediction_cli_check.csv"
+    subprocess.run([sys.executable, "scripts/predict.py", "--checkpoint", "examples/family30_fold0_seed11.pt",
+                    "--input", "examples/held_out_quartets.npz", "--output", str(output)], cwd=ROOT, check=True)
+    actual = pd.read_csv(output).set_index("variant_id").loc[example["variant_id"]]
+    for field in ["prediction_mu", "prediction_epsilon"]:
+        np.testing.assert_allclose(actual[field], example[field], rtol=1e-5, atol=1e-5)
+    assert actual.groupby("protein_id")["rank"].max().equals(actual.groupby("protein_id").size())
+    return {"real_held_out_quartets": len(example["variant_id"]), "device": "cpu", "saved_prediction_tolerance": 1e-5,
+            "public_prediction_cli_verified": True}
 
 
 def main():
@@ -97,14 +170,15 @@ def main():
     parser.add_argument("--output", type=Path, default=ROOT / "work/reproduced")
     parser.add_argument("--model-check", action="store_true")
     args = parser.parse_args()
-    primary, selection = reconstruct_primary()
-    random, comparisons = reconstruct_random(selection)
+    primary, tables = reconstruct_primary()
+    random, comparisons = reconstruct_random(tables["selection"])
+    conditioning = reconstruct_conditioning(tables)
     args.output.mkdir(parents=True, exist_ok=True)
     primary.to_csv(args.output / "primary_tables.csv")
     random.to_csv(args.output / "random_enrichment.csv")
     manifest = {"complete": True, "primary_model_rows": len(primary), "primary_values_checked": primary.size,
                 "random_comparisons": len(random), "random_values_checked": random.size,
-                "paired_selection_records": comparisons, "mean_tolerance": 1e-12,
+                "paired_selection_records": comparisons, "conditioning": conditioning, "mean_tolerance": 1e-12,
                 "intervals": "Saved group-bootstrap intervals; this command independently reconstructs all reported means."}
     if args.model_check:
         manifest["model_check"] = check_model()

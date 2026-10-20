@@ -59,7 +59,9 @@ def main():
     parser.add_argument("--input", type=Path, default=INPUT)
     parser.add_argument("--output", type=Path, default=OUTPUT)
     parser.add_argument("--source-run-path", default="/data3/doomx/RECOMB-3-Epistasis/runs/sall_full_target/paper_evidence/family30_snapshot")
+    parser.add_argument("--source-commit", default="875d04d6df818110001f3889758cf998321a96f6")
     args = parser.parse_args()
+    source_manifest = json.loads((args.input / "manifest.json").read_text())
     tables = {name: pd.read_parquet(args.input / (name + "_per_protein.parquet"))
               for name in ["phenotype", "residual", "selection"]}
     tables = {name: table.loc[table.threshold.eq(args.threshold)].copy() for name, table in tables.items()}
@@ -96,7 +98,9 @@ def main():
     overview["common_main_hit_rate"] = common.groupby(["arm", "protein_id"]).compensation_hit_rate.mean().groupby("arm").mean()
     overview.to_csv(args.output / "paper_table.csv")
     manifest = {"complete": True, "scope": f"All {len(arms)} available family{args.threshold} S-all arms; each five-fold, five-repeat grid is complete.",
-                "full_planned_matrix_complete": False, "source_commit": "875d04d6df818110001f3889758cf998321a96f6",
+                "full_planned_matrix_complete": source_manifest.get("full_planned_matrix_complete", bool(
+                    source_manifest.get("complete") and source_manifest.get("completed_evaluations") == source_manifest.get("expected_evaluations"))),
+                "source_commit": args.source_commit,
                 "source_run_path": args.source_run_path,
                 "source_tables": [name + "_per_protein.parquet" for name in tables],
                 "verified_grids": len(grids), "arms": sorted(grids.arm.unique()), "paired_comparisons": len(rows),

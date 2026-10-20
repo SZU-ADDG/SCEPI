@@ -1,0 +1,1834 @@
+{
+  "created_utc": "2026-10-20T17:26:32.058429+00:00",
+  "source_commit": "875d04d6df818110001f3889758cf998321a96f6",
+  "source_working_tree_modified": true,
+  "source_selection": "runs/conditioning_factorial_20261021/source_selection.json",
+  "source_fits_in_control_matrix": 200,
+  "new_source_fits_required_at_preparation": 110,
+  "existing_control_fits_reused": 90,
+  "reference_fits_reused": 50,
+  "full_factorial": {
+    "final_interaction": [
+      "calibrated",
+      "observed"
+    ],
+    "final_values_only": [
+      "calibrated",
+      "zero"
+    ],
+    "final_mask_only": [
+      "predicted",
+      "observed"
+    ],
+    "final_no_pair_measured": [
+      "predicted",
+      "zero"
+    ]
+  },
+  "matching": "Same selected objective, hyperparameters, single initialization, parameter shapes, rows, random seed, training recipe, validation criterion and stopping rules; only the specified pair input or cycle parameterization changes.",
+  "WT_states": "Every state retains the original active gating for values and availability.",
+  "calibration": "External calibration and its source-validation omega rule remain unchanged; each model is independently fitted.",
+  "target_double_labels_for_fitting_or_selection": 0,
+  "matched_runs": [
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 25,
+      "fold": 0,
+      "seed": 11,
+      "run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed11",
+      "reference_run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family25/fold0/single/full_p64_lr0.001_seed11"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 25,
+      "fold": 0,
+      "seed": 11,
+      "run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nomask_combined_seed11",
+      "reference_run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family25/fold0/single/full_p64_lr0.001_seed11"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 25,
+      "fold": 0,
+      "seed": 11,
+      "run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_predictedvalues_combined_seed11",
+      "reference_run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family25/fold0/single/full_p64_lr0.001_seed11"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 25,
+      "fold": 0,
+      "seed": 11,
+      "run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_direct_combined_seed11",
+      "reference_run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family25/fold0/single/full_p64_lr0.001_seed11"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 25,
+      "fold": 0,
+      "seed": 23,
+      "run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed23",
+      "reference_run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family25/fold0/single/full_p64_lr0.001_seed23"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 25,
+      "fold": 0,
+      "seed": 23,
+      "run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nomask_combined_seed23",
+      "reference_run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family25/fold0/single/full_p64_lr0.001_seed23"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 25,
+      "fold": 0,
+      "seed": 23,
+      "run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_predictedvalues_combined_seed23",
+      "reference_run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family25/fold0/single/full_p64_lr0.001_seed23"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 25,
+      "fold": 0,
+      "seed": 23,
+      "run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_direct_combined_seed23",
+      "reference_run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family25/fold0/single/full_p64_lr0.001_seed23"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 25,
+      "fold": 0,
+      "seed": 47,
+      "run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed47",
+      "reference_run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family25/fold0/single/full_p64_lr0.001_seed47"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 25,
+      "fold": 0,
+      "seed": 47,
+      "run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nomask_combined_seed47",
+      "reference_run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family25/fold0/single/full_p64_lr0.001_seed47"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 25,
+      "fold": 0,
+      "seed": 47,
+      "run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_predictedvalues_combined_seed47",
+      "reference_run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family25/fold0/single/full_p64_lr0.001_seed47"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 25,
+      "fold": 0,
+      "seed": 47,
+      "run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_direct_combined_seed47",
+      "reference_run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family25/fold0/single/full_p64_lr0.001_seed47"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 25,
+      "fold": 0,
+      "seed": 89,
+      "run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed89",
+      "reference_run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family25/fold0/single/full_p64_lr0.001_seed89"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 25,
+      "fold": 0,
+      "seed": 89,
+      "run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nomask_combined_seed89",
+      "reference_run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family25/fold0/single/full_p64_lr0.001_seed89"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 25,
+      "fold": 0,
+      "seed": 89,
+      "run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_predictedvalues_combined_seed89",
+      "reference_run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family25/fold0/single/full_p64_lr0.001_seed89"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 25,
+      "fold": 0,
+      "seed": 89,
+      "run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_direct_combined_seed89",
+      "reference_run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family25/fold0/single/full_p64_lr0.001_seed89"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 25,
+      "fold": 0,
+      "seed": 131,
+      "run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed131",
+      "reference_run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family25/fold0/single/full_p64_lr0.001_seed131"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 25,
+      "fold": 0,
+      "seed": 131,
+      "run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nomask_combined_seed131",
+      "reference_run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family25/fold0/single/full_p64_lr0.001_seed131"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 25,
+      "fold": 0,
+      "seed": 131,
+      "run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_predictedvalues_combined_seed131",
+      "reference_run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family25/fold0/single/full_p64_lr0.001_seed131"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 25,
+      "fold": 0,
+      "seed": 131,
+      "run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_direct_combined_seed131",
+      "reference_run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family25/fold0/single/full_p64_lr0.001_seed131"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 25,
+      "fold": 1,
+      "seed": 11,
+      "run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_nopairmeasured_combined_seed11",
+      "reference_run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family25/fold1/single/full_p64_lr0.001_seed11"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 25,
+      "fold": 1,
+      "seed": 11,
+      "run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_nomask_combined_seed11",
+      "reference_run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family25/fold1/single/full_p64_lr0.001_seed11"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 25,
+      "fold": 1,
+      "seed": 11,
+      "run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_predictedvalues_combined_seed11",
+      "reference_run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family25/fold1/single/full_p64_lr0.001_seed11"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 25,
+      "fold": 1,
+      "seed": 11,
+      "run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_direct_combined_seed11",
+      "reference_run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family25/fold1/single/full_p64_lr0.001_seed11"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 25,
+      "fold": 1,
+      "seed": 23,
+      "run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_nopairmeasured_combined_seed23",
+      "reference_run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family25/fold1/single/full_p64_lr0.001_seed23"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 25,
+      "fold": 1,
+      "seed": 23,
+      "run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_nomask_combined_seed23",
+      "reference_run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family25/fold1/single/full_p64_lr0.001_seed23"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 25,
+      "fold": 1,
+      "seed": 23,
+      "run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_predictedvalues_combined_seed23",
+      "reference_run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family25/fold1/single/full_p64_lr0.001_seed23"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 25,
+      "fold": 1,
+      "seed": 23,
+      "run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_direct_combined_seed23",
+      "reference_run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family25/fold1/single/full_p64_lr0.001_seed23"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 25,
+      "fold": 1,
+      "seed": 47,
+      "run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_nopairmeasured_combined_seed47",
+      "reference_run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family25/fold1/single/full_p64_lr0.001_seed47"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 25,
+      "fold": 1,
+      "seed": 47,
+      "run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_nomask_combined_seed47",
+      "reference_run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family25/fold1/single/full_p64_lr0.001_seed47"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 25,
+      "fold": 1,
+      "seed": 47,
+      "run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_predictedvalues_combined_seed47",
+      "reference_run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family25/fold1/single/full_p64_lr0.001_seed47"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 25,
+      "fold": 1,
+      "seed": 47,
+      "run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_direct_combined_seed47",
+      "reference_run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family25/fold1/single/full_p64_lr0.001_seed47"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 25,
+      "fold": 1,
+      "seed": 89,
+      "run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_nopairmeasured_combined_seed89",
+      "reference_run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family25/fold1/single/full_p64_lr0.001_seed89"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 25,
+      "fold": 1,
+      "seed": 89,
+      "run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_nomask_combined_seed89",
+      "reference_run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family25/fold1/single/full_p64_lr0.001_seed89"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 25,
+      "fold": 1,
+      "seed": 89,
+      "run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_predictedvalues_combined_seed89",
+      "reference_run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family25/fold1/single/full_p64_lr0.001_seed89"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 25,
+      "fold": 1,
+      "seed": 89,
+      "run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_direct_combined_seed89",
+      "reference_run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family25/fold1/single/full_p64_lr0.001_seed89"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 25,
+      "fold": 1,
+      "seed": 131,
+      "run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_nopairmeasured_combined_seed131",
+      "reference_run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family25/fold1/single/full_p64_lr0.001_seed131"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 25,
+      "fold": 1,
+      "seed": 131,
+      "run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_nomask_combined_seed131",
+      "reference_run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family25/fold1/single/full_p64_lr0.001_seed131"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 25,
+      "fold": 1,
+      "seed": 131,
+      "run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_predictedvalues_combined_seed131",
+      "reference_run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family25/fold1/single/full_p64_lr0.001_seed131"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 25,
+      "fold": 1,
+      "seed": 131,
+      "run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_direct_combined_seed131",
+      "reference_run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family25/fold1/single/full_p64_lr0.001_seed131"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 25,
+      "fold": 2,
+      "seed": 11,
+      "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed11",
+      "reference_run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family25/fold2/single/full_p64_lr0.001_seed11"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 25,
+      "fold": 2,
+      "seed": 11,
+      "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nomask_combined_seed11",
+      "reference_run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family25/fold2/single/full_p64_lr0.001_seed11"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 25,
+      "fold": 2,
+      "seed": 11,
+      "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_predictedvalues_combined_seed11",
+      "reference_run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family25/fold2/single/full_p64_lr0.001_seed11"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 25,
+      "fold": 2,
+      "seed": 11,
+      "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_direct_combined_seed11",
+      "reference_run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family25/fold2/single/full_p64_lr0.001_seed11"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 25,
+      "fold": 2,
+      "seed": 23,
+      "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed23",
+      "reference_run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family25/fold2/single/full_p64_lr0.001_seed23"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 25,
+      "fold": 2,
+      "seed": 23,
+      "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nomask_combined_seed23",
+      "reference_run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family25/fold2/single/full_p64_lr0.001_seed23"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 25,
+      "fold": 2,
+      "seed": 23,
+      "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_predictedvalues_combined_seed23",
+      "reference_run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family25/fold2/single/full_p64_lr0.001_seed23"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 25,
+      "fold": 2,
+      "seed": 23,
+      "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_direct_combined_seed23",
+      "reference_run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family25/fold2/single/full_p64_lr0.001_seed23"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 25,
+      "fold": 2,
+      "seed": 47,
+      "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed47",
+      "reference_run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family25/fold2/single/full_p64_lr0.001_seed47"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 25,
+      "fold": 2,
+      "seed": 47,
+      "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nomask_combined_seed47",
+      "reference_run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family25/fold2/single/full_p64_lr0.001_seed47"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 25,
+      "fold": 2,
+      "seed": 47,
+      "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_predictedvalues_combined_seed47",
+      "reference_run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family25/fold2/single/full_p64_lr0.001_seed47"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 25,
+      "fold": 2,
+      "seed": 47,
+      "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_direct_combined_seed47",
+      "reference_run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family25/fold2/single/full_p64_lr0.001_seed47"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 25,
+      "fold": 2,
+      "seed": 89,
+      "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed89",
+      "reference_run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family25/fold2/single/full_p64_lr0.001_seed89"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 25,
+      "fold": 2,
+      "seed": 89,
+      "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nomask_combined_seed89",
+      "reference_run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family25/fold2/single/full_p64_lr0.001_seed89"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 25,
+      "fold": 2,
+      "seed": 89,
+      "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_predictedvalues_combined_seed89",
+      "reference_run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family25/fold2/single/full_p64_lr0.001_seed89"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 25,
+      "fold": 2,
+      "seed": 89,
+      "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_direct_combined_seed89",
+      "reference_run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family25/fold2/single/full_p64_lr0.001_seed89"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 25,
+      "fold": 2,
+      "seed": 131,
+      "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed131",
+      "reference_run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family25/fold2/single/full_p64_lr0.001_seed131"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 25,
+      "fold": 2,
+      "seed": 131,
+      "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nomask_combined_seed131",
+      "reference_run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family25/fold2/single/full_p64_lr0.001_seed131"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 25,
+      "fold": 2,
+      "seed": 131,
+      "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_predictedvalues_combined_seed131",
+      "reference_run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family25/fold2/single/full_p64_lr0.001_seed131"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 25,
+      "fold": 2,
+      "seed": 131,
+      "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_direct_combined_seed131",
+      "reference_run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family25/fold2/single/full_p64_lr0.001_seed131"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 25,
+      "fold": 3,
+      "seed": 11,
+      "run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed11",
+      "reference_run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family25/fold3/single/full_p64_lr0.0003_seed11"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 25,
+      "fold": 3,
+      "seed": 11,
+      "run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nomask_combined_seed11",
+      "reference_run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family25/fold3/single/full_p64_lr0.0003_seed11"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 25,
+      "fold": 3,
+      "seed": 11,
+      "run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_predictedvalues_combined_seed11",
+      "reference_run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family25/fold3/single/full_p64_lr0.0003_seed11"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 25,
+      "fold": 3,
+      "seed": 11,
+      "run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_direct_combined_seed11",
+      "reference_run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family25/fold3/single/full_p64_lr0.0003_seed11"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 25,
+      "fold": 3,
+      "seed": 23,
+      "run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed23",
+      "reference_run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family25/fold3/single/full_p64_lr0.0003_seed23"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 25,
+      "fold": 3,
+      "seed": 23,
+      "run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nomask_combined_seed23",
+      "reference_run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family25/fold3/single/full_p64_lr0.0003_seed23"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 25,
+      "fold": 3,
+      "seed": 23,
+      "run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_predictedvalues_combined_seed23",
+      "reference_run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family25/fold3/single/full_p64_lr0.0003_seed23"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 25,
+      "fold": 3,
+      "seed": 23,
+      "run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_direct_combined_seed23",
+      "reference_run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family25/fold3/single/full_p64_lr0.0003_seed23"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 25,
+      "fold": 3,
+      "seed": 47,
+      "run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed47",
+      "reference_run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family25/fold3/single/full_p64_lr0.0003_seed47"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 25,
+      "fold": 3,
+      "seed": 47,
+      "run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nomask_combined_seed47",
+      "reference_run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family25/fold3/single/full_p64_lr0.0003_seed47"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 25,
+      "fold": 3,
+      "seed": 47,
+      "run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_predictedvalues_combined_seed47",
+      "reference_run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family25/fold3/single/full_p64_lr0.0003_seed47"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 25,
+      "fold": 3,
+      "seed": 47,
+      "run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_direct_combined_seed47",
+      "reference_run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family25/fold3/single/full_p64_lr0.0003_seed47"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 25,
+      "fold": 3,
+      "seed": 89,
+      "run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed89",
+      "reference_run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family25/fold3/single/full_p64_lr0.0003_seed89"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 25,
+      "fold": 3,
+      "seed": 89,
+      "run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nomask_combined_seed89",
+      "reference_run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family25/fold3/single/full_p64_lr0.0003_seed89"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 25,
+      "fold": 3,
+      "seed": 89,
+      "run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_predictedvalues_combined_seed89",
+      "reference_run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family25/fold3/single/full_p64_lr0.0003_seed89"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 25,
+      "fold": 3,
+      "seed": 89,
+      "run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_direct_combined_seed89",
+      "reference_run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family25/fold3/single/full_p64_lr0.0003_seed89"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 25,
+      "fold": 3,
+      "seed": 131,
+      "run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed131",
+      "reference_run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family25/fold3/single/full_p64_lr0.0003_seed131"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 25,
+      "fold": 3,
+      "seed": 131,
+      "run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_nomask_combined_seed131",
+      "reference_run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family25/fold3/single/full_p64_lr0.0003_seed131"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 25,
+      "fold": 3,
+      "seed": 131,
+      "run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_predictedvalues_combined_seed131",
+      "reference_run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family25/fold3/single/full_p64_lr0.0003_seed131"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 25,
+      "fold": 3,
+      "seed": 131,
+      "run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_direct_combined_seed131",
+      "reference_run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family25/fold3/single/full_p64_lr0.0003_seed131"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 25,
+      "fold": 4,
+      "seed": 11,
+      "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed11",
+      "reference_run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family25/fold4/single/full_p128_lr0.001_seed11"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 25,
+      "fold": 4,
+      "seed": 11,
+      "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_nomask_combined_seed11",
+      "reference_run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family25/fold4/single/full_p128_lr0.001_seed11"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 25,
+      "fold": 4,
+      "seed": 11,
+      "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_predictedvalues_combined_seed11",
+      "reference_run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family25/fold4/single/full_p128_lr0.001_seed11"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 25,
+      "fold": 4,
+      "seed": 11,
+      "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_direct_combined_seed11",
+      "reference_run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family25/fold4/single/full_p128_lr0.001_seed11"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 25,
+      "fold": 4,
+      "seed": 23,
+      "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed23",
+      "reference_run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family25/fold4/single/full_p128_lr0.001_seed23"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 25,
+      "fold": 4,
+      "seed": 23,
+      "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_nomask_combined_seed23",
+      "reference_run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family25/fold4/single/full_p128_lr0.001_seed23"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 25,
+      "fold": 4,
+      "seed": 23,
+      "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_predictedvalues_combined_seed23",
+      "reference_run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family25/fold4/single/full_p128_lr0.001_seed23"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 25,
+      "fold": 4,
+      "seed": 23,
+      "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_direct_combined_seed23",
+      "reference_run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family25/fold4/single/full_p128_lr0.001_seed23"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 25,
+      "fold": 4,
+      "seed": 47,
+      "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed47",
+      "reference_run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family25/fold4/single/full_p128_lr0.001_seed47"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 25,
+      "fold": 4,
+      "seed": 47,
+      "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_nomask_combined_seed47",
+      "reference_run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family25/fold4/single/full_p128_lr0.001_seed47"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 25,
+      "fold": 4,
+      "seed": 47,
+      "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_predictedvalues_combined_seed47",
+      "reference_run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family25/fold4/single/full_p128_lr0.001_seed47"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 25,
+      "fold": 4,
+      "seed": 47,
+      "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_direct_combined_seed47",
+      "reference_run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family25/fold4/single/full_p128_lr0.001_seed47"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 25,
+      "fold": 4,
+      "seed": 89,
+      "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed89",
+      "reference_run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family25/fold4/single/full_p128_lr0.001_seed89"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 25,
+      "fold": 4,
+      "seed": 89,
+      "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_nomask_combined_seed89",
+      "reference_run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family25/fold4/single/full_p128_lr0.001_seed89"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 25,
+      "fold": 4,
+      "seed": 89,
+      "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_predictedvalues_combined_seed89",
+      "reference_run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family25/fold4/single/full_p128_lr0.001_seed89"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 25,
+      "fold": 4,
+      "seed": 89,
+      "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_direct_combined_seed89",
+      "reference_run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family25/fold4/single/full_p128_lr0.001_seed89"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 25,
+      "fold": 4,
+      "seed": 131,
+      "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed131",
+      "reference_run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family25/fold4/single/full_p128_lr0.001_seed131"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 25,
+      "fold": 4,
+      "seed": 131,
+      "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_nomask_combined_seed131",
+      "reference_run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family25/fold4/single/full_p128_lr0.001_seed131"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 25,
+      "fold": 4,
+      "seed": 131,
+      "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_predictedvalues_combined_seed131",
+      "reference_run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family25/fold4/single/full_p128_lr0.001_seed131"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 25,
+      "fold": 4,
+      "seed": 131,
+      "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_direct_combined_seed131",
+      "reference_run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family25/fold4/single/full_p128_lr0.001_seed131"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 30,
+      "fold": 0,
+      "seed": 11,
+      "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed11",
+      "reference_run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family30/fold0/single/full_p128_lr0.001_seed11"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 30,
+      "fold": 0,
+      "seed": 11,
+      "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_nomask_combined_seed11",
+      "reference_run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family30/fold0/single/full_p128_lr0.001_seed11"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 30,
+      "fold": 0,
+      "seed": 11,
+      "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_predictedvalues_combined_seed11",
+      "reference_run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family30/fold0/single/full_p128_lr0.001_seed11"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 30,
+      "fold": 0,
+      "seed": 11,
+      "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_direct_combined_seed11",
+      "reference_run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family30/fold0/single/full_p128_lr0.001_seed11"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 30,
+      "fold": 0,
+      "seed": 23,
+      "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed23",
+      "reference_run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family30/fold0/single/full_p128_lr0.001_seed23"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 30,
+      "fold": 0,
+      "seed": 23,
+      "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_nomask_combined_seed23",
+      "reference_run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family30/fold0/single/full_p128_lr0.001_seed23"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 30,
+      "fold": 0,
+      "seed": 23,
+      "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_predictedvalues_combined_seed23",
+      "reference_run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family30/fold0/single/full_p128_lr0.001_seed23"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 30,
+      "fold": 0,
+      "seed": 23,
+      "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_direct_combined_seed23",
+      "reference_run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family30/fold0/single/full_p128_lr0.001_seed23"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 30,
+      "fold": 0,
+      "seed": 47,
+      "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed47",
+      "reference_run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family30/fold0/single/full_p128_lr0.001_seed47"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 30,
+      "fold": 0,
+      "seed": 47,
+      "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_nomask_combined_seed47",
+      "reference_run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family30/fold0/single/full_p128_lr0.001_seed47"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 30,
+      "fold": 0,
+      "seed": 47,
+      "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_predictedvalues_combined_seed47",
+      "reference_run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family30/fold0/single/full_p128_lr0.001_seed47"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 30,
+      "fold": 0,
+      "seed": 47,
+      "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_direct_combined_seed47",
+      "reference_run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family30/fold0/single/full_p128_lr0.001_seed47"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 30,
+      "fold": 0,
+      "seed": 89,
+      "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed89",
+      "reference_run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family30/fold0/single/full_p128_lr0.001_seed89"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 30,
+      "fold": 0,
+      "seed": 89,
+      "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_nomask_combined_seed89",
+      "reference_run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family30/fold0/single/full_p128_lr0.001_seed89"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 30,
+      "fold": 0,
+      "seed": 89,
+      "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_predictedvalues_combined_seed89",
+      "reference_run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family30/fold0/single/full_p128_lr0.001_seed89"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 30,
+      "fold": 0,
+      "seed": 89,
+      "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_direct_combined_seed89",
+      "reference_run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family30/fold0/single/full_p128_lr0.001_seed89"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 30,
+      "fold": 0,
+      "seed": 131,
+      "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed131",
+      "reference_run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family30/fold0/single/full_p128_lr0.001_seed131"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 30,
+      "fold": 0,
+      "seed": 131,
+      "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_nomask_combined_seed131",
+      "reference_run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family30/fold0/single/full_p128_lr0.001_seed131"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 30,
+      "fold": 0,
+      "seed": 131,
+      "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_predictedvalues_combined_seed131",
+      "reference_run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family30/fold0/single/full_p128_lr0.001_seed131"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 30,
+      "fold": 0,
+      "seed": 131,
+      "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_direct_combined_seed131",
+      "reference_run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family30/fold0/single/full_p128_lr0.001_seed131"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 30,
+      "fold": 1,
+      "seed": 11,
+      "run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed11",
+      "reference_run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family30/fold1/single/full_p64_lr0.001_seed11"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 30,
+      "fold": 1,
+      "seed": 11,
+      "run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_nomask_combined_seed11",
+      "reference_run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family30/fold1/single/full_p64_lr0.001_seed11"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 30,
+      "fold": 1,
+      "seed": 11,
+      "run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_predictedvalues_combined_seed11",
+      "reference_run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family30/fold1/single/full_p64_lr0.001_seed11"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 30,
+      "fold": 1,
+      "seed": 11,
+      "run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_direct_combined_seed11",
+      "reference_run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family30/fold1/single/full_p64_lr0.001_seed11"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 30,
+      "fold": 1,
+      "seed": 23,
+      "run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed23",
+      "reference_run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family30/fold1/single/full_p64_lr0.001_seed23"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 30,
+      "fold": 1,
+      "seed": 23,
+      "run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_nomask_combined_seed23",
+      "reference_run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family30/fold1/single/full_p64_lr0.001_seed23"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 30,
+      "fold": 1,
+      "seed": 23,
+      "run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_predictedvalues_combined_seed23",
+      "reference_run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family30/fold1/single/full_p64_lr0.001_seed23"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 30,
+      "fold": 1,
+      "seed": 23,
+      "run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_direct_combined_seed23",
+      "reference_run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family30/fold1/single/full_p64_lr0.001_seed23"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 30,
+      "fold": 1,
+      "seed": 47,
+      "run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed47",
+      "reference_run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family30/fold1/single/full_p64_lr0.001_seed47"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 30,
+      "fold": 1,
+      "seed": 47,
+      "run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_nomask_combined_seed47",
+      "reference_run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family30/fold1/single/full_p64_lr0.001_seed47"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 30,
+      "fold": 1,
+      "seed": 47,
+      "run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_predictedvalues_combined_seed47",
+      "reference_run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family30/fold1/single/full_p64_lr0.001_seed47"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 30,
+      "fold": 1,
+      "seed": 47,
+      "run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_direct_combined_seed47",
+      "reference_run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family30/fold1/single/full_p64_lr0.001_seed47"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 30,
+      "fold": 1,
+      "seed": 89,
+      "run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed89",
+      "reference_run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family30/fold1/single/full_p64_lr0.001_seed89"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 30,
+      "fold": 1,
+      "seed": 89,
+      "run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_nomask_combined_seed89",
+      "reference_run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family30/fold1/single/full_p64_lr0.001_seed89"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 30,
+      "fold": 1,
+      "seed": 89,
+      "run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_predictedvalues_combined_seed89",
+      "reference_run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family30/fold1/single/full_p64_lr0.001_seed89"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 30,
+      "fold": 1,
+      "seed": 89,
+      "run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_direct_combined_seed89",
+      "reference_run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family30/fold1/single/full_p64_lr0.001_seed89"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 30,
+      "fold": 1,
+      "seed": 131,
+      "run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed131",
+      "reference_run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family30/fold1/single/full_p64_lr0.001_seed131"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 30,
+      "fold": 1,
+      "seed": 131,
+      "run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_nomask_combined_seed131",
+      "reference_run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family30/fold1/single/full_p64_lr0.001_seed131"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 30,
+      "fold": 1,
+      "seed": 131,
+      "run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_predictedvalues_combined_seed131",
+      "reference_run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family30/fold1/single/full_p64_lr0.001_seed131"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 30,
+      "fold": 1,
+      "seed": 131,
+      "run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_direct_combined_seed131",
+      "reference_run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family30/fold1/single/full_p64_lr0.001_seed131"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 30,
+      "fold": 2,
+      "seed": 11,
+      "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_nopairmeasured_combined_seed11",
+      "reference_run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family30/fold2/single/full_p64_lr0.0001_seed11"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 30,
+      "fold": 2,
+      "seed": 11,
+      "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_nomask_combined_seed11",
+      "reference_run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family30/fold2/single/full_p64_lr0.0001_seed11"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 30,
+      "fold": 2,
+      "seed": 11,
+      "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_predictedvalues_combined_seed11",
+      "reference_run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family30/fold2/single/full_p64_lr0.0001_seed11"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 30,
+      "fold": 2,
+      "seed": 11,
+      "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_direct_combined_seed11",
+      "reference_run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family30/fold2/single/full_p64_lr0.0001_seed11"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 30,
+      "fold": 2,
+      "seed": 23,
+      "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_nopairmeasured_combined_seed23",
+      "reference_run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family30/fold2/single/full_p64_lr0.0001_seed23"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 30,
+      "fold": 2,
+      "seed": 23,
+      "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_nomask_combined_seed23",
+      "reference_run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family30/fold2/single/full_p64_lr0.0001_seed23"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 30,
+      "fold": 2,
+      "seed": 23,
+      "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_predictedvalues_combined_seed23",
+      "reference_run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family30/fold2/single/full_p64_lr0.0001_seed23"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 30,
+      "fold": 2,
+      "seed": 23,
+      "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_direct_combined_seed23",
+      "reference_run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family30/fold2/single/full_p64_lr0.0001_seed23"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 30,
+      "fold": 2,
+      "seed": 47,
+      "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_nopairmeasured_combined_seed47",
+      "reference_run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family30/fold2/single/full_p64_lr0.0001_seed47"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 30,
+      "fold": 2,
+      "seed": 47,
+      "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_nomask_combined_seed47",
+      "reference_run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family30/fold2/single/full_p64_lr0.0001_seed47"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 30,
+      "fold": 2,
+      "seed": 47,
+      "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_predictedvalues_combined_seed47",
+      "reference_run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family30/fold2/single/full_p64_lr0.0001_seed47"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 30,
+      "fold": 2,
+      "seed": 47,
+      "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_direct_combined_seed47",
+      "reference_run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family30/fold2/single/full_p64_lr0.0001_seed47"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 30,
+      "fold": 2,
+      "seed": 89,
+      "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_nopairmeasured_combined_seed89",
+      "reference_run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family30/fold2/single/full_p64_lr0.0001_seed89"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 30,
+      "fold": 2,
+      "seed": 89,
+      "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_nomask_combined_seed89",
+      "reference_run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family30/fold2/single/full_p64_lr0.0001_seed89"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 30,
+      "fold": 2,
+      "seed": 89,
+      "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_predictedvalues_combined_seed89",
+      "reference_run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family30/fold2/single/full_p64_lr0.0001_seed89"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 30,
+      "fold": 2,
+      "seed": 89,
+      "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_direct_combined_seed89",
+      "reference_run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family30/fold2/single/full_p64_lr0.0001_seed89"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 30,
+      "fold": 2,
+      "seed": 131,
+      "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_nopairmeasured_combined_seed131",
+      "reference_run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family30/fold2/single/full_p64_lr0.0001_seed131"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 30,
+      "fold": 2,
+      "seed": 131,
+      "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_nomask_combined_seed131",
+      "reference_run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family30/fold2/single/full_p64_lr0.0001_seed131"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 30,
+      "fold": 2,
+      "seed": 131,
+      "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_predictedvalues_combined_seed131",
+      "reference_run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family30/fold2/single/full_p64_lr0.0001_seed131"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 30,
+      "fold": 2,
+      "seed": 131,
+      "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_direct_combined_seed131",
+      "reference_run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family30/fold2/single/full_p64_lr0.0001_seed131"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 30,
+      "fold": 3,
+      "seed": 11,
+      "run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_nopairmeasured_phenotype_seed11",
+      "reference_run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed11",
+      "single_run": "runs/e3/family30/fold3/single/full_p64_lr0.0003_seed11"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 30,
+      "fold": 3,
+      "seed": 11,
+      "run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_nomask_phenotype_seed11",
+      "reference_run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed11",
+      "single_run": "runs/e3/family30/fold3/single/full_p64_lr0.0003_seed11"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 30,
+      "fold": 3,
+      "seed": 11,
+      "run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_predictedvalues_phenotype_seed11",
+      "reference_run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed11",
+      "single_run": "runs/e3/family30/fold3/single/full_p64_lr0.0003_seed11"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 30,
+      "fold": 3,
+      "seed": 11,
+      "run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_direct_phenotype_seed11",
+      "reference_run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed11",
+      "single_run": "runs/e3/family30/fold3/single/full_p64_lr0.0003_seed11"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 30,
+      "fold": 3,
+      "seed": 23,
+      "run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_nopairmeasured_phenotype_seed23",
+      "reference_run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed23",
+      "single_run": "runs/e3/family30/fold3/single/full_p64_lr0.0003_seed23"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 30,
+      "fold": 3,
+      "seed": 23,
+      "run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_nomask_phenotype_seed23",
+      "reference_run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed23",
+      "single_run": "runs/e3/family30/fold3/single/full_p64_lr0.0003_seed23"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 30,
+      "fold": 3,
+      "seed": 23,
+      "run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_predictedvalues_phenotype_seed23",
+      "reference_run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed23",
+      "single_run": "runs/e3/family30/fold3/single/full_p64_lr0.0003_seed23"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 30,
+      "fold": 3,
+      "seed": 23,
+      "run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_direct_phenotype_seed23",
+      "reference_run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed23",
+      "single_run": "runs/e3/family30/fold3/single/full_p64_lr0.0003_seed23"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 30,
+      "fold": 3,
+      "seed": 47,
+      "run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_nopairmeasured_phenotype_seed47",
+      "reference_run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed47",
+      "single_run": "runs/e3/family30/fold3/single/full_p64_lr0.0003_seed47"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 30,
+      "fold": 3,
+      "seed": 47,
+      "run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_nomask_phenotype_seed47",
+      "reference_run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed47",
+      "single_run": "runs/e3/family30/fold3/single/full_p64_lr0.0003_seed47"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 30,
+      "fold": 3,
+      "seed": 47,
+      "run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_predictedvalues_phenotype_seed47",
+      "reference_run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed47",
+      "single_run": "runs/e3/family30/fold3/single/full_p64_lr0.0003_seed47"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 30,
+      "fold": 3,
+      "seed": 47,
+      "run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_direct_phenotype_seed47",
+      "reference_run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed47",
+      "single_run": "runs/e3/family30/fold3/single/full_p64_lr0.0003_seed47"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 30,
+      "fold": 3,
+      "seed": 89,
+      "run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_nopairmeasured_phenotype_seed89",
+      "reference_run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed89",
+      "single_run": "runs/e3/family30/fold3/single/full_p64_lr0.0003_seed89"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 30,
+      "fold": 3,
+      "seed": 89,
+      "run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_nomask_phenotype_seed89",
+      "reference_run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed89",
+      "single_run": "runs/e3/family30/fold3/single/full_p64_lr0.0003_seed89"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 30,
+      "fold": 3,
+      "seed": 89,
+      "run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_predictedvalues_phenotype_seed89",
+      "reference_run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed89",
+      "single_run": "runs/e3/family30/fold3/single/full_p64_lr0.0003_seed89"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 30,
+      "fold": 3,
+      "seed": 89,
+      "run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_direct_phenotype_seed89",
+      "reference_run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed89",
+      "single_run": "runs/e3/family30/fold3/single/full_p64_lr0.0003_seed89"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 30,
+      "fold": 3,
+      "seed": 131,
+      "run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_nopairmeasured_phenotype_seed131",
+      "reference_run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed131",
+      "single_run": "runs/e3/family30/fold3/single/full_p64_lr0.0003_seed131"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 30,
+      "fold": 3,
+      "seed": 131,
+      "run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_nomask_phenotype_seed131",
+      "reference_run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed131",
+      "single_run": "runs/e3/family30/fold3/single/full_p64_lr0.0003_seed131"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 30,
+      "fold": 3,
+      "seed": 131,
+      "run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_predictedvalues_phenotype_seed131",
+      "reference_run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed131",
+      "single_run": "runs/e3/family30/fold3/single/full_p64_lr0.0003_seed131"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 30,
+      "fold": 3,
+      "seed": 131,
+      "run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_direct_phenotype_seed131",
+      "reference_run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed131",
+      "single_run": "runs/e3/family30/fold3/single/full_p64_lr0.0003_seed131"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 30,
+      "fold": 4,
+      "seed": 11,
+      "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed11",
+      "reference_run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family30/fold4/single/full_p128_lr0.001_seed11"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 30,
+      "fold": 4,
+      "seed": 11,
+      "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_nomask_combined_seed11",
+      "reference_run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family30/fold4/single/full_p128_lr0.001_seed11"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 30,
+      "fold": 4,
+      "seed": 11,
+      "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_predictedvalues_combined_seed11",
+      "reference_run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family30/fold4/single/full_p128_lr0.001_seed11"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 30,
+      "fold": 4,
+      "seed": 11,
+      "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_direct_combined_seed11",
+      "reference_run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+      "single_run": "runs/e3/family30/fold4/single/full_p128_lr0.001_seed11"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 30,
+      "fold": 4,
+      "seed": 23,
+      "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed23",
+      "reference_run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family30/fold4/single/full_p128_lr0.001_seed23"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 30,
+      "fold": 4,
+      "seed": 23,
+      "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_nomask_combined_seed23",
+      "reference_run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family30/fold4/single/full_p128_lr0.001_seed23"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 30,
+      "fold": 4,
+      "seed": 23,
+      "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_predictedvalues_combined_seed23",
+      "reference_run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family30/fold4/single/full_p128_lr0.001_seed23"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 30,
+      "fold": 4,
+      "seed": 23,
+      "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_direct_combined_seed23",
+      "reference_run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed23",
+      "single_run": "runs/e3/family30/fold4/single/full_p128_lr0.001_seed23"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 30,
+      "fold": 4,
+      "seed": 47,
+      "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed47",
+      "reference_run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family30/fold4/single/full_p128_lr0.001_seed47"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 30,
+      "fold": 4,
+      "seed": 47,
+      "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_nomask_combined_seed47",
+      "reference_run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family30/fold4/single/full_p128_lr0.001_seed47"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 30,
+      "fold": 4,
+      "seed": 47,
+      "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_predictedvalues_combined_seed47",
+      "reference_run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family30/fold4/single/full_p128_lr0.001_seed47"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 30,
+      "fold": 4,
+      "seed": 47,
+      "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_direct_combined_seed47",
+      "reference_run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed47",
+      "single_run": "runs/e3/family30/fold4/single/full_p128_lr0.001_seed47"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 30,
+      "fold": 4,
+      "seed": 89,
+      "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed89",
+      "reference_run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family30/fold4/single/full_p128_lr0.001_seed89"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 30,
+      "fold": 4,
+      "seed": 89,
+      "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_nomask_combined_seed89",
+      "reference_run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family30/fold4/single/full_p128_lr0.001_seed89"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 30,
+      "fold": 4,
+      "seed": 89,
+      "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_predictedvalues_combined_seed89",
+      "reference_run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family30/fold4/single/full_p128_lr0.001_seed89"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 30,
+      "fold": 4,
+      "seed": 89,
+      "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_direct_combined_seed89",
+      "reference_run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed89",
+      "single_run": "runs/e3/family30/fold4/single/full_p128_lr0.001_seed89"
+    },
+    {
+      "arm": "final_no_pair_measured",
+      "threshold": 30,
+      "fold": 4,
+      "seed": 131,
+      "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_nopairmeasured_combined_seed131",
+      "reference_run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family30/fold4/single/full_p128_lr0.001_seed131"
+    },
+    {
+      "arm": "final_values_only",
+      "threshold": 30,
+      "fold": 4,
+      "seed": 131,
+      "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_nomask_combined_seed131",
+      "reference_run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family30/fold4/single/full_p128_lr0.001_seed131"
+    },
+    {
+      "arm": "final_mask_only",
+      "threshold": 30,
+      "fold": 4,
+      "seed": 131,
+      "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_predictedvalues_combined_seed131",
+      "reference_run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family30/fold4/single/full_p128_lr0.001_seed131"
+    },
+    {
+      "arm": "final_direct_residual",
+      "threshold": 30,
+      "fold": 4,
+      "seed": 131,
+      "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_direct_combined_seed131",
+      "reference_run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed131",
+      "single_run": "runs/e3/family30/fold4/single/full_p128_lr0.001_seed131"
+    }
+  ]
+}

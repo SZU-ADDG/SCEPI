@@ -1,0 +1,321 @@
+{
+  "complete": true,
+  "family_partitions": [
+    {
+      "threshold": 30,
+      "reference_backgrounds": 479,
+      "sequence_homology_groups": 112,
+      "merged_family_groups": 74,
+      "pfam_annotated_backgrounds": 301,
+      "recorded_edges": 6598,
+      "cross_partition_edges": 0,
+      "edge_reasons": {
+        "sequence_identity_coverage": 5888,
+        "pfam": 418,
+        "clan": 221,
+        "reference_scaffold": 71
+      }
+    },
+    {
+      "threshold": 25,
+      "reference_backgrounds": 479,
+      "sequence_homology_groups": 99,
+      "merged_family_groups": 67,
+      "pfam_annotated_backgrounds": 301,
+      "recorded_edges": 7257,
+      "cross_partition_edges": 0,
+      "edge_reasons": {
+        "sequence_identity_coverage": 6547,
+        "pfam": 418,
+        "clan": 221,
+        "reference_scaffold": 71
+      }
+    }
+  ],
+  "combination_permissions": [
+    {
+      "seed": 11,
+      "scheme": "two_pair_secondary",
+      "proteins": 32,
+      "training_variants": 9455,
+      "validation_variants": 0,
+      "test_variants": 9685,
+      "train_validation_pair_overlap": 0,
+      "train_test_pair_overlap": 0,
+      "validation_test_pair_overlap": 0
+    },
+    {
+      "seed": 11,
+      "scheme": "unseen_pair",
+      "proteins": 71,
+      "training_variants": 68323,
+      "validation_variants": 28898,
+      "test_variants": 28962,
+      "train_validation_pair_overlap": 0,
+      "train_test_pair_overlap": 0,
+      "validation_test_pair_overlap": 0
+    },
+    {
+      "seed": 23,
+      "scheme": "two_pair_secondary",
+      "proteins": 32,
+      "training_variants": 9773,
+      "validation_variants": 0,
+      "test_variants": 9367,
+      "train_validation_pair_overlap": 0,
+      "train_test_pair_overlap": 0,
+      "validation_test_pair_overlap": 0
+    },
+    {
+      "seed": 23,
+      "scheme": "unseen_pair",
+      "proteins": 71,
+      "training_variants": 68681,
+      "validation_variants": 28923,
+      "test_variants": 28579,
+      "train_validation_pair_overlap": 0,
+      "train_test_pair_overlap": 0,
+      "validation_test_pair_overlap": 0
+    },
+    {
+      "seed": 47,
+      "scheme": "two_pair_secondary",
+      "proteins": 32,
+      "training_variants": 9602,
+      "validation_variants": 0,
+      "test_variants": 9538,
+      "train_validation_pair_overlap": 0,
+      "train_test_pair_overlap": 0,
+      "validation_test_pair_overlap": 0
+    },
+    {
+      "seed": 47,
+      "scheme": "unseen_pair",
+      "proteins": 71,
+      "training_variants": 68163,
+      "validation_variants": 28994,
+      "test_variants": 29026,
+      "train_validation_pair_overlap": 0,
+      "train_test_pair_overlap": 0,
+      "validation_test_pair_overlap": 0
+    },
+    {
+      "seed": 89,
+      "scheme": "two_pair_secondary",
+      "proteins": 32,
+      "training_variants": 9754,
+      "validation_variants": 0,
+      "test_variants": 9386,
+      "train_validation_pair_overlap": 0,
+      "train_test_pair_overlap": 0,
+      "validation_test_pair_overlap": 0
+    },
+    {
+      "seed": 89,
+      "scheme": "unseen_pair",
+      "proteins": 71,
+      "training_variants": 68098,
+      "validation_variants": 29044,
+      "test_variants": 29041,
+      "train_validation_pair_overlap": 0,
+      "train_test_pair_overlap": 0,
+      "validation_test_pair_overlap": 0
+    },
+    {
+      "seed": 131,
+      "scheme": "two_pair_secondary",
+      "proteins": 32,
+      "training_variants": 9500,
+      "validation_variants": 0,
+      "test_variants": 9640,
+      "train_validation_pair_overlap": 0,
+      "train_test_pair_overlap": 0,
+      "validation_test_pair_overlap": 0
+    },
+    {
+      "seed": 131,
+      "scheme": "unseen_pair",
+      "proteins": 71,
+      "training_variants": 68470,
+      "validation_variants": 28829,
+      "test_variants": 28884,
+      "train_validation_pair_overlap": 0,
+      "train_test_pair_overlap": 0,
+      "validation_test_pair_overlap": 0
+    }
+  ],
+  "data_fields": {
+    "source_rows": 776298,
+    "accepted_observations": 695972,
+    "phenotype_field": "dG_ML",
+    "unit": "kcal/mol",
+    "observation_fields": [
+      "observation_id",
+      "source_row",
+      "name",
+      "dna_seq",
+      "log10_K50_t",
+      "log10_K50_t_95CI_high",
+      "log10_K50_t_95CI_low",
+      "log10_K50_t_95CI",
+      "fitting_error_t",
+      "log10_K50unfolded_t",
+      "deltaG_t",
+      "deltaG_t_95CI_high",
+      "deltaG_t_95CI_low",
+      "deltaG_t_95CI",
+      "log10_K50_c",
+      "log10_K50_c_95CI_high",
+      "log10_K50_c_95CI_low",
+      "log10_K50_c_95CI",
+      "fitting_error_c",
+      "log10_K50unfolded_c",
+      "deltaG_c",
+      "deltaG_c_95CI_high",
+      "deltaG_c_95CI_low",
+      "deltaG_c_95CI",
+      "deltaG",
+      "deltaG_95CI_high",
+      "deltaG_95CI_low",
+      "deltaG_95CI",
+      "aa_seq_full",
+      "aa_seq",
+      "mut_type",
+      "WT_name",
+      "WT_cluster",
+      "log10_K50_trypsin_ML",
+      "log10_K50_chymotrypsin_ML",
+      "dG_ML",
+      "ddG_ML",
+      "Stabilizing_mut",
+      "pair_name",
+      "protein_id",
+      "sequence_status",
+      "mutation_key",
+      "n_mutations",
+      "positions",
+      "wt_residues",
+      "mut_residues",
+      "point",
+      "lower",
+      "upper",
+      "measurement_status",
+      "point_in_range",
+      "accepted",
+      "variant_id"
+    ],
+    "measurement_status_counts": {
+      "point": 675467,
+      "left_censored": 53235,
+      "right_censored": 43059,
+      "author_filtered": 4537
+    },
+    "admission": "Sequence-consistent substitution or wild type and author dG_ML not '-'. Dataset2/Dataset3 reference backgrounds belong to G0/G1 in Single_DMS_list.csv.",
+    "censoring": "'<-1' becomes (-inf,-1]; '>5' becomes [5,inf). These records remain interval observations; numerical values are not clipped into point targets.",
+    "main_evaluation": "Every member of a complete cycle has only point observations strictly between -1 and 5 kcal/mol.",
+    "relative_effect": "mu_obs(M)=y(M)-y(WT), with the same reference background and measurement scale."
+  },
+  "kermut_optimization": {
+    "fits": 795,
+    "proteins": 159,
+    "all_steps": 150,
+    "median_relative_terminal_window_change": 0.0023348331451416016,
+    "p90_relative_terminal_window_change": 0.009080109000206005,
+    "fraction_terminal_window_change_below_0_01": 0.929559748427673,
+    "median_last_minus_minimum_loss": 0.02608737349510193,
+    "protocol": "Fixed 150 AdamW steps, learning rate 0.1, weight decay 0.01, one initialization. Terminal-window changes are a descriptive diagnostic, not a new stopping criterion."
+  },
+  "thermompnn_source": {
+    "source_fits": 50,
+    "maximum_epochs": 100,
+    "patience": 10,
+    "batch_size": 256,
+    "selected_learning_rates": [
+      0.0001
+    ],
+    "selected_weight_decays": [
+      0.0001,
+      0.001,
+      0.01
+    ],
+    "minimum_realized_epochs": 14,
+    "maximum_realized_epochs": 45
+  },
+  "family_versions": {
+    "stage": "E3_split",
+    "seed": 20261009,
+    "pfam": "37.0",
+    "hmmer": "3.4",
+    "mmseqs_version": "18.8cc5c",
+    "source_commit": "1fc0433acdee9405832a146315406c53fcb8a2ee",
+    "protocol": "Exhaustive pairwise search without a sequence prefilter; family/clan and documented reference scaffold merges.",
+    "scope": "Pfam-annotated families and unannotated sequence homology groups are flagged separately.",
+    "results": {
+      "30": {
+        "identity_threshold": 0.3,
+        "bidirectional_coverage": 0.8,
+        "homology_groups": 112,
+        "family_groups": 74,
+        "pfam_annotated_proteins": 301,
+        "pfam_annotated_groups_with_main_quartets": 41,
+        "outer_group_loads_quartets_proteins": [
+          [
+            46615,
+            239
+          ],
+          [
+            20273,
+            73
+          ],
+          [
+            20353,
+            99
+          ],
+          [
+            20322,
+            48
+          ],
+          [
+            20329,
+            20
+          ]
+        ],
+        "cross_group_qualifying_alignments": 0,
+        "path": "data/splits/families_30.parquet"
+      },
+      "25": {
+        "identity_threshold": 0.25,
+        "bidirectional_coverage": 0.8,
+        "homology_groups": 99,
+        "family_groups": 67,
+        "pfam_annotated_proteins": 301,
+        "pfam_annotated_groups_with_main_quartets": 36,
+        "outer_group_loads_quartets_proteins": [
+          [
+            54611,
+            312
+          ],
+          [
+            18389,
+            22
+          ],
+          [
+            18280,
+            63
+          ],
+          [
+            18331,
+            21
+          ],
+          [
+            18281,
+            61
+          ]
+        ],
+        "cross_group_qualifying_alignments": 0,
+        "path": "data/splits/families_25.parquet"
+      }
+    }
+  },
+  "new_model_training": false
+}

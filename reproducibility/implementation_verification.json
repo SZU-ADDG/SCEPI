@@ -1,0 +1,30 @@
+{
+  "complete": true,
+  "performance_evaluation": false,
+  "source_records": [
+    {
+      "source_run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+      "projection": 64,
+      "real_training_cycles": 548,
+      "training_cycle_fraction": 0.009983239816366684,
+      "parameters": 640319,
+      "legacy_full_and_removed_outputs_identical": true,
+      "external_single_predictions_identical": true,
+      "independent_value_and_mask_inputs_verified": true,
+      "all_four_WT_state_masks_verified": true,
+      "real_label_backward_pass": true
+    },
+    {
+      "source_run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_combined_seed11",
+      "projection": 128,
+      "real_training_cycles": 912,
+      "training_cycle_fraction": 0.009997478706028086,
+      "parameters": 984383,
+      "legacy_full_and_removed_outputs_identical": true,
+      "external_single_predictions_identical": true,
+      "independent_value_and_mask_inputs_verified": true,
+      "all_four_WT_state_masks_verified": true,
+      "real_label_backward_pass": true
+    }
+  ]
+}

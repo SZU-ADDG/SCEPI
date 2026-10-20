@@ -1,0 +1,58 @@
+[
+  {
+    "threshold": 25,
+    "condition": "S128",
+    "proteins": 155,
+    "protein_repetition_records": 775,
+    "residual_rmse": 0.8027980882133386
+  },
+  {
+    "threshold": 25,
+    "condition": "S32",
+    "proteins": 155,
+    "protein_repetition_records": 775,
+    "residual_rmse": 0.8212129501024044
+  },
+  {
+    "threshold": 25,
+    "condition": "Sall",
+    "proteins": 155,
+    "protein_repetition_records": 775,
+    "residual_rmse": 0.604328600891248
+  },
+  {
+    "threshold": 25,
+    "condition": "Z",
+    "proteins": 155,
+    "protein_repetition_records": 775,
+    "residual_rmse": 0.826970662714427
+  },
+  {
+    "threshold": 30,
+    "condition": "S128",
+    "proteins": 155,
+    "protein_repetition_records": 775,
+    "residual_rmse": 0.779822494220658
+  },
+  {
+    "threshold": 30,
+    "condition": "S32",
+    "proteins": 155,
+    "protein_repetition_records": 775,
+    "residual_rmse": 0.7975119073366523
+  },
+  {
+    "threshold": 30,
+    "condition": "Sall",
+    "proteins": 155,
+    "protein_repetition_records": 775,
+    "residual_rmse": 0.590416403536381
+  },
+  {
+    "threshold": 30,
+    "condition": "Z",
+    "proteins": 155,
+    "protein_repetition_records": 775,
+    "residual_rmse": 0.8030987287014031
+  }
+]

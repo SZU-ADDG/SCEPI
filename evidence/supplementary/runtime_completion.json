@@ -1,0 +1,68 @@
+{
+  "complete": true,
+  "checked_at": "2026-10-18T04:55:03.859000+00:00",
+  "source_commit": "875d04d6df818110001f3889758cf998321a96f6",
+  "matrices": {
+    "original_main": {
+      "authorized_evaluations": 12622,
+      "completed_evaluations": 12622,
+      "discontinued_evaluations": 498,
+      "active_scope_complete": true,
+      "reporting_complete": true,
+      "reporting_evidence": "AsyncSummary published the complete authorized evaluation count."
+    },
+    "compensation_main": {
+      "authorized_evaluations": 2251,
+      "completed_evaluations": 2251,
+      "discontinued_evaluations": 149,
+      "active_scope_complete": true,
+      "reporting_complete": true,
+      "reporting_evidence": "AsyncSummary published the complete authorized evaluation count."
+    },
+    "sall_full_target": {
+      "authorized_evaluations": 1151,
+      "completed_evaluations": 1151,
+      "discontinued_evaluations": 49,
+      "active_scope_complete": true,
+      "reporting_complete": true,
+      "reporting_evidence": "Published manifest, evaluation coverage, and output files."
+    }
+  },
+  "runtime": "/data1/doomx/anaconda3/envs/recomb-3-epistasis/bin/python",
+  "rfa_target_queue_complete": true,
+  "verified_fixed_targets": 284,
+  "preserved_files": 1199,
+  "compatibility_paths_present": {
+    ".work": false,
+    ".cache": false,
+    ".conda-env": false
+  },
+  "paper_numeric_cells_checked": 485,
+  "paper_verification": "runs/final_main_reporting_20261018/manuscript_verification.json",
+  "working_tree_source_snapshot": "runs/final_main_reporting_20261018/source_snapshot",
+  "source_files": [
+    "README.md",
+    "EXPERIMENTS.md",
+    "METHOD.md",
+    "configs/rfa_fixed.json",
+    "scripts/runtime.sh",
+    "scripts/fit_rfa.R",
+    "scripts/run_mochi_targets.py",
+    "scripts/run_rfa_acceleration.py",
+    "scripts/summarize_completed_main.py",
+    "scripts/check_completed_main_paper.py",
+    "scripts/check_paper_evidence.py",
+    "epistasis/rfa.py",
+    "epistasis/main_evaluation.py",
+    "paper/manuscript.tex",
+    "paper/evidence_ledger.md",
+    "paper/figures/method_overview.tikz",
+    "paper/figures/compensation_discovery.tikz",
+    "paper/figures/prediction_comparison.tikz",
+    "paper/figures/component_analysis.tikz",
+    "work/rfa_fixed_20261018/verify_live.py",
+    "work/final_main_reporting_20261018/read_rfa_evaluations.py",
+    "work/final_main_reporting_20261018/check_rfa_constants.py",
+    "work/final_main_reporting_20261018/record_final_state.py"
+  ]
+}

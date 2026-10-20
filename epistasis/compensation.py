@@ -17,6 +17,12 @@ def definitions():
         "interaction": "full_g0_f1_j1",
         "direct_residual": "full_g0_f1_j1_direct",
         "no_pair_measured": "full_g0_f1_j1_nopairmeasured",
+        "final_interaction": "source_selected",
+        "final_remove_interaction": "source_selected",
+        "final_direct_residual": "source_selected_direct",
+        "final_no_pair_measured": "source_selected_nopairmeasured",
+        "final_values_only": "source_selected_nomask",
+        "final_mask_only": "source_selected_predictedvalues",
         "additive": "full_g0_f0_j1_n1",
         "global_nonlinear": "full_g0_f1_j1_n1",
         "remove_interaction": "full_g0_f1_j1",
@@ -37,7 +43,7 @@ def definitions():
     for arm, tag in pair.items():
         result[arm] = {"kind": "pair", "tag": tag, "conditions": ["Sall"], "thresholds": [30, 25],
                        "requires_structure": arm.startswith("geometry"),
-                       "prediction_method": "remove_interaction" if arm == "remove_interaction" else "shared"}
+                       "prediction_method": "remove_interaction" if arm in {"remove_interaction", "final_remove_interaction"} else "shared"}
     for arm in ["esm2_additive", "esm2_context"]:
         result[arm] = {"kind": "esm_scores", "conditions": ["Sall"], "thresholds": [30, 25], "requires_structure": False}
     for arm, template in {

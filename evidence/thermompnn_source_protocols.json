@@ -1,0 +1,952 @@
+[
+  {
+    "key": "family25/fold0",
+    "seed": 11,
+    "run": "runs/thermo_family/family25/fold0/epistatic/lr0.0001_wd0.0001_seed11",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 25,
+      "fold": 0,
+      "seed": 11,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 24,
+    "epochs": 35,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family25/fold0",
+    "seed": 23,
+    "run": "runs/thermo_family/family25/fold0/epistatic/lr0.0001_wd0.0001_seed23",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 25,
+      "fold": 0,
+      "seed": 23,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 7,
+    "epochs": 18,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family25/fold0",
+    "seed": 47,
+    "run": "runs/thermo_family/family25/fold0/epistatic/lr0.0001_wd0.0001_seed47",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 25,
+      "fold": 0,
+      "seed": 47,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 34,
+    "epochs": 45,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family25/fold0",
+    "seed": 89,
+    "run": "runs/thermo_family/family25/fold0/epistatic/lr0.0001_wd0.0001_seed89",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 25,
+      "fold": 0,
+      "seed": 89,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 10,
+    "epochs": 21,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family25/fold0",
+    "seed": 131,
+    "run": "runs/thermo_family/family25/fold0/epistatic/lr0.0001_wd0.0001_seed131",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 25,
+      "fold": 0,
+      "seed": 131,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 17,
+    "epochs": 28,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family25/fold1",
+    "seed": 11,
+    "run": "runs/thermo_family/family25/fold1/epistatic/lr0.0001_wd0.0001_seed11",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 25,
+      "fold": 1,
+      "seed": 11,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 31,
+    "epochs": 42,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family25/fold1",
+    "seed": 23,
+    "run": "runs/thermo_family/family25/fold1/epistatic/lr0.0001_wd0.0001_seed23",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 25,
+      "fold": 1,
+      "seed": 23,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 10,
+    "epochs": 21,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family25/fold1",
+    "seed": 47,
+    "run": "runs/thermo_family/family25/fold1/epistatic/lr0.0001_wd0.0001_seed47",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 25,
+      "fold": 1,
+      "seed": 47,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 16,
+    "epochs": 27,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family25/fold1",
+    "seed": 89,
+    "run": "runs/thermo_family/family25/fold1/epistatic/lr0.0001_wd0.0001_seed89",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 25,
+      "fold": 1,
+      "seed": 89,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 16,
+    "epochs": 27,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family25/fold1",
+    "seed": 131,
+    "run": "runs/thermo_family/family25/fold1/epistatic/lr0.0001_wd0.0001_seed131",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 25,
+      "fold": 1,
+      "seed": 131,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 12,
+    "epochs": 23,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family25/fold2",
+    "seed": 11,
+    "run": "runs/thermo_family/family25/fold2/epistatic/lr0.0001_wd0.01_seed11",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 25,
+      "fold": 2,
+      "seed": 11,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.01,
+      "smoke": false
+    },
+    "best_epoch": 9,
+    "epochs": 20,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family25/fold2",
+    "seed": 23,
+    "run": "runs/thermo_family/family25/fold2/epistatic/lr0.0001_wd0.01_seed23",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 25,
+      "fold": 2,
+      "seed": 23,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.01,
+      "smoke": false
+    },
+    "best_epoch": 3,
+    "epochs": 14,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family25/fold2",
+    "seed": 47,
+    "run": "runs/thermo_family/family25/fold2/epistatic/lr0.0001_wd0.01_seed47",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 25,
+      "fold": 2,
+      "seed": 47,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.01,
+      "smoke": false
+    },
+    "best_epoch": 9,
+    "epochs": 20,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family25/fold2",
+    "seed": 89,
+    "run": "runs/thermo_family/family25/fold2/epistatic/lr0.0001_wd0.01_seed89",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 25,
+      "fold": 2,
+      "seed": 89,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.01,
+      "smoke": false
+    },
+    "best_epoch": 11,
+    "epochs": 22,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family25/fold2",
+    "seed": 131,
+    "run": "runs/thermo_family/family25/fold2/epistatic/lr0.0001_wd0.01_seed131",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 25,
+      "fold": 2,
+      "seed": 131,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.01,
+      "smoke": false
+    },
+    "best_epoch": 10,
+    "epochs": 21,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family25/fold3",
+    "seed": 11,
+    "run": "runs/thermo_family/family25/fold3/epistatic/lr0.0001_wd0.01_seed11",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 25,
+      "fold": 3,
+      "seed": 11,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.01,
+      "smoke": false
+    },
+    "best_epoch": 15,
+    "epochs": 26,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family25/fold3",
+    "seed": 23,
+    "run": "runs/thermo_family/family25/fold3/epistatic/lr0.0001_wd0.01_seed23",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 25,
+      "fold": 3,
+      "seed": 23,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.01,
+      "smoke": false
+    },
+    "best_epoch": 4,
+    "epochs": 15,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family25/fold3",
+    "seed": 47,
+    "run": "runs/thermo_family/family25/fold3/epistatic/lr0.0001_wd0.01_seed47",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 25,
+      "fold": 3,
+      "seed": 47,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.01,
+      "smoke": false
+    },
+    "best_epoch": 16,
+    "epochs": 27,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family25/fold3",
+    "seed": 89,
+    "run": "runs/thermo_family/family25/fold3/epistatic/lr0.0001_wd0.01_seed89",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 25,
+      "fold": 3,
+      "seed": 89,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.01,
+      "smoke": false
+    },
+    "best_epoch": 10,
+    "epochs": 21,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family25/fold3",
+    "seed": 131,
+    "run": "runs/thermo_family/family25/fold3/epistatic/lr0.0001_wd0.01_seed131",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 25,
+      "fold": 3,
+      "seed": 131,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.01,
+      "smoke": false
+    },
+    "best_epoch": 10,
+    "epochs": 21,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family25/fold4",
+    "seed": 11,
+    "run": "runs/thermo_family/family25/fold4/epistatic/lr0.0001_wd0.0001_seed11",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 25,
+      "fold": 4,
+      "seed": 11,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 11,
+    "epochs": 22,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family25/fold4",
+    "seed": 23,
+    "run": "runs/thermo_family/family25/fold4/epistatic/lr0.0001_wd0.0001_seed23",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 25,
+      "fold": 4,
+      "seed": 23,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 21,
+    "epochs": 32,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family25/fold4",
+    "seed": 47,
+    "run": "runs/thermo_family/family25/fold4/epistatic/lr0.0001_wd0.0001_seed47",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 25,
+      "fold": 4,
+      "seed": 47,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 29,
+    "epochs": 40,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family25/fold4",
+    "seed": 89,
+    "run": "runs/thermo_family/family25/fold4/epistatic/lr0.0001_wd0.0001_seed89",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 25,
+      "fold": 4,
+      "seed": 89,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 11,
+    "epochs": 22,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family25/fold4",
+    "seed": 131,
+    "run": "runs/thermo_family/family25/fold4/epistatic/lr0.0001_wd0.0001_seed131",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 25,
+      "fold": 4,
+      "seed": 131,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 11,
+    "epochs": 22,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family30/fold0",
+    "seed": 11,
+    "run": "runs/thermo_family/family30/fold0/epistatic/lr0.0001_wd0.0001_seed11",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 30,
+      "fold": 0,
+      "seed": 11,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 30,
+    "epochs": 41,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family30/fold0",
+    "seed": 23,
+    "run": "runs/thermo_family/family30/fold0/epistatic/lr0.0001_wd0.0001_seed23",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 30,
+      "fold": 0,
+      "seed": 23,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 11,
+    "epochs": 22,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family30/fold0",
+    "seed": 47,
+    "run": "runs/thermo_family/family30/fold0/epistatic/lr0.0001_wd0.0001_seed47",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 30,
+      "fold": 0,
+      "seed": 47,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 9,
+    "epochs": 20,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family30/fold0",
+    "seed": 89,
+    "run": "runs/thermo_family/family30/fold0/epistatic/lr0.0001_wd0.0001_seed89",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 30,
+      "fold": 0,
+      "seed": 89,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 13,
+    "epochs": 24,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family30/fold0",
+    "seed": 131,
+    "run": "runs/thermo_family/family30/fold0/epistatic/lr0.0001_wd0.0001_seed131",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 30,
+      "fold": 0,
+      "seed": 131,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 8,
+    "epochs": 19,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family30/fold1",
+    "seed": 11,
+    "run": "runs/thermo_family/family30/fold1/epistatic/lr0.0001_wd0.0001_seed11",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 30,
+      "fold": 1,
+      "seed": 11,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 10,
+    "epochs": 21,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family30/fold1",
+    "seed": 23,
+    "run": "runs/thermo_family/family30/fold1/epistatic/lr0.0001_wd0.0001_seed23",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 30,
+      "fold": 1,
+      "seed": 23,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 11,
+    "epochs": 22,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family30/fold1",
+    "seed": 47,
+    "run": "runs/thermo_family/family30/fold1/epistatic/lr0.0001_wd0.0001_seed47",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 30,
+      "fold": 1,
+      "seed": 47,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 11,
+    "epochs": 22,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family30/fold1",
+    "seed": 89,
+    "run": "runs/thermo_family/family30/fold1/epistatic/lr0.0001_wd0.0001_seed89",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 30,
+      "fold": 1,
+      "seed": 89,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 10,
+    "epochs": 21,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family30/fold1",
+    "seed": 131,
+    "run": "runs/thermo_family/family30/fold1/epistatic/lr0.0001_wd0.0001_seed131",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 30,
+      "fold": 1,
+      "seed": 131,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 6,
+    "epochs": 17,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family30/fold2",
+    "seed": 11,
+    "run": "runs/thermo_family/family30/fold2/epistatic/lr0.0001_wd0.001_seed11",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 30,
+      "fold": 2,
+      "seed": 11,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.001,
+      "smoke": false
+    },
+    "best_epoch": 9,
+    "epochs": 20,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family30/fold2",
+    "seed": 23,
+    "run": "runs/thermo_family/family30/fold2/epistatic/lr0.0001_wd0.001_seed23",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 30,
+      "fold": 2,
+      "seed": 23,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.001,
+      "smoke": false
+    },
+    "best_epoch": 17,
+    "epochs": 28,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family30/fold2",
+    "seed": 47,
+    "run": "runs/thermo_family/family30/fold2/epistatic/lr0.0001_wd0.001_seed47",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 30,
+      "fold": 2,
+      "seed": 47,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.001,
+      "smoke": false
+    },
+    "best_epoch": 9,
+    "epochs": 20,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family30/fold2",
+    "seed": 89,
+    "run": "runs/thermo_family/family30/fold2/epistatic/lr0.0001_wd0.001_seed89",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 30,
+      "fold": 2,
+      "seed": 89,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.001,
+      "smoke": false
+    },
+    "best_epoch": 9,
+    "epochs": 20,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family30/fold2",
+    "seed": 131,
+    "run": "runs/thermo_family/family30/fold2/epistatic/lr0.0001_wd0.001_seed131",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 30,
+      "fold": 2,
+      "seed": 131,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.001,
+      "smoke": false
+    },
+    "best_epoch": 18,
+    "epochs": 29,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family30/fold3",
+    "seed": 11,
+    "run": "runs/thermo_family/family30/fold3/epistatic/lr0.0001_wd0.0001_seed11",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 30,
+      "fold": 3,
+      "seed": 11,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 6,
+    "epochs": 17,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family30/fold3",
+    "seed": 23,
+    "run": "runs/thermo_family/family30/fold3/epistatic/lr0.0001_wd0.0001_seed23",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 30,
+      "fold": 3,
+      "seed": 23,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 11,
+    "epochs": 22,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family30/fold3",
+    "seed": 47,
+    "run": "runs/thermo_family/family30/fold3/epistatic/lr0.0001_wd0.0001_seed47",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 30,
+      "fold": 3,
+      "seed": 47,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 7,
+    "epochs": 18,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family30/fold3",
+    "seed": 89,
+    "run": "runs/thermo_family/family30/fold3/epistatic/lr0.0001_wd0.0001_seed89",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 30,
+      "fold": 3,
+      "seed": 89,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 11,
+    "epochs": 22,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family30/fold3",
+    "seed": 131,
+    "run": "runs/thermo_family/family30/fold3/epistatic/lr0.0001_wd0.0001_seed131",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 30,
+      "fold": 3,
+      "seed": 131,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 6,
+    "epochs": 17,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family30/fold4",
+    "seed": 11,
+    "run": "runs/thermo_family/family30/fold4/epistatic/lr0.0001_wd0.0001_seed11",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 30,
+      "fold": 4,
+      "seed": 11,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 5,
+    "epochs": 16,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family30/fold4",
+    "seed": 23,
+    "run": "runs/thermo_family/family30/fold4/epistatic/lr0.0001_wd0.0001_seed23",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 30,
+      "fold": 4,
+      "seed": 23,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 12,
+    "epochs": 23,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family30/fold4",
+    "seed": 47,
+    "run": "runs/thermo_family/family30/fold4/epistatic/lr0.0001_wd0.0001_seed47",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 30,
+      "fold": 4,
+      "seed": 47,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 13,
+    "epochs": 24,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family30/fold4",
+    "seed": 89,
+    "run": "runs/thermo_family/family30/fold4/epistatic/lr0.0001_wd0.0001_seed89",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 30,
+      "fold": 4,
+      "seed": 89,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 14,
+    "epochs": 25,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  },
+  {
+    "key": "family30/fold4",
+    "seed": 131,
+    "run": "runs/thermo_family/family30/fold4/epistatic/lr0.0001_wd0.0001_seed131",
+    "config": {
+      "mode": "epistatic",
+      "threshold": 30,
+      "fold": 4,
+      "seed": 131,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "smoke": false
+    },
+    "best_epoch": 13,
+    "epochs": 24,
+    "optimizer": "AdamW and ReduceLROnPlateau(factor=0.5); original batch size 256.",
+    "selection_metric": "macro_epsilon_rmse",
+    "vendor_commit": "df9a75aaddb674a7c4c193005031fc0536d325fb"
+  }
+]

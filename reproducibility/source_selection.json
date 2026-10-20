@@ -1,0 +1,885 @@
+{
+  "complete": true,
+  "created_utc": "2026-10-20T17:18:04.461258+00:00",
+  "source_commit": "875d04d6df818110001f3889758cf998321a96f6",
+  "source_working_tree_modified": true,
+  "selection_seed": 11,
+  "repetition_seeds": [
+    11,
+    23,
+    47,
+    89,
+    131
+  ],
+  "criterion": "Per outer fold, minimize 0.5*Z+0.25*S128+0.25*Sall source-validation residual RMSE; omega minimizes source-validation S128 RMSE.",
+  "candidate_objectives": [
+    "combined",
+    "phenotype"
+  ],
+  "candidate_fits_read": 240,
+  "target_predictions_or_metrics_read": false,
+  "target_labels_for_selection": 0,
+  "selection_scope": "Independent within each outer partition; no pooled cross-fold objective selection.",
+  "selected": {
+    "family25/fold0": {
+      "key": "family25/fold0",
+      "threshold": 25,
+      "fold": 0,
+      "objective": "combined",
+      "run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+      "validation_score": 0.5953639721809753,
+      "validation_Z": 0.6357199065108049,
+      "validation_S128": 0.6244931518410195,
+      "validation_Sall": 0.48552292386127177,
+      "omega": 1.0,
+      "projection": 64,
+      "learning_rate": 0.001,
+      "lambda_y": 0.1,
+      "best_epoch": 0,
+      "training_proteins": 145,
+      "validation_proteins": 22,
+      "excluded_target_proteins": 312,
+      "objective_candidates": {
+        "combined": {
+          "key": "family25/fold0",
+          "threshold": 25,
+          "fold": 0,
+          "objective": "combined",
+          "run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+          "validation_score": 0.5953639721809753,
+          "validation_Z": 0.6357199065108049,
+          "validation_S128": 0.6244931518410195,
+          "validation_Sall": 0.48552292386127177,
+          "omega": 1.0,
+          "projection": 64,
+          "learning_rate": 0.001,
+          "lambda_y": 0.1,
+          "best_epoch": 0,
+          "training_proteins": 145,
+          "validation_proteins": 22,
+          "excluded_target_proteins": 312
+        },
+        "phenotype": {
+          "key": "family25/fold0",
+          "threshold": 25,
+          "fold": 0,
+          "objective": "phenotype",
+          "run": "runs/e3/family25/fold0/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_phenotype_seed11",
+          "validation_score": 0.6113256783782773,
+          "validation_Z": 0.6572385859511846,
+          "validation_S128": 0.6453984083456258,
+          "validation_Sall": 0.4854271332651147,
+          "omega": 1.0,
+          "projection": 128,
+          "learning_rate": 0.001,
+          "lambda_y": 0.1,
+          "best_epoch": 0,
+          "training_proteins": 145,
+          "validation_proteins": 22,
+          "excluded_target_proteins": 312
+        }
+      },
+      "repeats": [
+        {
+          "seed": 11,
+          "run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+          "single_run": "runs/e3/family25/fold0/single/full_p64_lr0.001_seed11"
+        },
+        {
+          "seed": 23,
+          "run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed23",
+          "single_run": "runs/e3/family25/fold0/single/full_p64_lr0.001_seed23"
+        },
+        {
+          "seed": 47,
+          "run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed47",
+          "single_run": "runs/e3/family25/fold0/single/full_p64_lr0.001_seed47"
+        },
+        {
+          "seed": 89,
+          "run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed89",
+          "single_run": "runs/e3/family25/fold0/single/full_p64_lr0.001_seed89"
+        },
+        {
+          "seed": 131,
+          "run": "runs/e3/family25/fold0/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed131",
+          "single_run": "runs/e3/family25/fold0/single/full_p64_lr0.001_seed131"
+        }
+      ]
+    },
+    "family25/fold1": {
+      "key": "family25/fold1",
+      "threshold": 25,
+      "fold": 1,
+      "objective": "combined",
+      "run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_combined_seed11",
+      "validation_score": 0.7421494772419182,
+      "validation_Z": 0.7990813005633411,
+      "validation_S128": 0.7728546936570682,
+      "validation_Sall": 0.5975806141839219,
+      "omega": 1.0,
+      "projection": 128,
+      "learning_rate": 0.0001,
+      "lambda_y": 1.0,
+      "best_epoch": 0,
+      "training_proteins": 394,
+      "validation_proteins": 63,
+      "excluded_target_proteins": 22,
+      "objective_candidates": {
+        "combined": {
+          "key": "family25/fold1",
+          "threshold": 25,
+          "fold": 1,
+          "objective": "combined",
+          "run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_combined_seed11",
+          "validation_score": 0.7421494772419182,
+          "validation_Z": 0.7990813005633411,
+          "validation_S128": 0.7728546936570682,
+          "validation_Sall": 0.5975806141839219,
+          "omega": 1.0,
+          "projection": 128,
+          "learning_rate": 0.0001,
+          "lambda_y": 1.0,
+          "best_epoch": 0,
+          "training_proteins": 394,
+          "validation_proteins": 63,
+          "excluded_target_proteins": 22
+        },
+        "phenotype": {
+          "key": "family25/fold1",
+          "threshold": 25,
+          "fold": 1,
+          "objective": "phenotype",
+          "run": "runs/e3/family25/fold1/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_phenotype_seed11",
+          "validation_score": 0.7687161719970834,
+          "validation_Z": 0.8306311993184765,
+          "validation_S128": 0.8035472681121314,
+          "validation_Sall": 0.6100550212392496,
+          "omega": 1.0,
+          "projection": 64,
+          "learning_rate": 0.0001,
+          "lambda_y": 0.1,
+          "best_epoch": 0,
+          "training_proteins": 394,
+          "validation_proteins": 63,
+          "excluded_target_proteins": 22
+        }
+      },
+      "repeats": [
+        {
+          "seed": 11,
+          "run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_combined_seed11",
+          "single_run": "runs/e3/family25/fold1/single/full_p64_lr0.001_seed11"
+        },
+        {
+          "seed": 23,
+          "run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_combined_seed23",
+          "single_run": "runs/e3/family25/fold1/single/full_p64_lr0.001_seed23"
+        },
+        {
+          "seed": 47,
+          "run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_combined_seed47",
+          "single_run": "runs/e3/family25/fold1/single/full_p64_lr0.001_seed47"
+        },
+        {
+          "seed": 89,
+          "run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_combined_seed89",
+          "single_run": "runs/e3/family25/fold1/single/full_p64_lr0.001_seed89"
+        },
+        {
+          "seed": 131,
+          "run": "runs/e3/family25/fold1/pair/full_p128_lr0.0001_ly1_g0_f1_j1_combined_seed131",
+          "single_run": "runs/e3/family25/fold1/single/full_p64_lr0.001_seed131"
+        }
+      ]
+    },
+    "family25/fold2": {
+      "key": "family25/fold2",
+      "threshold": 25,
+      "fold": 2,
+      "objective": "combined",
+      "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+      "validation_score": 0.684185742451827,
+      "validation_Z": 0.7461079312078573,
+      "validation_S128": 0.7265803285277967,
+      "validation_Sall": 0.5179467788637961,
+      "omega": 1.0,
+      "projection": 64,
+      "learning_rate": 0.001,
+      "lambda_y": 0.1,
+      "best_epoch": 0,
+      "training_proteins": 395,
+      "validation_proteins": 21,
+      "excluded_target_proteins": 63,
+      "objective_candidates": {
+        "combined": {
+          "key": "family25/fold2",
+          "threshold": 25,
+          "fold": 2,
+          "objective": "combined",
+          "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+          "validation_score": 0.684185742451827,
+          "validation_Z": 0.7461079312078573,
+          "validation_S128": 0.7265803285277967,
+          "validation_Sall": 0.5179467788637961,
+          "omega": 1.0,
+          "projection": 64,
+          "learning_rate": 0.001,
+          "lambda_y": 0.1,
+          "best_epoch": 0,
+          "training_proteins": 395,
+          "validation_proteins": 21,
+          "excluded_target_proteins": 63
+        },
+        "phenotype": {
+          "key": "family25/fold2",
+          "threshold": 25,
+          "fold": 2,
+          "objective": "phenotype",
+          "run": "runs/e3/family25/fold2/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed11",
+          "validation_score": 0.7122408667220927,
+          "validation_Z": 0.7832295422844524,
+          "validation_S128": 0.7616615283254857,
+          "validation_Sall": 0.5208428539939803,
+          "omega": 1.0,
+          "projection": 64,
+          "learning_rate": 0.0003,
+          "lambda_y": 0.1,
+          "best_epoch": 0,
+          "training_proteins": 395,
+          "validation_proteins": 21,
+          "excluded_target_proteins": 63
+        }
+      },
+      "repeats": [
+        {
+          "seed": 11,
+          "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+          "single_run": "runs/e3/family25/fold2/single/full_p64_lr0.001_seed11"
+        },
+        {
+          "seed": 23,
+          "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed23",
+          "single_run": "runs/e3/family25/fold2/single/full_p64_lr0.001_seed23"
+        },
+        {
+          "seed": 47,
+          "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed47",
+          "single_run": "runs/e3/family25/fold2/single/full_p64_lr0.001_seed47"
+        },
+        {
+          "seed": 89,
+          "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed89",
+          "single_run": "runs/e3/family25/fold2/single/full_p64_lr0.001_seed89"
+        },
+        {
+          "seed": 131,
+          "run": "runs/e3/family25/fold2/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed131",
+          "single_run": "runs/e3/family25/fold2/single/full_p64_lr0.001_seed131"
+        }
+      ]
+    },
+    "family25/fold3": {
+      "key": "family25/fold3",
+      "threshold": 25,
+      "fold": 3,
+      "objective": "combined",
+      "run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+      "validation_score": 0.7553709554025636,
+      "validation_Z": 0.805929278145356,
+      "validation_S128": 0.7867302274813656,
+      "validation_Sall": 0.6228950378381768,
+      "omega": 1.0,
+      "projection": 64,
+      "learning_rate": 0.001,
+      "lambda_y": 0.1,
+      "best_epoch": 1,
+      "training_proteins": 397,
+      "validation_proteins": 61,
+      "excluded_target_proteins": 21,
+      "objective_candidates": {
+        "combined": {
+          "key": "family25/fold3",
+          "threshold": 25,
+          "fold": 3,
+          "objective": "combined",
+          "run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+          "validation_score": 0.7553709554025636,
+          "validation_Z": 0.805929278145356,
+          "validation_S128": 0.7867302274813656,
+          "validation_Sall": 0.6228950378381768,
+          "omega": 1.0,
+          "projection": 64,
+          "learning_rate": 0.001,
+          "lambda_y": 0.1,
+          "best_epoch": 1,
+          "training_proteins": 397,
+          "validation_proteins": 61,
+          "excluded_target_proteins": 21
+        },
+        "phenotype": {
+          "key": "family25/fold3",
+          "threshold": 25,
+          "fold": 3,
+          "objective": "phenotype",
+          "run": "runs/e3/family25/fold3/pair/full_p128_lr0.0001_ly0.1_g0_f1_j1_phenotype_seed11",
+          "validation_score": 0.7901925473377042,
+          "validation_Z": 0.8643211075337657,
+          "validation_S128": 0.837722439597482,
+          "validation_Sall": 0.5944055346858031,
+          "omega": 1.0,
+          "projection": 128,
+          "learning_rate": 0.0001,
+          "lambda_y": 0.1,
+          "best_epoch": 3,
+          "training_proteins": 397,
+          "validation_proteins": 61,
+          "excluded_target_proteins": 21
+        }
+      },
+      "repeats": [
+        {
+          "seed": 11,
+          "run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+          "single_run": "runs/e3/family25/fold3/single/full_p64_lr0.0003_seed11"
+        },
+        {
+          "seed": 23,
+          "run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed23",
+          "single_run": "runs/e3/family25/fold3/single/full_p64_lr0.0003_seed23"
+        },
+        {
+          "seed": 47,
+          "run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed47",
+          "single_run": "runs/e3/family25/fold3/single/full_p64_lr0.0003_seed47"
+        },
+        {
+          "seed": 89,
+          "run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed89",
+          "single_run": "runs/e3/family25/fold3/single/full_p64_lr0.0003_seed89"
+        },
+        {
+          "seed": 131,
+          "run": "runs/e3/family25/fold3/pair/full_p64_lr0.001_ly0.1_g0_f1_j1_combined_seed131",
+          "single_run": "runs/e3/family25/fold3/single/full_p64_lr0.0003_seed131"
+        }
+      ]
+    },
+    "family25/fold4": {
+      "key": "family25/fold4",
+      "threshold": 25,
+      "fold": 4,
+      "objective": "combined",
+      "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed11",
+      "validation_score": 0.7308015303150125,
+      "validation_Z": 0.7630477684557003,
+      "validation_S128": 0.7464778547216863,
+      "validation_Sall": 0.6506327296269633,
+      "omega": 1.0,
+      "projection": 64,
+      "learning_rate": 0.0001,
+      "lambda_y": 0.1,
+      "best_epoch": 1,
+      "training_proteins": 106,
+      "validation_proteins": 312,
+      "excluded_target_proteins": 61,
+      "objective_candidates": {
+        "combined": {
+          "key": "family25/fold4",
+          "threshold": 25,
+          "fold": 4,
+          "objective": "combined",
+          "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed11",
+          "validation_score": 0.7308015303150125,
+          "validation_Z": 0.7630477684557003,
+          "validation_S128": 0.7464778547216863,
+          "validation_Sall": 0.6506327296269633,
+          "omega": 1.0,
+          "projection": 64,
+          "learning_rate": 0.0001,
+          "lambda_y": 0.1,
+          "best_epoch": 1,
+          "training_proteins": 106,
+          "validation_proteins": 312,
+          "excluded_target_proteins": 61
+        },
+        "phenotype": {
+          "key": "family25/fold4",
+          "threshold": 25,
+          "fold": 4,
+          "objective": "phenotype",
+          "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed11",
+          "validation_score": 0.7379860840835505,
+          "validation_Z": 0.7765084199425746,
+          "validation_S128": 0.7580128973441629,
+          "validation_Sall": 0.64091459910489,
+          "omega": 1.0,
+          "projection": 64,
+          "learning_rate": 0.0003,
+          "lambda_y": 0.1,
+          "best_epoch": 0,
+          "training_proteins": 106,
+          "validation_proteins": 312,
+          "excluded_target_proteins": 61
+        }
+      },
+      "repeats": [
+        {
+          "seed": 11,
+          "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed11",
+          "single_run": "runs/e3/family25/fold4/single/full_p128_lr0.001_seed11"
+        },
+        {
+          "seed": 23,
+          "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed23",
+          "single_run": "runs/e3/family25/fold4/single/full_p128_lr0.001_seed23"
+        },
+        {
+          "seed": 47,
+          "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed47",
+          "single_run": "runs/e3/family25/fold4/single/full_p128_lr0.001_seed47"
+        },
+        {
+          "seed": 89,
+          "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed89",
+          "single_run": "runs/e3/family25/fold4/single/full_p128_lr0.001_seed89"
+        },
+        {
+          "seed": 131,
+          "run": "runs/e3/family25/fold4/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed131",
+          "single_run": "runs/e3/family25/fold4/single/full_p128_lr0.001_seed131"
+        }
+      ]
+    },
+    "family30/fold0": {
+      "key": "family30/fold0",
+      "threshold": 30,
+      "fold": 0,
+      "objective": "combined",
+      "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed11",
+      "validation_score": 0.7239308288409072,
+      "validation_Z": 0.778726102140826,
+      "validation_S128": 0.7564607499574093,
+      "validation_Sall": 0.5818103611245674,
+      "omega": 1.0,
+      "projection": 64,
+      "learning_rate": 0.0001,
+      "lambda_y": 0.1,
+      "best_epoch": 2,
+      "training_proteins": 167,
+      "validation_proteins": 73,
+      "excluded_target_proteins": 239,
+      "objective_candidates": {
+        "combined": {
+          "key": "family30/fold0",
+          "threshold": 30,
+          "fold": 0,
+          "objective": "combined",
+          "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed11",
+          "validation_score": 0.7239308288409072,
+          "validation_Z": 0.778726102140826,
+          "validation_S128": 0.7564607499574093,
+          "validation_Sall": 0.5818103611245674,
+          "omega": 1.0,
+          "projection": 64,
+          "learning_rate": 0.0001,
+          "lambda_y": 0.1,
+          "best_epoch": 2,
+          "training_proteins": 167,
+          "validation_proteins": 73,
+          "excluded_target_proteins": 239
+        },
+        "phenotype": {
+          "key": "family30/fold0",
+          "threshold": 30,
+          "fold": 0,
+          "objective": "phenotype",
+          "run": "runs/e3/family30/fold0/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_phenotype_seed11",
+          "validation_score": 0.7595821342185084,
+          "validation_Z": 0.8291619945995006,
+          "validation_S128": 0.8031301892687097,
+          "validation_Sall": 0.5768743584063231,
+          "omega": 1.0,
+          "projection": 128,
+          "learning_rate": 0.001,
+          "lambda_y": 0.1,
+          "best_epoch": 1,
+          "training_proteins": 167,
+          "validation_proteins": 73,
+          "excluded_target_proteins": 239
+        }
+      },
+      "repeats": [
+        {
+          "seed": 11,
+          "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed11",
+          "single_run": "runs/e3/family30/fold0/single/full_p128_lr0.001_seed11"
+        },
+        {
+          "seed": 23,
+          "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed23",
+          "single_run": "runs/e3/family30/fold0/single/full_p128_lr0.001_seed23"
+        },
+        {
+          "seed": 47,
+          "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed47",
+          "single_run": "runs/e3/family30/fold0/single/full_p128_lr0.001_seed47"
+        },
+        {
+          "seed": 89,
+          "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed89",
+          "single_run": "runs/e3/family30/fold0/single/full_p128_lr0.001_seed89"
+        },
+        {
+          "seed": 131,
+          "run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed131",
+          "single_run": "runs/e3/family30/fold0/single/full_p128_lr0.001_seed131"
+        }
+      ]
+    },
+    "family30/fold1": {
+      "key": "family30/fold1",
+      "threshold": 30,
+      "fold": 1,
+      "objective": "combined",
+      "run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+      "validation_score": 0.740847355063997,
+      "validation_Z": 0.7931551453433496,
+      "validation_S128": 0.7706792382296124,
+      "validation_Sall": 0.6063998913396764,
+      "omega": 1.0,
+      "projection": 128,
+      "learning_rate": 0.001,
+      "lambda_y": 0.1,
+      "best_epoch": 2,
+      "training_proteins": 307,
+      "validation_proteins": 99,
+      "excluded_target_proteins": 73,
+      "objective_candidates": {
+        "combined": {
+          "key": "family30/fold1",
+          "threshold": 30,
+          "fold": 1,
+          "objective": "combined",
+          "run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+          "validation_score": 0.740847355063997,
+          "validation_Z": 0.7931551453433496,
+          "validation_S128": 0.7706792382296124,
+          "validation_Sall": 0.6063998913396764,
+          "omega": 1.0,
+          "projection": 128,
+          "learning_rate": 0.001,
+          "lambda_y": 0.1,
+          "best_epoch": 2,
+          "training_proteins": 307,
+          "validation_proteins": 99,
+          "excluded_target_proteins": 73
+        },
+        "phenotype": {
+          "key": "family30/fold1",
+          "threshold": 30,
+          "fold": 1,
+          "objective": "phenotype",
+          "run": "runs/e3/family30/fold1/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed11",
+          "validation_score": 0.7456953881774148,
+          "validation_Z": 0.810514261556595,
+          "validation_S128": 0.7811500416250083,
+          "validation_Sall": 0.5806029879714606,
+          "omega": 1.0,
+          "projection": 128,
+          "learning_rate": 0.0003,
+          "lambda_y": 0.1,
+          "best_epoch": 0,
+          "training_proteins": 307,
+          "validation_proteins": 99,
+          "excluded_target_proteins": 73
+        }
+      },
+      "repeats": [
+        {
+          "seed": 11,
+          "run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+          "single_run": "runs/e3/family30/fold1/single/full_p64_lr0.001_seed11"
+        },
+        {
+          "seed": 23,
+          "run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed23",
+          "single_run": "runs/e3/family30/fold1/single/full_p64_lr0.001_seed23"
+        },
+        {
+          "seed": 47,
+          "run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed47",
+          "single_run": "runs/e3/family30/fold1/single/full_p64_lr0.001_seed47"
+        },
+        {
+          "seed": 89,
+          "run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed89",
+          "single_run": "runs/e3/family30/fold1/single/full_p64_lr0.001_seed89"
+        },
+        {
+          "seed": 131,
+          "run": "runs/e3/family30/fold1/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed131",
+          "single_run": "runs/e3/family30/fold1/single/full_p64_lr0.001_seed131"
+        }
+      ]
+    },
+    "family30/fold2": {
+      "key": "family30/fold2",
+      "threshold": 30,
+      "fold": 2,
+      "objective": "combined",
+      "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_combined_seed11",
+      "validation_score": 0.6651626654165097,
+      "validation_Z": 0.7154442435691241,
+      "validation_S128": 0.6923282794976714,
+      "validation_Sall": 0.5374338950301195,
+      "omega": 1.0,
+      "projection": 128,
+      "learning_rate": 0.0003,
+      "lambda_y": 0.1,
+      "best_epoch": 2,
+      "training_proteins": 332,
+      "validation_proteins": 48,
+      "excluded_target_proteins": 99,
+      "objective_candidates": {
+        "combined": {
+          "key": "family30/fold2",
+          "threshold": 30,
+          "fold": 2,
+          "objective": "combined",
+          "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_combined_seed11",
+          "validation_score": 0.6651626654165097,
+          "validation_Z": 0.7154442435691241,
+          "validation_S128": 0.6923282794976714,
+          "validation_Sall": 0.5374338950301195,
+          "omega": 1.0,
+          "projection": 128,
+          "learning_rate": 0.0003,
+          "lambda_y": 0.1,
+          "best_epoch": 2,
+          "training_proteins": 332,
+          "validation_proteins": 48,
+          "excluded_target_proteins": 99
+        },
+        "phenotype": {
+          "key": "family30/fold2",
+          "threshold": 30,
+          "fold": 2,
+          "objective": "phenotype",
+          "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed11",
+          "validation_score": 0.6997013001697949,
+          "validation_Z": 0.7693327175133463,
+          "validation_S128": 0.7391471786597027,
+          "validation_Sall": 0.5209925869927844,
+          "omega": 1.0,
+          "projection": 128,
+          "learning_rate": 0.0003,
+          "lambda_y": 0.1,
+          "best_epoch": 0,
+          "training_proteins": 332,
+          "validation_proteins": 48,
+          "excluded_target_proteins": 99
+        }
+      },
+      "repeats": [
+        {
+          "seed": 11,
+          "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_combined_seed11",
+          "single_run": "runs/e3/family30/fold2/single/full_p64_lr0.0001_seed11"
+        },
+        {
+          "seed": 23,
+          "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_combined_seed23",
+          "single_run": "runs/e3/family30/fold2/single/full_p64_lr0.0001_seed23"
+        },
+        {
+          "seed": 47,
+          "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_combined_seed47",
+          "single_run": "runs/e3/family30/fold2/single/full_p64_lr0.0001_seed47"
+        },
+        {
+          "seed": 89,
+          "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_combined_seed89",
+          "single_run": "runs/e3/family30/fold2/single/full_p64_lr0.0001_seed89"
+        },
+        {
+          "seed": 131,
+          "run": "runs/e3/family30/fold2/pair/full_p128_lr0.0003_ly0.1_g0_f1_j1_combined_seed131",
+          "single_run": "runs/e3/family30/fold2/single/full_p64_lr0.0001_seed131"
+        }
+      ]
+    },
+    "family30/fold3": {
+      "key": "family30/fold3",
+      "threshold": 30,
+      "fold": 3,
+      "objective": "phenotype",
+      "run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed11",
+      "validation_score": 0.6798670950904886,
+      "validation_Z": 0.7323715402041427,
+      "validation_S128": 0.7192062186765186,
+      "validation_Sall": 0.5355190812771502,
+      "omega": 1.0,
+      "projection": 64,
+      "learning_rate": 0.0003,
+      "lambda_y": 0.1,
+      "best_epoch": 0,
+      "training_proteins": 411,
+      "validation_proteins": 20,
+      "excluded_target_proteins": 48,
+      "objective_candidates": {
+        "combined": {
+          "key": "family30/fold3",
+          "threshold": 30,
+          "fold": 3,
+          "objective": "combined",
+          "run": "runs/e3/family30/fold3/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+          "validation_score": 0.6991717946609781,
+          "validation_Z": 0.7426934245133948,
+          "validation_S128": 0.7300990860703472,
+          "validation_Sall": 0.5812012435467759,
+          "omega": 1.0,
+          "projection": 128,
+          "learning_rate": 0.001,
+          "lambda_y": 0.1,
+          "best_epoch": 15,
+          "training_proteins": 411,
+          "validation_proteins": 20,
+          "excluded_target_proteins": 48
+        },
+        "phenotype": {
+          "key": "family30/fold3",
+          "threshold": 30,
+          "fold": 3,
+          "objective": "phenotype",
+          "run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed11",
+          "validation_score": 0.6798670950904886,
+          "validation_Z": 0.7323715402041427,
+          "validation_S128": 0.7192062186765186,
+          "validation_Sall": 0.5355190812771502,
+          "omega": 1.0,
+          "projection": 64,
+          "learning_rate": 0.0003,
+          "lambda_y": 0.1,
+          "best_epoch": 0,
+          "training_proteins": 411,
+          "validation_proteins": 20,
+          "excluded_target_proteins": 48
+        }
+      },
+      "repeats": [
+        {
+          "seed": 11,
+          "run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed11",
+          "single_run": "runs/e3/family30/fold3/single/full_p64_lr0.0003_seed11"
+        },
+        {
+          "seed": 23,
+          "run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed23",
+          "single_run": "runs/e3/family30/fold3/single/full_p64_lr0.0003_seed23"
+        },
+        {
+          "seed": 47,
+          "run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed47",
+          "single_run": "runs/e3/family30/fold3/single/full_p64_lr0.0003_seed47"
+        },
+        {
+          "seed": 89,
+          "run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed89",
+          "single_run": "runs/e3/family30/fold3/single/full_p64_lr0.0003_seed89"
+        },
+        {
+          "seed": 131,
+          "run": "runs/e3/family30/fold3/pair/full_p64_lr0.0003_ly0.1_g0_f1_j1_phenotype_seed131",
+          "single_run": "runs/e3/family30/fold3/single/full_p64_lr0.0003_seed131"
+        }
+      ]
+    },
+    "family30/fold4": {
+      "key": "family30/fold4",
+      "threshold": 30,
+      "fold": 4,
+      "objective": "combined",
+      "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+      "validation_score": 0.6704807592474538,
+      "validation_Z": 0.7035790575850396,
+      "validation_S128": 0.6849020753247265,
+      "validation_Sall": 0.5898628464950095,
+      "omega": 1.0,
+      "projection": 128,
+      "learning_rate": 0.001,
+      "lambda_y": 0.1,
+      "best_epoch": 15,
+      "training_proteins": 220,
+      "validation_proteins": 239,
+      "excluded_target_proteins": 20,
+      "objective_candidates": {
+        "combined": {
+          "key": "family30/fold4",
+          "threshold": 30,
+          "fold": 4,
+          "objective": "combined",
+          "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+          "validation_score": 0.6704807592474538,
+          "validation_Z": 0.7035790575850396,
+          "validation_S128": 0.6849020753247265,
+          "validation_Sall": 0.5898628464950095,
+          "omega": 1.0,
+          "projection": 128,
+          "learning_rate": 0.001,
+          "lambda_y": 0.1,
+          "best_epoch": 15,
+          "training_proteins": 220,
+          "validation_proteins": 239,
+          "excluded_target_proteins": 20
+        },
+        "phenotype": {
+          "key": "family30/fold4",
+          "threshold": 30,
+          "fold": 4,
+          "objective": "phenotype",
+          "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_phenotype_seed11",
+          "validation_score": 0.6796983453376226,
+          "validation_Z": 0.7191878891482864,
+          "validation_S128": 0.7025453416906423,
+          "validation_Sall": 0.5778722613632754,
+          "omega": 1.0,
+          "projection": 128,
+          "learning_rate": 0.001,
+          "lambda_y": 0.1,
+          "best_epoch": 0,
+          "training_proteins": 220,
+          "validation_proteins": 239,
+          "excluded_target_proteins": 20
+        }
+      },
+      "repeats": [
+        {
+          "seed": 11,
+          "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed11",
+          "single_run": "runs/e3/family30/fold4/single/full_p128_lr0.001_seed11"
+        },
+        {
+          "seed": 23,
+          "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed23",
+          "single_run": "runs/e3/family30/fold4/single/full_p128_lr0.001_seed23"
+        },
+        {
+          "seed": 47,
+          "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed47",
+          "single_run": "runs/e3/family30/fold4/single/full_p128_lr0.001_seed47"
+        },
+        {
+          "seed": 89,
+          "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed89",
+          "single_run": "runs/e3/family30/fold4/single/full_p128_lr0.001_seed89"
+        },
+        {
+          "seed": 131,
+          "run": "runs/e3/family30/fold4/pair/full_p128_lr0.001_ly0.1_g0_f1_j1_combined_seed131",
+          "single_run": "runs/e3/family30/fold4/single/full_p128_lr0.001_seed131"
+        }
+      ]
+    }
+  }
+}

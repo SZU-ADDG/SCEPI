@@ -68,14 +68,16 @@ def select_single(args):
 
 def pair_config(args):
     config = ModelConfig(projection=args.projection, representation=args.representation, geometry=args.geometry,
-                         pair_form=args.pair_form, pair_single_input=args.pair_single_input)
+                         pair_form=args.pair_form, pair_single_input=args.pair_single_input,
+                         pair_mask_input=args.pair_mask_input)
     if args.representation == "identity":
         target = sum(parameter.numel() for parameter in PairEffect(ModelConfig(projection=args.projection, geometry=args.geometry)).parameters())
         base = sum(parameter.numel() for parameter in PairEffect(ModelConfig(projection=args.projection, representation="identity", geometry=args.geometry, hidden=1)).parameters())
         increment = base - 257
         hidden = min(range(1, 8193), key=lambda width: abs(increment * width + 257 - target))
         config = ModelConfig(projection=args.projection, representation=args.representation, geometry=args.geometry,
-                             hidden=hidden, pair_form=args.pair_form, pair_single_input=args.pair_single_input)
+                             hidden=hidden, pair_form=args.pair_form, pair_single_input=args.pair_single_input,
+                             pair_mask_input=args.pair_mask_input)
     return config
 
 
@@ -147,6 +149,7 @@ def main():
     parser.add_argument("--single-run")
     parser.add_argument("--pair-form", choices=["contrast", "direct"], default="contrast")
     parser.add_argument("--pair-single-input", choices=["calibrated", "predicted"], default="calibrated")
+    parser.add_argument("--pair-mask-input", choices=["auto", "observed", "zero"], default="auto")
     parser.add_argument("--smoke", action="store_true")
     args = parser.parse_args()
     assert args.geometry or args.geometry_intervention == "none"
@@ -154,21 +157,25 @@ def main():
     assert not (args.no_interaction and not args.flexible and args.objective == "residual")
     control_tag = (f"_geo{args.geometry_intervention}" if args.geometry_intervention != "none" else "") + ("_n1" if args.no_interaction else "")
     control_tag += "_direct" if args.pair_form == "direct" else ""
-    control_tag += "_nopairmeasured" if args.pair_single_input == "predicted" else ""
+    if args.pair_single_input == "predicted":
+        control_tag += "_predictedvalues" if args.pair_mask_input == "observed" else "_nopairmeasured"
+    elif args.pair_mask_input == "zero":
+        control_tag += "_nomask"
     torch.manual_seed(args.seed)
     np.random.seed(args.seed)
     torch.set_float32_matmul_precision("highest")
     name = f"{args.representation}_p{args.projection}_lr{args.learning_rate:g}_ly{args.lambda_y:g}_g{int(args.geometry)}_f{int(args.flexible)}_j{int(args.joint)}{control_tag}_{args.objective}_seed{args.seed}"
     run = ROOT / "runs/e3" / f"family{args.threshold}" / f"fold{args.fold}" / ("pair_smoke" if args.smoke else "pair") / name
     run.mkdir(parents=True, exist_ok=True)
-    if not args.smoke and (args.pair_form == "direct" or args.pair_single_input == "predicted"):
+    if not args.smoke and (args.pair_form == "direct" or args.pair_single_input == "predicted" or args.pair_mask_input == "zero"):
         # 两个队列可以认领同一消融配置，文件锁保证实际训练只执行一次。
         source_lock = (run / "pair_training.lock").open("a")
         fcntl.flock(source_lock, fcntl.LOCK_EX)
         if (run / "manifest.json").exists():
             completed = json.loads((run / "manifest.json").read_text())
             assert completed["complete"] and not completed["smoke"]
-            assert completed["config"] == vars(args)
+            completed_config = {"pair_mask_input": "auto", **completed["config"]}
+            assert completed_config == vars(args)
             print(json.dumps({"complete": True, "reused_completed_training": str(run.relative_to(ROOT))}), flush=True)
             return
     assert not (run / "manifest.json").exists(), f"Completed run already exists: {run}"

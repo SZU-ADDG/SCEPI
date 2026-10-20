@@ -1,0 +1,24 @@
+{
+  "complete": true,
+  "arms": [
+    "interaction",
+    "joint_objective",
+    "thermo_epistatic",
+    "kermut",
+    "global_nonlinear",
+    "additive"
+  ],
+  "matched_evaluations": 150,
+  "source_selected_final_model": true,
+  "original_joint_recipe_reconstruction_matches": true,
+  "target_double_training_labels": 0,
+  "residual_proteins": 70,
+  "selection_proteins": 63,
+  "residual_protein_repetitions": 339,
+  "selection_protein_repetitions": 269,
+  "bootstrap": {
+    "unit": "homology group",
+    "draws": 10000,
+    "seed": 20261013
+  }
+}

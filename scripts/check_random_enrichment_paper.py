@@ -8,11 +8,11 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input", type=Path, default=ROOT / "runs/reviewer_revision_20261019/random_enrichment")
+    parser.add_argument("--input", type=Path, default=ROOT / "runs/conditioning_factorial_20261021/random_enrichment")
     args = parser.parse_args()
     records = json.loads((args.input / "summary.json").read_text())
     manifest = json.loads((args.input / "manifest.json").read_text())
-    assert manifest["complete"] and len(records) == 1248
+    assert manifest["complete"] and len(records) == 1536
     indexed = {(row["threshold"], row["margin"], row["scoring"], row["budget"], row["arm"]): row for row in records}
     assert len(indexed) == len(records)
     manuscript = (ROOT / "paper/manuscript.tex").read_text()

@@ -2,8 +2,8 @@
   "complete": true,
   "source_commit": "875d04d6df818110001f3889758cf998321a96f6",
   "analysis_script": "scripts/analyze_random_enrichment.py",
-  "source_evidence": "runs/key_ablations_20261015/paper_evidence",
-  "run_path": "runs/reviewer_revision_20261019/random_enrichment",
+  "source_evidence": "runs/conditioning_factorial_20261021/paper_evidence",
+  "run_path": "runs/conditioning_factorial_20261021/random_enrichment",
   "target_combination_labels_used_for_fitting": 0,
   "analysis_type": "Post-review retrospective random-selection analysis",
   "random_selection": "Uniform sampling without replacement from each unchanged eligible protein candidate pool.",
@@ -28,9 +28,9 @@
     30
   ],
   "random_protein_budget_records": 2840,
-  "paired_repetition_records_checked": 738400,
-  "paired_protein_records": 147680,
-  "summary_rows": 1248,
+  "paired_repetition_records_checked": 908800,
+  "paired_protein_records": 181760,
+  "summary_rows": 1536,
   "checks": [
     "candidate eligibility",
     "five matched repetitions",

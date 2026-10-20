@@ -1,0 +1,40 @@
+{
+  "complete": true,
+  "device": "cpu",
+  "threads": 4,
+  "batch_size": 32,
+  "warmup_batches_per_model": 20,
+  "timed_batches_per_model": 100,
+  "full_run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_combined_seed11",
+  "direct_run": "runs/e3/family30/fold0/pair/full_p64_lr0.0001_ly0.1_g0_f1_j1_direct_combined_seed11",
+  "real_feature_source": "releases/scepi_submission_20261019_final/examples/held_out_quartets.npz",
+  "parameters": {
+    "contrast": 836927,
+    "direct": 836927
+  },
+  "ordered_pair_network_evaluations": {
+    "contrast": 8,
+    "direct": 2
+  },
+  "symmetric_function_evaluations": {
+    "contrast": 4,
+    "direct": 1
+  },
+  "median_ms": {
+    "contrast": 6.880152,
+    "direct": 3.3881715
+  },
+  "interquartile_ms": {
+    "contrast": [
+      6.73578225,
+      7.1597005
+    ],
+    "direct": [
+      3.31096175,
+      3.53217575
+    ]
+  },
+  "contrast_to_direct_median_ratio": 2.030638649784995,
+  "scope": "Complete cached-feature predictor on 32 real held-out cycles; excludes frozen-encoder computation and feature-cache construction.",
+  "torch_version": "2.3.1+cu121"
+}

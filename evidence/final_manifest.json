@@ -1,4 +1,14 @@
 {
+  "timestamp_utc": "2026-10-20T19:00:40.713864+00:00",
+  "complete": true,
+  "completed_control_fits": 200,
+  "expected_control_fits": 200,
+  "new_fits_completed": 110,
+  "new_fits_required": 110,
+  "completed_evaluations": 300,
+  "expected_evaluations": 300,
+  "source_selection": "/data3/doomx/RECOMB-3-Epistasis/runs/conditioning_factorial_20261021/source_selection.json",
+  "evidence_manifest": "/data3/doomx/RECOMB-3-Epistasis/runs/conditioning_factorial_20261021/paper_evidence/manifest.json",
   "source": "paper/manuscript.tex",
   "class": "paper/llncs.cls",
   "template": "llncs, 2026/09/03 v2.25",
@@ -6,8 +16,8 @@
   "source_experiment_base_commit": "875d04d6df818110001f3889758cf998321a96f6",
   "main_text_pages_including_title_and_abstract": 10,
   "reference_pages": 1,
-  "supplementary_pages": 14,
-  "total_pages": 25,
+  "supplementary_pages": 18,
+  "total_pages": 29,
   "separate_title_pages": 0,
   "letter_format": true,
   "margin_inches": 1,
@@ -34,15 +44,15 @@
         "11"
       ],
       "all_fonts_embedded": true,
-      "retained_internal_links": 45,
+      "retained_internal_links": 42,
       "dangling_internal_links": 0,
-      "omitted_cross_document_links": 11,
+      "omitted_cross_document_links": 13,
       "render_dpi": 110,
       "render_matches_visually_inspected_source": true
     },
     {
       "path": "paper/supplementary.pdf",
-      "pages": 14,
+      "pages": 18,
       "page_labels": [
         "S1",
         "S2",
@@ -57,14 +67,22 @@
         "S11",
         "S12",
         "S13",
-        "S14"
+        "S14",
+        "S15",
+        "S16",
+        "S17",
+        "S18"
       ],
       "all_fonts_embedded": true,
-      "retained_internal_links": 17,
+      "retained_internal_links": 22,
       "dangling_internal_links": 0,
-      "omitted_cross_document_links": 9,
+      "omitted_cross_document_links": 14,
       "render_dpi": 110,
       "render_matches_visually_inspected_source": true
     }
-  ]
+  ],
+  "primary_complete_arms": 32,
+  "primary_evaluations": 1600,
+  "publication_version": "recomb2027-20261021",
+  "delivery_checked_at_utc": "2026-10-20T19:53:47.920787+00:00"
 }

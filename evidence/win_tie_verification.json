@@ -1,0 +1,8 @@
+{
+  "complete": true,
+  "comparisons": 14446,
+  "count_records_updated": 2365,
+  "win_tie_tolerance": 1e-12,
+  "means_and_repeated_gains_unchanged": true,
+  "bootstrap_intervals_unchanged": true
+}
