@@ -52,26 +52,24 @@
 \raggedbottom
 
 \begin{abstract}
-Selecting compensatory double mutants requires predicting how individually damaging substitutions combine. We introduce Single-mutant-Conditioned Epistasis Prediction (SCEPI), a cross-protein model that conditions a shared interaction function on measured single-mutant effects. These measurements also calibrate individual effects outside the interaction network. Source combination measurements train the model, while target double-mutant labels remain withheld. Across 155 held-out proteins, SCEPI achieves mean residual root mean squared error of 0.595 kcal/mol, compared with 0.805 for ThermoMPNN-D, 0.847 for Kermut, and 0.853 for calibrated StabilityArc. At a budget of ten candidates per protein, its compensation hit rate is 11.22\% across 120 proteins, compared with 7.07\%, 5.40\%, and 8.75\%, respectively. This rate is 4.27 times the 2.63\% expectation of uniform random selection from the same candidates. Matched input-removal controls retain external calibration and establish prediction and selection gains from measured single effects within the interaction network. The gains persist with the same measured single-effect sum, stricter homology grouping, and measurement-boundary analysis. SCEPI uses existing single-mutant measurements to guide compensatory discovery in unseen proteins.
+We introduce Single-mutant-Conditioned Epistasis Prediction (SCEPI) for discovering compensatory double mutants from individually damaging substitutions. A shared cross-protein interaction function receives measured single-mutant effects alongside protein representations. The same measurements calibrate individual effects outside the interaction network. Training uses source combination measurements and withholds target double-mutant labels. Across 155 held-out proteins, SCEPI achieves mean residual root mean squared error of 0.595 kcal/mol, compared with 0.805 for ThermoMPNN-D, 0.847 for Kermut, and 0.853 for calibrated StabilityArc. Selecting ten candidates per protein yields a compensation hit rate of 11.22\% across 120 proteins, compared with 7.07\%, 5.40\%, and 8.75\%, respectively. This is 4.27 times the 2.63\% expectation of uniform random selection from the same candidates. With external calibration held fixed, matched input-removal controls identify prediction and selection gains from supplying measured effects to the interaction network. These gains persist with the same measured single-effect sum, stricter homology grouping, and measurement-boundary analysis. Existing single-mutant measurements thus guide compensatory discovery in unseen proteins through a transferable interaction model.
 \end{abstract}
 
 \section{Introduction}
 
-Compensatory substitutions recover stability or function lost through other sequence changes \citep{davis2009,gong2013,azbukina2022}. Their discovery requires selecting useful combinations from individually damaging substitutions. Measured single-mutant effects provide target-specific information for directing a fixed experimental budget toward those combinations.
+Compensatory substitutions recover stability or function lost through other sequence changes \citep{davis2009,gong2013,azbukina2022}. Discovering them requires selecting useful combinations of individually damaging substitutions. Single-mutant measurements provide target-specific information for spending a fixed experimental budget on these combinations.
 
-Complete wild-type, single-mutant, and double-mutant measurements define observed nonadditivity \citep{tsuboyama2023}. Source proteins supply this supervision for learning a shared interaction function. At inference, target single-mutant measurements condition predictions for unmeasured combinations. Global phenotype nonlinearity and pair-dependent effects both contribute to the observed contrast \citep{otwinowski2018,tareen2022}.
+Complete wild-type, single-mutant, and double-mutant measurements define observed nonadditivity \citep{tsuboyama2023}. This contrast includes global phenotype nonlinearity and pair-dependent effects \citep{otwinowski2018,tareen2022}. Measurements from source proteins can supervise a shared interaction function for predicting unmeasured target combinations. Transferable combination predictors already learn from structure or sequence representations \citep{dieckhaus2025,ouyang2023,feller2026}, and target-specific regression uses measured variants \citep{groth2024}. We ask whether target single-mutant measurements add predictive value when supplied directly to the shared interaction function.
 
-Transferable combination predictors learn from structure or sequence representations \citep{dieckhaus2025,ouyang2023,feller2026}. Target-specific regression also uses measured variants \citep{groth2024}. These capabilities motivate a question about the additional value of supplying target single-mutant measurements directly to a shared interaction function.
+SCEPI uses measured single effects in two places. They calibrate individual effects and condition a shared interaction function together with their observation indicators. Within this function, the measured inputs accompany reference and single-mutant representations. Subtraction around a double-mutant cycle cancels endpoint-only offsets and enforces zero interaction at either wild-type endpoint. Source combination measurements train the shared parameters; target single-mutant observations condition predictions at inference.
 
-We introduce SCEPI, which conditions a shared interaction function on available single-mutant effects and their observation indicators. The same measurements calibrate individual effects outside that function. The pair function combines these inputs with reference and single-mutant representations. A double-mutant cycle cancels endpoint-only offsets and enforces zero interaction at either wild-type endpoint. Source combination measurements train the shared parameters.
-
-Matched input-removal controls retain external calibration, model capacity, training samples, and selection procedures. Removing the measured pair inputs increases residual error and reduces compensation hit rate under both homology groupings. The full-target comparison gives SCEPI a top-10 hit rate of 11.22\%, compared with 7.07\% for ThermoMPNN-D, 5.40\% for Kermut, and 8.75\% for calibrated StabilityArc. Every method receives zero target double-mutant training labels. Fixing the measured single-effect sum and excluding measurements near assay limits preserve the selection gains. A same-capacity direct-head comparison tests the reference constraints.
+Under both homology groupings, measured inputs improve residual prediction and compensation selection. The input-removal controls retain external calibration, model capacity, training samples, and selection procedures. In the full-target comparison, SCEPI's top-10 hit rate is 11.22\%, compared with 7.07\% for ThermoMPNN-D, 5.40\% for Kermut, and 8.75\% for calibrated StabilityArc. Every method receives zero target double-mutant training labels. The selection gains persist after fixing the measured single-effect sum and excluding measurements near assay limits. A separate same-capacity direct-head comparison tests the reference constraints.
 
 \section{Related work}
 
-\noindent\textbf{Combination predictors from protein representations.} ThermoMPNN-D uses a Siamese head over frozen ProteinMPNN features \citep{dieckhaus2025}. Mutate Everything composes reusable mutation representations \citep{ouyang2023}. ESM-MSR encodes wild-type and mutant sequences \citep{reeves2026}. The StabilityArc preprint learns a shared wild-type decoder and a symmetric, contact-conditioned residual \citep{feller2026}. These models establish transferable combination prediction from protein representations.
+\noindent\textbf{Combination predictors from protein representations.} Transferable predictors use structural or sequence representations to model combinations. In ThermoMPNN-D, frozen ProteinMPNN features feed a Siamese head \citep{dieckhaus2025}. Mutate Everything composes reusable mutation representations \citep{ouyang2023}, and ESM-MSR encodes wild-type and mutant sequences \citep{reeves2026}. The StabilityArc preprint learns a shared wild-type decoder with a symmetric, contact-conditioned residual \citep{feller2026}.
 
-\noindent\textbf{Using target measurements.} Table~\ref{tab:information} distinguishes the roles of single-mutant measurements. Mutate Everything constructs training residuals from measured singles and uses predicted effects at inference \citep{ouyang2023}. StabilityArc supplies a cross-protein prior to Kermut's target Gaussian-process posterior \citep{feller2026,groth2024}. SCEPI supplies measured effects directly to its shared pair network and external calibration. The matched input-removal control isolates the pair-input role.
+\noindent\textbf{Using target measurements.} Single-mutant labels enter combination predictors at different stages (Table~\ref{tab:information}). Mutate Everything uses measured singles to construct training residuals, then supplies predicted effects at inference \citep{ouyang2023}. For target adaptation, StabilityArc provides a cross-protein prior to Kermut's Gaussian-process posterior \citep{feller2026,groth2024}. In SCEPI, measured effects enter both external calibration and the shared pair network. Holding the calibration fixed during input removal isolates the contribution of their use within that network.
 
 \begin{table}[!b]
 \centering
@@ -90,11 +88,11 @@ SCEPI & Joint loss & Calibration and conditioning & Effects and masks \\
 \end{tabular}
 \end{table}
 
-\noindent\textbf{Phenotype maps and interaction terms.} MAVE-NN, MoCHI, and reference-free analysis fit genetic effects and nonlinear phenotype maps \citep{tareen2022,faure2024,park2024}. Global epistasis separates phenotype nonlinearity from pair-dependent contributions \citep{otwinowski2018}. SCEPI retains both in its predicted phenotype contrast. Component comparisons evaluate the map and fitting objectives separately from measured-input conditioning.
+\noindent\textbf{Phenotype maps and interaction terms.} MAVE-NN, MoCHI, and reference-free analysis fit genetic effects through nonlinear phenotype maps \citep{tareen2022,faure2024,park2024}. Global epistasis distinguishes this nonlinearity from pair-dependent contributions \citep{otwinowski2018}. Both enter SCEPI's predicted phenotype contrast. We evaluate the map and fitting objectives separately from measured-input conditioning.
 
 \section{Methods}
 
-SCEPI combines a source-trained interaction function with measured target single effects (Figure~\ref{fig:method}). These measurements enter the pair network and external calibration. Target double-mutant outcomes are reserved for evaluation.
+Source combination measurements train SCEPI's shared interaction function (Figure~\ref{fig:method}). At inference, target single effects condition this function and calibrate the external single-effect sum. Target double-mutant outcomes are reserved for evaluation.
 
 \begin{figure}[!b]
 \centering
@@ -157,20 +155,18 @@ The four observations form a double-mutant cycle \citep{horovitz1996}. They shar
 
 \subsection{Mutation representations and calibrated single effects}
 
-We use a frozen ESM-2 encoder $h$ \citep{lin2023}. For substitution $A=(i,a)$, the endpoint representation contains $h_i(s_p)$, the local change $h_i(x_p(A))-h_i(s_p)$, amino-acid identities, and the pretrained substitution score. A shared head predicts the single effect through a reference subtraction,
+A frozen ESM-2 encoder $h$ supplies the sequence representations \citep{lin2023}. For substitution $A=(i,a)$, the endpoint representation contains $h_i(s_p)$, the local change $h_i(x_p(A))-h_i(s_p)$, amino-acid identities, and the pretrained substitution score. The single-effect head is shared across proteins and uses a reference subtraction,
 \begin{equation}
 a_i(a)=f_\phi(u_i(a))-f_\phi(u_i(w_i)),
 \end{equation}
-where $w_i$ is the reference residue. Thus $a_i(w_i)=0$. The same head processes every protein.
+where $w_i$ is the reference residue, giving $a_i(w_i)=0$.
 
 Available single-mutant effects enter through
 \begin{equation}
 \widetilde a_i(a)=a_i(a)+\omega m_i(a)\bigl[\mu_i^{\mathrm{obs}}(a)-a_i(a)\bigr],
 \label{eq:calibration}
 \end{equation}
-where $m_i(a)$ records label availability. The mixing weight $\omega$ is selected on source-validation proteins. A measured zero remains an available label. The calibrated effects enter both the single-effect sum and the interaction network.
-
-Pair representations also contain mutation-dependent cross-site context and sequence separation. Appendix~\ref{app:parameterization} defines these features and the structural variant.
+where $m_i(a)$ records label availability and $\omega$ is selected on source-validation proteins. An observed zero remains an available label. The calibrated effects enter both the single-effect sum and the interaction network. Pair representations also include mutation-dependent cross-site context and sequence separation, defined with the structural variant in Appendix~\ref{app:parameterization}.
 
 \subsection{Conditioning the shared interaction function}
 
@@ -179,7 +175,7 @@ For a candidate pair, collect the calibrated single effects and their availabili
 c_{ij}(a,b)=\bigl(\widetilde a_i(a),\widetilde a_j(b),m_i(a),m_j(b)\bigr).
 \label{eq:conditioning}
 \end{equation}
-The shared network receives this vector together with the endpoint representations and site relation. Thus the pair function depends on the target's measured single effects while its parameters remain shared across proteins. Exchanging the endpoints also exchanges the entries of $c_{ij}$.
+Together with the endpoint representations and site relation, $c_{ij}$ makes the shared network depend on measured effects from the target protein. Exchanging the endpoints also exchanges the entries of $c_{ij}$.
 
 Let $\Psi_\theta(i,a;j,b\mid c_{ij})$ denote the ordered network. We average both orders:
 \begin{equation}
@@ -191,9 +187,9 @@ The conditioning inputs enter every evaluation of $F$. The pair output uses the 
 r_{ij}(a,b)=F(i,a;j,b)-F(i,a;j,w_j)-F(i,w_i;j,b)+F(i,w_i;j,w_j).
 \label{eq:pair}
 \end{equation}
-Every call uses the specified amino-acid state. Restoring an endpoint to wild type sets its effect and local representation change to zero. It also removes the context change caused by that endpoint at the other site.
+Each call evaluates the specified amino-acid state. At a wild-type endpoint, the single effect and local representation change are zero. The context change caused by that endpoint at the other site is also removed.
 
-Equation~\eqref{eq:pair} gives symmetry, $r_{ij}(a,b)=r_{ji}(b,a)$, and zero reference effects, $r_{ij}(a,w_j)=r_{ij}(w_i,b)=0$. Replacing $F$ by $F+v_i(a)+v_j(b)+c$ leaves $r$ unchanged because the four terms cancel every endpoint-only contribution. A matched direct-head comparison tests the predictive contribution of these constraints.
+The subtraction enforces symmetry, $r_{ij}(a,b)=r_{ji}(b,a)$, and zero reference effects, $r_{ij}(a,w_j)=r_{ij}(w_i,b)=0$. It also cancels every endpoint-only contribution, so replacing $F$ by $F+v_i(a)+v_j(b)+c$ leaves $r$ unchanged. We test the predictive contribution of these constraints against a matched direct head.
 
 \subsection{Composition and phenotype prediction}
 
@@ -213,13 +209,13 @@ This contrast includes global phenotype nonlinearity and the learned pair contri
 
 \subsection{Learning from complete combination measurements}
 
-The single-effect head is initialized from source single-mutant measurements. Source combination measurements then jointly fit the single head, pair function, and phenotype map. Training combines a Huber loss on the complete predicted residual with the likelihood of source observations. Sampling balances proteins and site pairs. The likelihood retains point-valued and interval-valued measurements.
+After initialization on source single-mutant measurements, the single head is fitted jointly with the pair function and phenotype map using source combinations. The objective combines a Huber loss on the complete predicted residual with the likelihood of point-valued and interval-valued source observations. Sampling balances proteins and site pairs.
 
-Source training varies the permitted single-mutant information to represent inference conditions. Source-validation proteins determine model configurations and the label-mixing weight. Target homology groups remain excluded from fitting and selection. Appendix~\ref{app:training} gives the full criterion, observation model, and implementation. Residual-only and phenotype-only variants compare objective choices.
+To represent inference conditions, source training varies the permitted single-mutant information. Model configurations and the label-mixing weight are selected on source-validation proteins, excluding target homology groups from fitting and selection. Appendix~\ref{app:training} gives the criterion, observation model, and implementation. Residual-only and phenotype-only variants test the choice of objective.
 
 \subsection{Compensatory candidate selection}
 
-SCEPI ranks double mutants using its native phenotype prediction $\widehat\mu_p(AB)$. For a fixed budget $K$, it selects the highest-scoring $K$ candidates. We evaluate recovery relative to the better constituent single mutant,
+For a budget $K$, SCEPI selects the $K$ double mutants with the highest native phenotype predictions $\widehat\mu_p(AB)$. Recovery is measured relative to the better constituent single mutant,
 \begin{equation}
 R_p(A,B)=y_p(AB)-\max\{y_p(A),y_p(B)\}.
 \end{equation}
@@ -230,34 +226,34 @@ To isolate interaction information, we fix the measured single-effect sum across
 s_m(A,B)=\mu_p^{\mathrm{obs}}(A)+\mu_p^{\mathrm{obs}}(B)+\widehat\epsilon_{m,p}(A,B).
 \label{eq:selection}
 \end{equation}
-Every method retains its own four-prediction contrast. This comparison fixes the single-effect sum and changes the predicted nonadditivity. Native ranking measures the complete method's utility. Equation~\eqref{eq:selection} tests the contribution of interaction predictions to that utility.
+Each method retains its own four-prediction contrast, so scores differ through predicted nonadditivity. Native ranking evaluates the complete predictor; Equation~\eqref{eq:selection} isolates the selection value of its interaction predictions.
 
 Uniform random selection samples $K$ candidates without replacement from the same protein-level pool. Its expected hit rate is the pool's hit fraction, and its expected mean recovery is the pool mean. Enrichment is the ratio of the model and random equal-protein mean hit rates. Appendix~\ref{app:random} gives the exact calculation and uncertainty analysis.
 
 \section{Experimental setting}
 
-We use the cDNA-display proteolysis stability measurements of Tsuboyama et al. \citep{tsuboyama2023}. The accepted double-mutant set contains 182,663 variants across 190 reference backgrounds. It supplies 127,892 complete, point-valued double-mutant cycles across 160 backgrounds and 488 site pairs. The retrospective evaluation requires all four measurements to lie inside the assay range of $[-1,5]$ kcal/mol. Model training also retains interval-valued observations through the observation likelihood.
+The cDNA-display proteolysis measurements of Tsuboyama et al. provide stability data \citep{tsuboyama2023}. Among 182,663 accepted double mutants across 190 reference backgrounds, 127,892 form complete, point-valued cycles across 160 backgrounds and 488 site pairs. Retrospective evaluation requires all four measurements to lie inside the assay range of $[-1,5]$ kcal/mol. Training additionally retains interval-valued observations through the observation likelihood.
 
-The primary evaluation holds out homology groups and scores all accepted target double mutants. Grouping uses 30\% sequence identity and at least 80\% bidirectional coverage. Related reference backgrounds remain together, and annotated family relations further merge groups. Source training and validation exclude the outer test partition. S-all supplies all permitted target single-mutant labels and excludes every target double-mutant label from fitting. Homology groups and annotated families have separate coverage records.
+In the primary S-all evaluation, all permitted target single-mutant labels are available and every target double-mutant label is withheld from fitting. We score all accepted double mutants in held-out homology groups. Groups use 30\% sequence identity and at least 80\% bidirectional coverage, keeping related reference backgrounds together. Annotated family relations further merge groups. Source training and validation exclude the outer test partition. Coverage is recorded separately for homology groups and annotated families.
 
-Comparators include independently trained additive and global nonlinear models, ThermoMPNN-D, Kermut, StabilityArc + Kermut, mean ridge, and mean MLP. The global model retains the monotone map and omits the pair term. The mean-representation controls fit ridge regression or a multilayer perceptron (MLP) to averaged mutation representations. Source-trained baselines are retrained on the same source partitions, with checkpoints selected by source validation. StabilityArc scores supply the prior mean for Kermut target calibration \citep{feller2026,groth2024}. All methods receive zero target double-mutant labels and score the same candidates. Appendices~\ref{app:training} and~\ref{app:stabilityarc} give their architectures, source supervision, target adaptation, and structural inputs.
+We compare independently trained additive and global nonlinear models with ThermoMPNN-D, Kermut, StabilityArc + Kermut, mean ridge, and mean MLP. The global control keeps the monotone map and omits the pair term. Mean ridge and mean MLP fit ridge regression or a multilayer perceptron (MLP) to averaged mutation representations. For source-trained baselines, retraining uses the same source partitions and source-validation checkpoint selection. StabilityArc scores provide Kermut's prior mean during target calibration \citep{feller2026,groth2024}. All methods score the same candidates with zero target double-mutant labels. Their architectures, supervision, adaptation, and structural inputs are specified in Appendices~\ref{app:training} and~\ref{app:stabilityarc}.
 
-Prediction error uses root mean squared error (RMSE). Phenotype evaluation requires at least 30 point-valued target measurements per protein. It covers 159 proteins and 51 homology groups. Residual evaluation requires at least 30 complete, in-range cycles and covers 155 proteins from the same 51 groups. Compensation selection requires at least 100 eligible candidates per protein and reference stability at most 4.5 kcal/mol. Its cohort contains 120 proteins and 44 groups. We use candidate budgets $K\in\{1,3,10,30\}$ and recovery threshold $\delta=0.5$ kcal/mol. Metrics are calculated within each protein, averaged over matched repetitions, and then averaged equally across proteins. Hyperparameters and label-mixing weights are chosen using source-validation measurements.
+Prediction error is measured by root mean squared error (RMSE). The phenotype cohort contains 159 proteins from 51 homology groups, each with at least 30 point-valued target measurements. Residual evaluation requires at least 30 complete, in-range cycles and retains 155 proteins from the same 51 groups. For compensation selection, we require at least 100 eligible candidates and reference stability at most 4.5 kcal/mol. This gives 120 proteins from 44 groups. Candidate budgets are $K\in\{1,3,10,30\}$, with recovery threshold $\delta=0.5$ kcal/mol.
 
-For each cycle, the margin is the smallest distance of any measurement from either assay limit. Margins of 0.25 and 0.5 kcal/mol retain 120 and 115 compensation proteins; the latter covers 43 groups. The designated site-pair subset and target combination adaptation have separate evaluations. Statistical and repetition details appear in the appendix.
+Metrics are computed within protein, averaged over matched repetitions, and then averaged equally across proteins. Source-validation measurements determine hyperparameters and label-mixing weights.
 
-Additional information conditions measure the value of target labels. Z permits no target measurements. S32 and S128 permit the reference and the specified number of target single-mutant labels. The C conditions additionally permit 128, 512, 2,048, or all available training double-mutant labels. Their designated site-pair holdout excludes test pairs from target combination fitting. Separate adaptation experiments cover six functional assays and nine FLIP2 split protocols \citep{didi2026}. Appendix~\ref{app:externaladaptation} defines their measurement units, model variants, and evaluation populations.
+Measurement-boundary analysis uses each cycle's smallest distance from either assay limit. Margins of 0.25 and 0.5 kcal/mol retain 120 and 115 compensation proteins, respectively; the latter covers 43 groups. The designated site-pair subset and target combination adaptation are evaluated separately. Statistical and repetition details appear in the appendix.
+
+We vary target-label availability in additional information conditions. Z permits no target measurements; S32 and S128 permit the reference and the specified number of single-mutant labels. The C conditions also permit 128, 512, 2,048, or all available training double-mutant labels, excluding held-out test site pairs from target combination fitting. Separate adaptation experiments cover six functional assays and nine FLIP2 split protocols \citep{didi2026}. Appendix~\ref{app:externaladaptation} defines their measurement units, model variants, and evaluation populations.
 
 \section{Results}
 \interlinepenalty=10000
 
 \subsection{Measured single effects improve interaction prediction and selection}
 
-Conditioning the pair function on measured single effects improves prediction and compensation selection under both homology groupings (Table~\ref{tab:conditioning}; Figure~\ref{fig:components}c,d). The matched input-removal control supplies model-predicted single effects and zero availability indicators to $F$. It retains the external calibration formula and source-validation selection procedure. Model capacity, initialization, training samples, objectives, and stopping rules are matched. Each model is refitted independently.
+Measured single effects within the pair function reduce residual RMSE by 22.4\% under the primary grouping and 25.7\% under the stricter grouping (Table~\ref{tab:conditioning}; Figure~\ref{fig:components}c,d). Native top-10 hit rates rise by 3.03 and 3.00 percentage points. Both mean gains are positive in every matched training repetition under each grouping. To isolate this input contribution, the removal control supplies model-predicted single effects and zero availability indicators to $F$, retaining external calibration and its source-validation selection procedure. Each model is refitted independently with matched capacity, initialization, training samples, objectives, and stopping rules. Controls retain the same 155 residual-evaluation proteins and 120 compensation proteins.
 
-Measured pair inputs reduce residual RMSE by 22.4\% under the primary grouping and 25.7\% under the stricter grouping. Native top-10 hit rates improve by 3.03 and 3.00 percentage points. Both mean gains are positive in every matched training repetition under each grouping. The residual and compensation cohorts contain the same 155 and 120 proteins across controls.
-
-The input contribution remains when every method uses the same measured single-effect sum. Hit-rate gains over the input-removal control are 3.08 and 3.02 percentage points under the two groupings. At the 0.5 kcal/mol measurement margin, the gains are 3.11 and 3.13 points. These comparisons identify selection information supplied by measured inputs within the interaction function.
+Fixing the measured single-effect sum preserves hit-rate gains of 3.08 and 3.02 percentage points over the input-removal control. At the 0.5 kcal/mol measurement margin, these gains are 3.11 and 3.13 points. The pair network therefore uses measured effects to improve selection even when the external single-effect sum is identical.
 
 \begin{table}[!tbp]
 \centering
@@ -301,13 +297,11 @@ Uniform random & --- & --- & 2.63 & $-0.900$ & 1.00 \\
 
 \subsection{The conditional predictor improves compensatory candidate discovery}
 
-SCEPI achieves a mean top-10 compensation hit rate of 11.22\% using its native predictions (Table~\ref{tab:diagnostic}). ThermoMPNN-D achieves 7.07\%, Kermut 5.40\%, and the global nonlinear model 4.45\%. SCEPI improves their hit rates by 4.15, 5.82, and 6.77 percentage points. Its mean selected recovery exceeds these methods by 0.183, 0.201, and 0.180 kcal/mol. Recovery is higher in 86 of 120 proteins against ThermoMPNN-D and in 93 of 120 against Kermut. Figure~\ref{fig:compensation} shows the full budget curves and all protein-level hit-rate differences.
+At a budget of $K=10$ candidates, native SCEPI predictions yield an 11.22\% mean compensation hit rate (Table~\ref{tab:diagnostic}). ThermoMPNN-D reaches 7.07\%, Kermut 5.40\%, and the global nonlinear model 4.45\%. The corresponding hit-rate gains are 4.15, 5.82, and 6.77 percentage points, with mean recovery gains of 0.183, 0.201, and 0.180 kcal/mol. Higher recovery occurs in 86 of 120 proteins against ThermoMPNN-D and 93 of 120 against Kermut. StabilityArc + Kermut reaches an 8.75\% top-10 hit rate. Against this method, SCEPI gains 2.47 percentage points in hit rate and 0.087 kcal/mol in mean recovery, with higher recovery in 73 of 120 proteins. Both predictors learn pair effects across source proteins and use target single-mutant measurements. Figure~\ref{fig:compensation} shows the budget curves and all protein-level hit-rate differences.
 
-SCEPI has the highest mean selected recovery among the seven baselines at every evaluated budget. At $K=10$, its recovery advantage over mean ridge is 0.098 kcal/mol. Mean ridge has a hit rate of 11.42\%, compared with SCEPI's 11.22\% and mean MLP's 10.07\%. Against the additive model, SCEPI improves hit rate by 4.83 percentage points and mean recovery by 0.130 kcal/mol. The additive hit rate is 6.38\%.
+Mean selected recovery favors SCEPI over all seven baselines at every evaluated budget. At $K=10$, mean ridge has a slightly higher hit rate of 11.42\%, compared with SCEPI's 11.22\% and mean MLP's 10.07\%. SCEPI's recovery advantage over mean ridge is 0.098 kcal/mol. Relative to the additive model's 6.38\% hit rate, SCEPI gains 4.83 percentage points and 0.130 kcal/mol mean recovery.
 
-SCEPI improves top-10 hit rate over StabilityArc + Kermut by 2.47 percentage points and mean recovery by 0.087 kcal/mol. StabilityArc + Kermut reaches an 8.75\% hit rate. SCEPI gives higher recovery in 73 of 120 proteins. Both methods learn pair effects across source proteins and use target single-mutant measurements.
-
-SCEPI enriches compensatory hits 4.27-fold over uniform random selection at $K=10$. The same 120 proteins contain 79,564 eligible candidates. Random selection has an expected equal-protein hit rate of 2.63\% and mean recovery of $-0.900$ kcal/mol. SCEPI increases the hit rate by 8.59 percentage points and mean recovery by 0.643 kcal/mol. Enrichment is 5.52, 4.90, 4.27, and 3.26 at budgets 1, 3, 10, and 30, respectively (Figure~\ref{fig:compensation}a,b).
+Uniform random selection from the same 79,564 candidates across 120 proteins has an expected equal-protein hit rate of 2.63\% and mean recovery of $-0.900$ kcal/mol. At $K=10$, SCEPI enriches hits 4.27-fold, gaining 8.59 percentage points in hit rate and 0.643 kcal/mol in mean recovery. Enrichment decreases from 5.52 to 4.90, 4.27, and 3.26 as the budget increases through 1, 3, 10, and 30 candidates (Figure~\ref{fig:compensation}a,b).
 
 \begin{figure}[!tbp]
 \centering
@@ -644,15 +638,13 @@ SCEPI enriches compensatory hits 4.27-fold over uniform random selection at $K=1
 \label{fig:prediction}
 \end{figure}
 
-Mean residual RMSE is 0.595 kcal/mol for SCEPI, 0.805 for ThermoMPNN-D, and 0.847 for Kermut. The respective error reductions are 26.1\% and 29.8\%. SCEPI has lower protein-level residual RMSE in 136 of 155 proteins against either method (Figure~\ref{fig:prediction}a).
+Residual RMSE falls to 0.595 kcal/mol with SCEPI, compared with 0.805 for ThermoMPNN-D and 0.847 for Kermut. These are reductions of 26.1\% and 29.8\%, with lower error in 136 of 155 proteins against either method (Figure~\ref{fig:prediction}a). Against StabilityArc + Kermut's 0.853 kcal/mol, the reduction is 30.3\%, and error is lower in 130 of 155 proteins.
 
-SCEPI reduces residual RMSE by 30.3\% relative to StabilityArc + Kermut, which reaches 0.853 kcal/mol. Its error is lower in 130 of 155 proteins.
+Global phenotype nonlinearity reduces the additive model's residual error from 1.091 to 0.635 kcal/mol. Adding the learned pair function lowers this error by another 6.4\%, with improvement in 92 of 155 proteins. The two comparisons distinguish the contributions of the phenotype map and the pair function.
 
-SCEPI reduces the global nonlinear control's mean residual error by 6.4\%, with lower error in 92 of 155 proteins. The global control reaches 0.635 kcal/mol, compared with 1.091 kcal/mol for the additive model. This comparison separates phenotype nonlinearity from the additional pair function.
+For phenotype prediction, SCEPI reaches RMSE 0.657 kcal/mol and mean Spearman correlation 0.742. The corresponding values are 0.777 and 0.673 for ThermoMPNN-D, 0.798 and 0.696 for Kermut, and 0.815 and 0.746 for StabilityArc + Kermut. Protein-level phenotype error is lower in 117 of 159 comparisons with ThermoMPNN-D and 114 of 159 with Kermut. Both target-fitted mean-representation baselines also have higher mean phenotype and residual errors. Protein-level differences and repetition-level residual gains appear in Figure~\ref{fig:prediction}b--d.
 
-SCEPI's phenotype RMSE is 0.657 kcal/mol. Its mean Spearman correlation is 0.742. ThermoMPNN-D reaches 0.777 and 0.673, while Kermut reaches 0.798 and 0.696. StabilityArc + Kermut reaches 0.815 and 0.746. SCEPI has lower phenotype RMSE in 117 of 159 proteins against ThermoMPNN-D and in 114 of 159 against Kermut. Its mean phenotype and residual errors also improve over both target-fitted mean-representation baselines. Figure~\ref{fig:prediction}b--d shows the protein-level differences and repetition-level residual gains.
-
-With 128 target double-mutant training labels, the source-initialized SCEPI adaptation variant reaches unseen-site-pair RMSE of 0.567 kcal/mol across 70 proteins. Kermut reaches 0.758, ThermoMPNN-D 0.775, second-order MoCHI 0.859, and the target-only SCEPI adaptation variant 0.799. Table~\ref{tab:combinationbudgets} reports every comparator across the four budgets.
+Providing 128 target double-mutant training labels allows adaptation to the target protein. On unseen site pairs, the source-initialized SCEPI variant reaches RMSE 0.567 kcal/mol across 70 proteins. Kermut reaches 0.758, ThermoMPNN-D 0.775, second-order MoCHI 0.859, and the target-only SCEPI variant 0.799. Results for every comparator across the four budgets appear in Table~\ref{tab:combinationbudgets}.
 
 \subsection{Interaction predictions add value beyond measured single effects}
 
@@ -909,28 +901,26 @@ clip=false,
 \label{fig:components}
 \end{figure}
 
-Fixing the measured single-effect sum across methods preserves the selection advantage (Figure~\ref{fig:components}a; Appendix Table~\ref{tab:commonmain}). SCEPI achieves a compensation hit rate of 11.27\%, compared with 4.42\% for additivity and 4.70\% for global nonlinearity. ThermoMPNN-D reaches 5.30\%, Kermut reaches 5.47\%, and StabilityArc + Kermut reaches 8.17\%. Mean MLP and mean ridge reach 7.17\% and 7.33\%. Mean selected recovery improves by 0.176, 0.161, 0.224, and 0.200 kcal/mol over the first four controls. Its improvement over StabilityArc + Kermut is 0.095 kcal/mol. These paired scores differ through each method's predicted four-term nonadditivity.
+When every method uses the same measured single-effect sum, SCEPI retains an 11.27\% compensation hit rate (Figure~\ref{fig:components}a; Appendix Table~\ref{tab:commonmain}). Additivity gives 4.42\% and global nonlinearity 4.70\%; ThermoMPNN-D reaches 5.30\%, Kermut 5.47\%, and StabilityArc + Kermut 8.17\%. Mean MLP and mean ridge reach 7.17\% and 7.33\%. Recovery gains over the first four controls are 0.176, 0.161, 0.224, and 0.200 kcal/mol, respectively, with a 0.095 kcal/mol gain over StabilityArc + Kermut. Only the predicted four-term nonadditivity differs between paired scores.
 
-At a margin of at least 0.5 kcal/mol, SCEPI's hit rate is 11.15\%. Additivity reaches 4.52\%, global nonlinearity 4.82\%, ThermoMPNN-D 5.27\%, and Kermut 5.29\%. StabilityArc + Kermut reaches 8.12\%. Mean MLP and mean ridge reach 7.30\% and 7.48\%. The advantage extends to combinations whose measurements are separated from both assay limits (Figure~\ref{fig:components}a,b).
+Restricting evaluation to measurements at least 0.5 kcal/mol from both assay limits preserves this advantage (Figure~\ref{fig:components}a,b). Hit rates are 11.15\% for SCEPI, 4.52\% for additivity, 4.82\% for global nonlinearity, 5.27\% for ThermoMPNN-D, and 5.29\% for Kermut. StabilityArc + Kermut reaches 8.12\%, mean MLP 7.30\%, and mean ridge 7.48\%.
 
 \subsection{Reference constraints improve residual prediction}
 
-Cycle subtraction improves mean residual accuracy against the same-capacity direct head. The direct head's residual RMSE is 0.635 kcal/mol under the primary grouping and 0.630 kcal/mol under the stricter grouping. SCEPI's corresponding errors are 0.595 and 0.604 kcal/mol. Its native hit-rate gain is 0.52 percentage points under the primary grouping and $-0.23$ points under the stricter grouping. This parameterization supplies exact reference constraints and a residual-prediction benefit across both groupings. Tables~\ref{tab:allcomponents} and~\ref{tab:threshold25} report the prediction and selection results.
+Cycle subtraction enforces the reference constraints and improves residual accuracy against the same-capacity direct head (Tables~\ref{tab:allcomponents} and~\ref{tab:threshold25}). The direct head reaches residual RMSE 0.635 kcal/mol under the primary grouping and 0.630 kcal/mol under the stricter grouping, compared with SCEPI's 0.595 and 0.604 kcal/mol. Native hit-rate gains are 0.52 and $-0.23$ percentage points, respectively. The residual benefit holds across both groupings; the hit-rate effect varies.
 
-Removing the learned pair term at inference retains the trained single head and phenotype map. Native hit rate falls from 11.22\% to 4.42\%, and residual RMSE rises from 0.595 to 1.072 kcal/mol. This intervention establishes the pair output's contribution within the trained predictor (Figure~\ref{fig:components}c,d). Representation, mapping, and training-objective variants are reported with their complete results in the appendix.
+Setting the pair term to zero at inference lowers native hit rate from 11.22\% to 4.42\% and raises residual RMSE from 0.595 to 1.072 kcal/mol (Figure~\ref{fig:components}c,d). The trained single head and phenotype map remain fixed during this intervention. Complete representation, mapping, and training-objective comparisons are reported in the appendix.
 
 \interlinepenalty=0
 \section{Discussion}
 
-SCEPI makes existing single-mutant measurements useful for selecting compensatory combinations in unseen proteins. Source combination measurements train a shared function, and target single effects condition its predictions. This information supports candidate selection before target combination labels are collected. The retrospective comparisons quantify that selection benefit at a fixed budget and across held-out homology groups.
+Single-mutant measurements can guide compensatory discovery before any target combination labels are collected. SCEPI uses them to condition an interaction function learned across source proteins. The retrospective comparisons quantify the resulting selection benefit at a fixed budget and across held-out homology groups. This use of target information extends beyond fitting individual effects or a Gaussian-process posterior. StabilityArc supplies a source-trained prior for target adaptation \citep{feller2026}; SCEPI also supplies observed single effects to the shared interaction function. Holding external calibration fixed during input removal identifies the value of that input location. Selection gains also persist with the same measured single-effect sum.
 
-Measured inputs extend the use of target labels beyond fitting single effects or a Gaussian-process posterior. StabilityArc supplies a source-trained prior for target adaptation \citep{feller2026}. SCEPI also uses the observed single effects within the shared interaction function. The matched removal experiment identifies the value of that input location while retaining external calibration. Selection gains persist when every method uses the same measured single-effect sum.
-
-The reference constraints and the measured inputs serve distinct roles. The constraints define zero interaction at a wild-type endpoint and improve mean residual accuracy against a direct head. Their hit-rate differences vary across groupings. Conditioning on measured target observations improves both prediction and compensatory selection under the two homology groupings.
+The reference constraints fix the model's behavior at wild-type endpoints and improve mean residual accuracy against a direct head. Their hit-rate effects vary across groupings. Measured-input conditioning improves both residual prediction and compensatory selection under the two homology groupings.
 
 \section{Conclusion}
 
-SCEPI conditions a transferable interaction function on measured single effects. Matched controls and held-out comparisons establish gains in residual prediction and compensatory discovery. Code, configurations, and reproduction materials are available at \url{https://github.com/SZU-ADDG/SCEPI}.
+By conditioning a transferable interaction function on measured single effects, SCEPI improves residual prediction and compensatory discovery in matched controls and held-out comparisons. Code, configurations, and reproduction materials are available at \url{https://github.com/SZU-ADDG/SCEPI}.
 
 \clearpage
 \begin{thebibliography}{10}
@@ -1043,20 +1033,20 @@ K. Didi et al.
 \section{Model parameterization and algebraic properties}
 \label{app:parameterization}
 
-The frozen ESM-2 model supplies 1,280-dimensional residue representations. Independent linear projections map wild-type, local-change, and cross-site-change features to the selected projection dimension. Amino-acid states use one-hot encodings. The single and pair heads have a 256-dimensional hidden layer, a 128-dimensional second layer, GELU activations, and a scalar output. The pair head also receives the calibrated single effects and their observation indicators. Its sequence relation uses the logarithm of one plus the site gap and the gap divided by sequence length. Projection dimensions, learning rates, auxiliary weights, and $\omega$ are selected from source-validation measurements.
+Residue representations from the frozen ESM-2 model have dimension 1,280. Independent linear projections map wild-type, local-change, and cross-site-change features to the selected projection dimension. Amino-acid states use one-hot encodings. Both heads contain hidden layers of dimensions 256 and 128, GELU activations, and a scalar output. The pair head additionally receives calibrated single effects and observation indicators. Its sequence relation contains the logarithm of one plus the site gap and the gap divided by sequence length. Source-validation measurements select projection dimensions, learning rates, auxiliary weights, and $\omega$.
 
 The cross-site context is the change at one site after the other site is substituted,
 \begin{equation}
 \chi_{i\leftarrow j}(b)=h_i(x_p(j,b))-h_i(s_p).
 \end{equation}
-Each single-mutant sequence is encoded once. Its residue states are reused across candidate pairs. The pair network therefore receives mutation-dependent context without encoding every double-mutant sequence. Sequence separation supplies the relation between endpoints. The structural variant adds reference C$\alpha$ distances and residue confidence.
+Encoding each single-mutant sequence once supplies residue states for every candidate pair involving that mutation. This gives the pair network mutation-dependent context without encoding double-mutant sequences. Sequence separation describes the endpoint relation; the structural variant adds reference C$\alpha$ distances and residue confidence.
 
 The normalized phenotype map is
 \begin{equation}
 g(z)=\frac{z+\sum_{k=1}^{20}b_k[\tanh(c_kz+d_k)-\tanh(d_k)]}
 {1+\sum_{k=1}^{20}b_kc_k\operatorname{sech}^2(d_k)},\qquad b_k,c_k>0.
 \end{equation}
-Positive parameters use softplus. Substitution of $z=0$ gives $g(0)=0$. Differentiation gives $g'(0)=1$. Its derivative is positive for every $z$, and its linear term preserves nonzero slopes in the tails. The positive factor $\tau$ sets the phenotype scale.
+Softplus ensures positive parameters. Substitution of $z=0$ gives $g(0)=0$, and differentiation gives $g'(0)=1$. The derivative is positive for every $z$, with the linear term preserving nonzero slopes in the tails. A positive factor $\tau$ sets the phenotype scale.
 
 For $u=\widetilde a_i(a)$ and $v=\widetilde a_j(b)$, the predicted phenotype contrast decomposes as
 \begin{align}
@@ -1065,19 +1055,21 @@ For $u=\widetilde a_i(a)$ and $v=\widetilde a_j(b)$, the predicted phenotype con
 \end{align}
 Their sum is $\widehat\epsilon_p$. With the identity map and unit scale, the phenotype contrast equals $r_{ij}$. With a nonlinear map, the complete contrast includes both contributions.
 
-Symmetry of $F$ implies symmetry of the cycle subtraction. Setting $b=w_j$ makes its first two terms equal and its last two terms equal, giving $r_{ij}(a,w_j)=0$. The other reference constraint follows identically. For an endpoint term $v_i(a)$, the subtraction contains $v_i(a)-v_i(a)-v_i(w_i)+v_i(w_i)=0$. The second endpoint term and the constant cancel in the same way. These are algebraic properties of the parameterization. Real-data model checks also verify endpoint exchange and reference-state outputs.
+Symmetry of $F$ carries over to the cycle subtraction. At $b=w_j$, the first two terms cancel and so do the last two, giving $r_{ij}(a,w_j)=0$. The other reference constraint follows identically. An endpoint term $v_i(a)$ contributes $v_i(a)-v_i(a)-v_i(w_i)+v_i(w_i)=0$ to the subtraction. The second endpoint term and the constant cancel in the same way. Endpoint exchange and reference-state outputs are also checked on real data.
 
 \subsection*{Matched controls for the pair function}
 
-The input-removal control supplies model-predicted single effects $a_i(a),a_j(b)$ to every evaluation of $F$ and sets its observation indicators to zero. Equation~\eqref{eq:calibration} continues to define the external single-effect sum. Measured values and their availability indicators therefore reach that sum through the original permission rule. The pair network receives neither channel. Its input dimensions and parameter count remain unchanged.
+For input removal, every evaluation of $F$ receives model-predicted single effects $a_i(a),a_j(b)$ and zero observation indicators. External calibration still follows Equation~\eqref{eq:calibration} and the original label-permission rule. Measured values and availability indicators continue to calibrate that sum. Neither channel enters the pair network, whose input dimensions and parameter count remain unchanged.
 
 The direct-head control predicts $r_{ij}(a,b)=F(i,a;j,b)$ with the same symmetric network. Its projections, endpoint features, measured inputs, hidden dimensions, and parameter count match SCEPI. This intervention isolates cycle subtraction while retaining endpoint symmetry and the external single-effect calibration.
 
-Both controls reuse the full model's source-selected hyperparameters in each outer partition. They use the same pretrained single checkpoint for each training repetition, random initialization, source rows, sampler, optimizer, objectives, and checkpoint-selection rule. The maximum epoch budget and early-stopping patience are identical. Realized stopping epochs and fitted weights may differ. The label-mixing weight follows the same source-validation procedure. Full-target evaluation retains the same proteins, candidate pools, measurement margins, budgets, and aggregation. The stricter homology grouping repeats this comparison independently. These controls measure the predictive contributions of cycle subtraction and measured pair inputs.
+Both controls reuse the full model's source-selected hyperparameters in each outer partition. Each repetition matches the pretrained single checkpoint, random initialization, source rows, sampler, optimizer, objectives, and checkpoint-selection rule. Maximum epochs and early-stopping patience are identical, while realized stopping epochs and fitted weights may differ. The label-mixing weight follows the same source-validation procedure.
+
+Evaluation holds proteins, candidate pools, measurement margins, budgets, and aggregation fixed. Repeating the comparisons independently under the stricter homology grouping tests the predictive contributions of cycle subtraction and measured pair inputs across both groupings.
 
 \section{Repetitions, aggregation, and statistical analysis}
 
-The 30\% grouping has five outer partitions. Each source-trained model uses one partition for testing, the next partition for source validation, and the remaining three for source training. The main comparisons contain all 25 outer-fold and training-seed evaluations per model. Training seeds are 11, 23, 47, 89, and 131. Every eligible target protein is evaluated once per training seed in its assigned outer test partition. All eligible target double mutants enter the full-target evaluation. There are 795 paired protein-repetition records for phenotype prediction, 775 for residual prediction, and 600 for standard compensation selection. The 0.5 kcal/mol margin cohort contains 575 records. Each protein is averaged over its five repetitions before the equal-protein mean is computed.
+Five outer partitions define the 30\% grouping. A source-trained model uses one partition for testing, the next for validation, and the remaining three for training. Training seeds 11, 23, 47, 89, and 131 give all 25 outer-fold and training-seed evaluations per model. Every eligible target protein is evaluated once per seed in its assigned test partition, using all eligible target double mutants. The resulting paired protein-repetition records number 795 for phenotype prediction, 775 for residual prediction, and 600 for standard compensation selection. The 0.5 kcal/mol margin cohort contains 575 records. Each protein's five repetitions are averaged before computing the equal-protein mean.
 
 At each repetition, all compared methods use the same permitted target labels and candidate definition. Means use the paired cohort. Phenotype and residual comparisons cover 159 and 155 proteins, respectively, from 51 homology groups. Standard compensation covers 120 proteins and 44 groups. The 0.5 kcal/mol margin comparison covers 115 proteins and 43 groups. Source-validation configurations are retained across training repetitions. Candidate yield is excluded from source hyperparameter selection. Five outer partitions describe source-data separation; five training seeds describe repeated model fitting.
 
@@ -1156,7 +1148,7 @@ The fitted objective is $\mathcal L_\epsilon+\lambda_y\mathcal L_y$. The observa
 
 The single-effect model is fitted to source single-mutant measurements before joint training. The joint configuration grid contains projection dimensions of 64 and 128, learning rates of $10^{-4}$, $3\times10^{-4}$, and $10^{-3}$, and auxiliary phenotype weights of 0.1 and 1. The resulting twelve configurations are fitted separately in each outer partition. AdamW uses weight decay $10^{-4}$ and batches of 1,024 records. Training runs for at most 100 epochs, with early stopping after ten epochs without validation improvement. The residual loss uses Huber threshold 1 on the kcal/mol scale.
 
-Training samples three single-label availability conditions. With probability 0.5, it hides target single labels. With probability 0.25, it permits 128 single labels. With probability 0.25, it permits all single labels. Source validation selects $\omega\in\{0,0.5,1\}$ in the 128-label condition. It selects the model configuration by a weighted residual RMSE: 0.5 for zero labels, 0.25 for 128 labels, and 0.25 for all single labels. The selected configuration is then refitted for each training repetition. Phenotype-only, residual-only, and representation variants have separate fitted parameters. The additive model uses phenotype validation because its four-term residual is zero by construction.
+Single-label availability varies during training. Labels are hidden with probability 0.5; the model receives 128 labels with probability 0.25 and all single labels with probability 0.25. Source validation selects $\omega\in\{0,0.5,1\}$ in the 128-label condition. Model selection uses weighted residual RMSE, assigning weights 0.5 to zero labels, 0.25 to 128 labels, and 0.25 to all single labels. The selected configuration is refitted for each training repetition. Phenotype-only, residual-only, and representation variants have separate fitted parameters. For the additive model, validation uses phenotype error because its four-term residual is zero by construction.
 
 Frozen sequence representations are cached by reference and single-mutant sequence. The pair predictor reuses those caches across double mutants. The structural variant adds C$\alpha$ distance and residue confidence from the reference structure. Geometry permutations preserve the recorded distance values while changing their pair assignments. Inference interventions use the fitted structural model. Retrained interventions also use the changed assignments during fitting. Each comparison retains the same outer partition and information condition.
 
@@ -1234,17 +1226,19 @@ Rewired distances\textsuperscript{R} & 0.633 & 0.572 & 10.47 & $-0.257$ \\
 
 Pair removal keeps the trained single-effect predictions and phenotype map fixed. The predicted-singles control replaces measured inputs inside $F$ and retains measured single-effect calibration outside $F$. Local context omits cross-site changes. Wild-type context uses reference-sequence representations. Identity features use amino-acid identities and single effects, with hidden width adjusted to match the main model's parameter count. The remaining variants change the training loss, freeze the single-effect head, replace the phenotype map with the identity, or add structural distances. Superscripts I and R denote distance interventions during inference and retraining, respectively. Retrained additive and global nonlinear models optimize their own parameters.
 
-Removing cross-site context yields 0.575 kcal/mol residual RMSE and an 11.47\% native hit rate under the primary grouping. The amino-acid-identity version reaches 0.557 kcal/mol and 9.12\%. Phenotype-only training reaches 0.562 kcal/mol and 11.95\%. Under the stricter grouping, phenotype-only training lowers residual RMSE from 0.604 to 0.584 kcal/mol and raises hit rate from 11.15\% to 11.98\%. The identity phenotype map gives 0.593 kcal/mol and 11.13\% under the primary grouping. Cross-site context, the flexible map, and the residual objective remain model and fitting choices with these individual results.
+Without cross-site context, residual RMSE is 0.575 kcal/mol and native hit rate is 11.47\% under the primary grouping. Using amino-acid identities and single effects gives 0.557 kcal/mol and 9.12\%, and using an identity phenotype map gives 0.593 kcal/mol and 11.13\%.
+
+Phenotype-only training reaches residual RMSE 0.562 kcal/mol and hit rate 11.95\% under the primary grouping. It also improves both metrics under the stricter grouping, lowering residual RMSE from 0.604 to 0.584 kcal/mol and raising hit rate from 11.15\% to 11.98\%.
 
 \section{Sensitivity to the homology threshold}
 
-Grouping at 25\% identity with the same coverage requirement produces 45 groups in the phenotype and residual cohorts. The compensation cohort contains 39 groups, and its 0.5 kcal/mol margin subset contains 38. Protein membership remains unchanged. All predictors and components are evaluated across five outer partitions and five training repetitions under this grouping (Table~\ref{tab:threshold25}). SCEPI's residual RMSE is 0.604 kcal/mol, compared with 0.771 for ThermoMPNN-D, 0.847 for Kermut, 0.874 for StabilityArc + Kermut, and 0.650 for global nonlinearity. Its native compensation hit rate is 11.15\%, compared with 6.97\%, 5.40\%, and 8.23\% for the three external methods. Its mean selected recovery exceeds StabilityArc + Kermut by 0.092 kcal/mol.
+At 25\% sequence identity and the same coverage requirement, the phenotype and residual cohorts contain 45 groups. Compensation covers 39 groups, with 38 in the 0.5 kcal/mol margin subset. Protein membership remains unchanged. Every predictor and component is evaluated across five outer partitions and five training repetitions (Table~\ref{tab:threshold25}).
 
-With the same measured single-effect sum, top-10 hit rates are 11.17\% for SCEPI, 4.42\% for additivity, 4.63\% for global nonlinearity, 5.68\% for ThermoMPNN-D, 5.47\% for Kermut, 8.57\% for mean MLP, and 5.83\% for mean ridge. At margin 0.5 kcal/mol, the corresponding rates are 11.23\%, 4.52\%, 4.75\%, 5.65\%, 5.29\%, 8.77\%, and 5.83\%. The stricter grouping preserves the average compensation advantage with this fixed sum.
+SCEPI retains residual RMSE of 0.604 kcal/mol under this grouping. ThermoMPNN-D reaches 0.771, Kermut 0.847, StabilityArc + Kermut 0.874, and global nonlinearity 0.650. Native compensation hit rates are 11.15\% for SCEPI and 6.97\%, 5.40\%, and 8.23\% for the three external methods, respectively. Mean selected recovery exceeds StabilityArc + Kermut by 0.092 kcal/mol.
 
-StabilityArc + Kermut reaches an 8.02\% hit rate with the fixed single-effect sum and 7.95\% at margin 0.5 kcal/mol. The paired comparison retains the same proteins and label permissions. SCEPI's selection advantage over this source-trained comparator persists under both homology thresholds.
+With the same measured single-effect sum, top-10 hit rates are 11.17\% for SCEPI, 4.42\% for additivity, 4.63\% for global nonlinearity, 5.68\% for ThermoMPNN-D, 5.47\% for Kermut, 8.57\% for mean MLP, and 5.83\% for mean ridge. At margin 0.5 kcal/mol, the corresponding rates are 11.23\%, 4.52\%, 4.75\%, 5.65\%, 5.29\%, 8.77\%, and 5.83\%. StabilityArc + Kermut reaches 8.02\% with the fixed sum and 7.95\% at margin 0.5 kcal/mol. These paired comparisons retain the same proteins and label permissions. SCEPI's average selection advantage persists under both homology thresholds.
 
-The matched direct residual head reaches 0.630 kcal/mol residual RMSE and an 11.38\% native hit rate. SCEPI lowers residual error to 0.604 kcal/mol and has an 11.15\% native hit rate. Removing measured pair inputs while retaining the external calibration gives 0.814 kcal/mol and 8.15\%. With the same measured single-effect sum, hit rates are 11.45\% for the direct head and 8.15\% for the removed-input control. SCEPI reaches 11.17\%. These controls retain the residual-accuracy contribution of cycle subtraction and the prediction and selection contribution of measured pair inputs.
+For the matched direct residual head, residual RMSE is 0.630 kcal/mol and native hit rate is 11.38\%. SCEPI reaches 0.604 kcal/mol and 11.15\%. Removing measured pair inputs while keeping external calibration gives 0.814 kcal/mol and 8.15\%. With the same measured single-effect sum, the direct head reaches an 11.45\% hit rate, the removed-input control 8.15\%, and SCEPI 11.17\%. Cycle subtraction retains its residual-accuracy benefit; measured pair inputs improve both prediction and selection.
 
 \begin{table}[H]
 \centering
@@ -1310,9 +1304,7 @@ With the same measured single-effect sum, top-10 hit rates on this subset are 5.
 
 \section{Target-label budgets and unseen-site-pair prediction}
 
-The transferred predictor benefits from partial target single-mutant measurements. Across the same 155 residual-evaluation proteins, its RMSE is 0.793 kcal/mol in Z, 0.788 in S32, 0.772 in S128, and 0.595 in S-all. Table~\ref{tab:singlebudgets} reports these four information conditions. Tables~\ref{tab:combinationbudgets}--\ref{tab:combinationsecondary} report the separate target combination-adaptation experiments.
-
-The family-level comparison varies only the target information condition. Source training and validation remain outside each target homology group. All eligible target double mutants enter evaluation. Each condition retains 155 residual-evaluation proteins and 775 protein-repetition records. Kermut requires target measurements, so the Z comparison lists source-trained predictors.
+Partial target single-mutant measurements improve the transferred predictor (Table~\ref{tab:singlebudgets}). Across the same 155 residual-evaluation proteins, RMSE is 0.793 kcal/mol in Z, 0.788 in S32, 0.772 in S128, and 0.595 in S-all. Only the target information condition varies. Source training and validation exclude each target homology group, and evaluation uses all eligible target double mutants. Every condition retains 155 proteins and 775 protein-repetition records. Kermut requires target measurements, so Z lists source-trained predictors. The separate target combination-adaptation experiments appear in Tables~\ref{tab:combinationbudgets}--\ref{tab:combinationsecondary}.
 
 \begin{table}[H]
 \centering
@@ -1330,7 +1322,7 @@ S-all & 0.595 & 1.091 & 0.635 & 0.805 & 0.847 \\
 \end{tabular}
 \end{table}
 
-The ESM-MSR comparison uses the epoch-10 source-validation checkpoint from family30, fold 0, and repetition seed 11. We compare every method on its matched held-out proteins in that fold. Residual evaluation retains 61 proteins; phenotype evaluation retains 65. Table~\ref{tab:msrsubset} reports Z and S-all separately. This checkpoint covers one fold and one repetition. Its results remain separate from the complete five-fold, five-repetition comparison.
+ESM-MSR is evaluated using the epoch-10 source-validation checkpoint from family30, fold 0, and repetition seed 11. All methods share the held-out proteins in that fold: 61 for residual prediction and 65 for phenotype prediction. Table~\ref{tab:msrsubset} separates Z and S-all. This one-fold, one-repetition comparison is distinct from the complete five-fold, five-repetition evaluation.
 
 \begin{table}[H]
 \centering
@@ -1353,7 +1345,9 @@ Kermut & --- & --- & --- & 0.829 & 0.793 & 0.731 \\
 \end{tabular}
 \end{table}
 
-The C comparison fits the SCEPI adaptation variant to permitted target training combinations. Its source initialization uses an identity phenotype map and a single-effect head held fixed during source pair fitting. Target adaptation retains that head and updates the pair network and observation noise. Target validation selects the stopping point. The target-only variant fits its single-effect head without supervised source weights. Both variants retain the same target single-label permissions. Pair removal sets the fitted pair output to zero at inference. Superscripts S and T denote source initialization and target-only fitting. For mean ridge and mean MLP, S denotes a source prior and T denotes target fitting. Numerical superscripts on MoCHI and MAVE-NN specify interaction order. These adaptation models are evaluated separately from the jointly trained S-all predictor.
+For the C conditions, SCEPI adapts to permitted target training combinations. Source initialization uses an identity phenotype map and holds the single-effect head fixed during source pair fitting. Target adaptation keeps this head fixed and updates the pair network and observation noise, with stopping selected by target validation. The target-only variant fits its single-effect head without supervised source weights. Both variants have the same target single-label permissions. Pair removal sets the fitted pair output to zero at inference. These adaptation models are evaluated separately from the jointly trained S-all predictor.
+
+Superscripts S and T denote source initialization and target-only fitting. For mean ridge and mean MLP, they denote a source prior and target fitting. Numerical superscripts on MoCHI and MAVE-NN specify interaction order.
 
 Each budget includes proteins with enough permitted training combinations and complete test cycles. Every comparator in a table uses the same protein-repetition intersection. Unseen-site-pair evaluation excludes all test pairs from target combination fitting. Random splitting shares site pairs between training and test combinations. The auxiliary two-pair cohort retains its designated pair split. Coverage reports proteins and matched protein-repetition records. Metrics average repetitions within protein before equal-protein averaging.
 
@@ -1446,7 +1440,7 @@ Mean MLP\textsuperscript{S} & 1.002 & 1.001 \\
 \section{Functional assays and higher-order target adaptation}
 \label{app:externaladaptation}
 
-The functional double-mutant cohort contains 74,598 double mutants from six ProteinGym assays \citep{notin2023}. Measurements retain their original scales. The three KRAS abundance blocks remain separate measurement conditions. The resulting eight conditions contain 7,898 single mutants. Seven conditions supply measured wild-type values and 70,198 complete cycles. HIS7 contributes phenotype-ranking tests and has no observed wild type for cycle evaluation. Table~\ref{tab:functionalcoverage} lists the coverage. Each fit uses only its permitted measurement condition.
+Six ProteinGym assays supply 74,598 functional double mutants on their original measurement scales \citep{notin2023}. Keeping the three KRAS abundance blocks separate gives eight conditions and 7,898 single mutants. Seven conditions provide measured wild-type values, yielding 70,198 complete cycles. HIS7 lacks an observed wild type and contributes phenotype-ranking tests. Each fit uses only its permitted measurement condition (Table~\ref{tab:functionalcoverage}).
 
 We evaluate random combination splits and held-out site pairs at C128, C512, C2048, and C-all. Each condition supplies its permitted single mutants and training combinations. Test combinations remain excluded from fitting and validation. The C2048 condition excludes HIS7 because its training pool is smaller than the budget. Phenotype rank correlation is computed on measured test double mutants. Residual evaluation requires at least 30 complete test cycles. To compare assay scales, residual RMSE is divided by the population standard deviation of permitted training point values. Tables report equal-assay means. Repetitions are averaged within condition, the three KRAS conditions are averaged within their assay, and assays receive equal weight.
 
@@ -1473,7 +1467,7 @@ Total & 7,898 & 74,598 & 70,198 \\
 \end{tabular}
 \end{table}
 
-The functional SCEPI adaptation variant first fits single-effect predictions and a target-specific monotone phenotype map. It then freezes both and fits the pair function. The source-initialized version starts from source models trained with an identity phenotype map and a fixed single-effect head. Related source proteins are excluded using the recorded homology relation. Eligible source models are averaged at the effect level. The target-only version uses no supervised source weights. These variants use predicted single effects within the pair network. They evaluate source initialization and target combination fitting separately from measured-input conditioning in the primary S-all predictor.
+Functional adaptation separates single-effect fitting from pair fitting. The SCEPI variant fits single-effect predictions and a target-specific monotone phenotype map, freezes both, and then fits the pair function. Source initialization uses models trained with an identity phenotype map and a fixed single-effect head. The recorded homology relation excludes related source proteins, and eligible source models are averaged at the effect level. Target-only fitting uses no supervised source weights. Both variants supply predicted single effects to the pair network. They test source initialization and target combination fitting separately from measured-input conditioning in the primary S-all predictor.
 
 The independent no-pair control fits the first stage without adding pair effects. Inference-time pair removal uses the fitted two-stage model and sets its pair output to zero. Learning rates are $10^{-4}$, $3\times10^{-4}$, and $10^{-3}$. Target-only models compare projection dimensions 64 and 128. Pair fitting compares observation-loss weights 0.1 and 1. Each stage runs for at most 100 epochs with ten-epoch validation patience. Target validation selects phenotype rank correlation, with identifiable phenotype RMSE breaking ties.
 
@@ -1483,7 +1477,9 @@ RFA covers 350 eligible fits, comprising 310 functional-assay fits and 40 FLIP2 
 
 RFA gives constant GFP predictions in all five C128 repetitions under each split and in two unseen-pair C512 repetitions. Their twelve Spearman correlations are undefined. Rank comparisons use the same finite protein-repetition records for every method. C128 therefore excludes GFP and retains five assays, seven conditions, and 35 records. Unseen-pair C512 retains six assays, eight conditions, and 38 records. The other six-assay rank columns contain 40 records. C2048 retains five assays and 35 records after excluding HIS7. Residual evaluation retains all seven eligible conditions and 35 records at every budget, including the constant-prediction cases.
 
-Tables~\ref{tab:functionalresidual} and \ref{tab:functionalrank} separate residual prediction from phenotype ranking. At C128 on unseen pairs, the source-initialized interaction variant has normalized residual RMSE 0.508. Its pair-removed control has 0.551, and the target-only interaction variant has 0.537. First-order MAVE-NN reaches 0.484. At C-all, RFA reaches 0.409 and the source-initialized variant reaches 0.448. On the full six-assay unseen-pair ranking cohort at C128, the source-initialized variant has Spearman correlation 0.730, compared with 0.741 after pair removal. The pair fit improves residual accuracy in this setting while the phenotype-ranking comparison favors the no-pair control.
+On unseen pairs at C128, the source-initialized interaction variant reaches normalized residual RMSE 0.508 (Table~\ref{tab:functionalresidual}). Pair removal gives 0.551 and target-only interaction fitting 0.537. First-order MAVE-NN reaches 0.484. At C-all, RFA reaches 0.409 and the source-initialized variant 0.448.
+
+Phenotype ranking favors pair removal at C128 (Table~\ref{tab:functionalrank}). On the full six-assay unseen-pair ranking cohort, the source-initialized variant has Spearman correlation 0.730, compared with 0.741 after pair removal. Pair fitting improves residual accuracy and reduces phenotype rank correlation in this setting.
 
 \begin{table}[H]
 \centering
@@ -1545,7 +1541,7 @@ Mean MLP & 0.557 & 0.548 & 0.662 & 0.649 & 0.566 & 0.555 & 0.661 & 0.641 \\
 
 FLIP2 evaluates TrpB one-to-many, two-to-many, and by-position splits; amylase one-to-many; IRED two-to-many; Hydro three-to-many; and three Hydro background-transfer splits \citep{didi2026}. We retain the continuous phenotypes and official test assignments. Each split is evaluated separately across five repetitions. Hydro three-to-many averages its three target backgrounds equally. The background-transfer tests provide training measurements from the other backgrounds. Per-background MoCHI, MAVE-NN, and RFA fits require target-background training labels and are unavailable in those three tests. Pooled representation controls and the adaptation variants use the permitted cross-background training pool.
 
-Tables~\ref{tab:flipenzymes} and \ref{tab:fliphydro} report every split. Source-initialized pair fitting improves the TrpB by-position correlation from 0.167 to 0.233. It lowers the one-to-many correlation from 0.252 to $-0.214$. On Hydro three-to-many, the corresponding values are 0.356 and 0.201. The source-initialized independent no-pair model attains 0.703 on amylase. These results give separate comparisons of source initialization, target fitting, and inference-time pair removal. They establish task-dependent performance for the predicted-single adaptation variant.
+TrpB by-position correlation rises from 0.167 to 0.233 after source-initialized pair fitting (Tables~\ref{tab:flipenzymes} and \ref{tab:fliphydro}). One-to-many correlation falls from 0.252 to $-0.214$. On Hydro three-to-many, the corresponding values are 0.356 and 0.201. The source-initialized independent no-pair model reaches 0.703 on amylase. Each split compares source initialization, target fitting, and inference-time pair removal for the predicted-single adaptation variant.
 
 \begin{table}[H]
 \centering
@@ -1605,7 +1601,7 @@ Mean MLP & 0.614 & 0.317 & 0.303 & 0.025 \\
 
 Complete, point-valued double-mutant cycles define the retrospective evaluation cohort. Their double-mutant outcomes are excluded from model training and candidate scores. Measurement status and distance from assay limits define evaluation strata. The margin is the minimum of $y+1$ and $5-y$ across all four observations. A threshold of 0.5 kcal/mol excludes cycles close to either assay limit. This analysis conditions the evaluation on measured outcomes inside the assay range.
 
-Recovery is $y_{AB}-\max(y_A,y_B)$. A hit requires at least 0.5 kcal/mol recovery, and both singles must individually lose at least 0.5 kcal/mol relative to wild type. Hit rate and mean recovery have different roles: the first measures successful budgeted discoveries, and the second measures continuous candidate quality. A candidate can meet the recovery criterion while remaining less stable than wild type.
+Recovery is $y_{AB}-\max(y_A,y_B)$. A hit requires at least 0.5 kcal/mol recovery, with each single losing at least 0.5 kcal/mol relative to wild type. Hit rate measures successful discoveries at a fixed budget; mean recovery measures continuous candidate quality. Meeting the recovery criterion does not require restoring wild-type stability.
 
 General stability ranking is evaluated on a broader continuous pool of 65 proteins in one repetition with seed 11. With the same measured single-effect sum, top-10 mean stability changes differ from additive and global nonlinear ranking by $-0.0018$ and $-0.0054$ kcal/mol, respectively.
 
@@ -1616,7 +1612,7 @@ For protein $p$, let $N_p$ be the number of eligible candidates and $H_p$ the nu
 \begin{equation}
 \operatorname{Var}(X_p/K)=\frac{q_p(1-q_p)(N_p-K)}{K(N_p-1)}.
 \end{equation}
-Expected mean recovery equals the candidate-pool mean. Both expectations are independent of $K$. They are calculated exactly from every eligible candidate; no random-ranking simulation is needed.
+Expected mean recovery equals the candidate-pool mean. Both expectations are independent of $K$ and are calculated exactly from all eligible candidates without random-ranking simulation.
 
 Let $\overline h_p(K)$ be a predictor's hit rate averaged over its five fitted repetitions. For the same $P$ eligible proteins, enrichment is
 \begin{equation}
